@@ -1,8 +1,21 @@
 import './App.css';
-import Login from './pages/login/login.jsx'
+import Dashboard from './pages/dashboard/dashboard.js';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 function App() {
   return (
-    <Login />
+    <Router>
+      <Switch>
+        <Router path="/dashboard">
+          <Dashboard></Dashboard>
+        </Router>
+      </Switch>
+    </Router>
   );
 }
 

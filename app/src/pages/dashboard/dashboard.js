@@ -1,12 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Navbar from '../../components/navbar/navbar.js';
+
+import './dashboard.css';
 
 class Dashboard extends React.Component {
     render() {
         return (
-            <div>
-                
+            <div className="main-container">
+                <div className="header-container"></div>
+                <div className="filter-container"></div>
+                <div className="sidebar-container"></div>
+                <div className="content-container"></div>
             </div>
         );
     }
 }
+
+export default Dashboard;
