@@ -8,7 +8,7 @@ class Dashboard extends React.Component {
     render() {
         return (
             <div className="main-container">
-                <div className="header-container"></div>
+                <Navbar className="header-container"></Navbar>
                 <div className="filter-container"></div>
                 <div className="sidebar-container"></div>
                 <div className="content-container"></div>
