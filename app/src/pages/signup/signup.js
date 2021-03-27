@@ -29,7 +29,7 @@ handleSubmit(event) {
       this.state.username === "admin@littech.in" &&
       this.state.password === "secret"
     ) {
-      this.props.history.push("/home");
+      this.props.history.push("/dashboard");
     } else {
       alert("Incorrect Credntials!");
     }
@@ -76,6 +76,17 @@ render() {
                 variant="outlined"
                 required
                 fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
                 id="email"
                 label="Email Address"
                 name="email"
@@ -97,7 +108,7 @@ render() {
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+                label="I agree to nothing."
               />
             </Grid>
           </Grid>
