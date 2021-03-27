@@ -10,6 +10,9 @@ import {
   Link,
 } from "@material-ui/core";
 import "./login.css"
+import Navbar from '../../components/navbar/navbar.js';
+
+
 const BRAND_NAME = "Study Buddy"
 
 class Login extends React.Component {
@@ -42,15 +45,7 @@ class Login extends React.Component {
   render() {
     return (
       <div>
-        <AppBar position="static" alignitems="center" color="primary">
-          <Toolbar>
-            <Grid container justify="center" wrap="wrap">
-              <Grid item>
-                <Typography variant="h6">{BRAND_NAME}</Typography>
-              </Grid>
-            </Grid>
-          </Toolbar>
-        </AppBar>
+        <Navbar></Navbar>
         <Grid container spacing={0} justify="center" direction="row">
           <Grid item>
             <Grid
