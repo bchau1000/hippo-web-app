@@ -42,7 +42,7 @@ class Login extends React.Component {
   render() {
     return (
       <div>
-        <AppBar position="static" alignitems="center" color="primary">
+        {/* <AppBar position="static" alignitems="center" color="primary">
           <Toolbar>
             <Grid container justify="center" wrap="wrap">
               <Grid item>
@@ -50,7 +50,7 @@ class Login extends React.Component {
               </Grid>
             </Grid>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <Grid container spacing={0} justify="center" direction="row">
           <Grid item>
             <Grid
@@ -113,24 +113,24 @@ class Login extends React.Component {
                           type="submit"
                           className="button-block"
                         >
-                          Submit
+                          Sign In
                         </Button>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          type="submit"
-                          className="button-block"
-                        >
-                          Register
-                        </Button>
+                       
                       </Grid>
                     </Grid>
                   </form>
                 </Grid>
+                <Grid container direction="row" justify="space-between">
                 <Grid item>
                   <Link href="#" variant="body2">
                     Forgot Password?
                   </Link>
+                </Grid>
+                <Grid item >
+                  <Link href="#" variant="body2">
+                    Not a member? Register Here
+                  </Link>
+                </Grid>
                 </Grid>
               </Paper>
             </Grid>

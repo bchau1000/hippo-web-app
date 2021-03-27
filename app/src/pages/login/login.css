@@ -10,6 +10,7 @@
 
 .login-background {
   justify-content: center;
-  min-height: 30vh;
+  min-height: 20vh;
+  min-width: 50vh;
   padding: 50px;
 }
