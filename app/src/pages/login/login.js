@@ -9,8 +9,9 @@ import {
   Toolbar,
   Link,
 } from "@material-ui/core";
-import "./login.css"
-const BRAND_NAME = "Study Buddy"
+
+import "./login.css";
+const BRAND_NAME = "Study Buddy";
 
 class Login extends React.Component {
   constructor(props) {
@@ -42,15 +43,6 @@ class Login extends React.Component {
   render() {
     return (
       <div>
-        {/* <AppBar position="static" alignitems="center" color="primary">
-          <Toolbar>
-            <Grid container justify="center" wrap="wrap">
-              <Grid item>
-                <Typography variant="h6">{BRAND_NAME}</Typography>
-              </Grid>
-            </Grid>
-          </Toolbar>
-        </AppBar> */}
         <Grid container spacing={0} justify="center" direction="row">
           <Grid item>
             <Grid
@@ -75,9 +67,10 @@ class Login extends React.Component {
                     <Grid container direction="column" spacing={2}>
                       <Grid item>
                         <TextField
-                          type="email"
-                          placeholder="Email"
                           fullWidth
+                          required
+                          autoFocus
+                          label="Email / Username"
                           name="username"
                           variant="outlined"
                           value={this.state.username}
@@ -86,14 +79,12 @@ class Login extends React.Component {
                               [event.target.name]: event.target.value,
                             })
                           }
-                          required
-                          autoFocus
                         />
                       </Grid>
                       <Grid item>
                         <TextField
                           type="password"
-                          placeholder="Password"
+                          label="Password"
                           fullWidth
                           name="password"
                           variant="outlined"
@@ -115,22 +106,21 @@ class Login extends React.Component {
                         >
                           Sign In
                         </Button>
-                       
                       </Grid>
                     </Grid>
                   </form>
                 </Grid>
                 <Grid container direction="row" justify="space-between">
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    Forgot Password?
-                  </Link>
-                </Grid>
-                <Grid item >
-                  <Link href="#" variant="body2">
-                    Not a member? Register Here
-                  </Link>
-                </Grid>
+                  <Grid item>
+                    <Link href="#" variant="body2">
+                      Forgot Password?
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link href="/signup" variant="body2">
+                      Not a member? Register Here
+                    </Link>
+                  </Grid>
                 </Grid>
               </Paper>
             </Grid>
