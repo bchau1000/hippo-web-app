@@ -115,6 +115,14 @@ class Login extends React.Component {
                         >
                           Submit
                         </Button>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          type="submit"
+                          className="button-block"
+                        >
+                          Register
+                        </Button>
                       </Grid>
                     </Grid>
                   </form>

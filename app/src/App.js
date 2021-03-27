@@ -1,6 +1,7 @@
 import './App.css';
 import Dashboard from './pages/dashboard/dashboard.js';
 import Login from './pages/login/login.jsx';
+import SignUp from './pages/signup/signup.js';
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,6 +18,9 @@ function App() {
         </Router>
         <Router path="/login">
           <Login />
+        </Router>
+        <Router path="/signup">
+          <SignUp />
         </Router>
       </Switch>
     </Router>
