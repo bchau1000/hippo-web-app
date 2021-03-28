@@ -16,6 +16,21 @@ class SetGrid extends React.Component {
                 <SetGridItem/>
                 <SetGridItem/>
                 <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
             </div>
             
         )

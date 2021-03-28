@@ -6,12 +6,20 @@ html, body, #root, #root>div {
 .main-container {
     display: grid;
     background: rgb(250, 250, 250);
-    grid-template-columns: 240px auto;
+    grid-template-columns: 15px 240px auto;
     grid-template-rows: 65px auto;
     grid-template-areas:
-        "header header"
-        "sidebar content";
+        "header header header"
+        "indent sidebar content";
     grid-gap: 15px;
+}
+
+.content {
+    grid-area: content;
+}
+
+.indent {
+    grid-area: indent;
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
