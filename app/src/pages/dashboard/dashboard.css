@@ -1,3 +1,13 @@
 html, body, #root, #root>div {
     height: 100%
 }
+
+.main-container {
+    display: grid;
+    grid-template-columns: 240px auto;
+    grid-template-rows: 65px auto;
+    grid-template-areas:
+        "header header"
+        "sidebar content";
+    grid-gap: 15px;
+}

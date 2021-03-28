@@ -1,0 +1,45 @@
+img {
+    border: 0;
+}
+
+.sidebar-container {
+    width: 100%;
+    height: 100%;
+    grid-area: sidebar;
+    background: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-container .item {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sidebar-container .item .icon {
+    height: 30px;
+    width: 30px;
+    object-fit: fill;
+    margin-left: 10px;
+}
+
+.sidebar-container .item .text {
+    height: 100%;
+    width: auto;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    user-select: none;
+}
+
+.item:hover {
+    background: rgb(220, 220, 220);
+    cursor: pointer;
+}
