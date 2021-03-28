@@ -43,3 +43,10 @@ img {
     background: rgb(220, 220, 220);
     cursor: pointer;
 }
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .sidebar-container {
+        display: none;
+    }
+
+}

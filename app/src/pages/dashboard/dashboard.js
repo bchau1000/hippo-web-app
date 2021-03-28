@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 
 import Navbar from '../../components/navbar/navbar.js';
 import Sidebar from '../../components/sidebar/sidebar.js';
@@ -16,7 +15,7 @@ class Dashboard extends React.Component {
             <div className="main-container">
                 <Navbar></Navbar>
                 <Sidebar onClick={onClick}></Sidebar>
-                <SetGrid></SetGrid>
+                <SetGrid className="hide"></SetGrid>
             </div>
         );
     }

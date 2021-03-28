@@ -13,3 +13,11 @@ html, body, #root, #root>div {
         "sidebar content";
     grid-gap: 15px;
 }
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .main-container {
+        grid-template-areas:
+            "header header"
+            "content content";
+    }
+}

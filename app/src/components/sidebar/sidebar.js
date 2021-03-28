@@ -8,7 +8,6 @@ import './sidebar.css';
 
 
 export default function Sidebar(props) {
-    console.log(props.onClick)
     return (
         <div className="sidebar-container">
             <div className="item" onClick={props.onClick}>
