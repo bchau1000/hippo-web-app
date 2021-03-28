@@ -8,22 +8,18 @@ import './sidebar.css';
 
 
 export default function Sidebar(props) {
-
-    function onClick(text) {
-        console.log(text)
-    }
-
+    console.log(props.onClick)
     return (
         <div className="sidebar-container">
-            <div className="item" onClick={() => onClick("hello")}>
+            <div className="item" onClick={props.onClick}>
                 <AddIcon className="icon"></AddIcon>
                 <div className="text">Create</div>
             </div>
-            <div className="item">
+            <div className="item" onClick={props.onClick}>
                 <LayersIcon className="icon"></LayersIcon>
                 <div className="text">Study Sets</div>
             </div>
-            <div className="item">
+            <div className="item" onClick={props.onClick}>
                 <DeleteIcon className="icon"></DeleteIcon>
                 <div className="text">Trash</div>
             </div>
