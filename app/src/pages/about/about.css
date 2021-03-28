@@ -1,0 +1,11 @@
+html, body, #root, #root>div {
+    height: 100%
+}
+
+.header-container{
+    position: relative;
+    color: black;
+    top: 45px;
+    font-family: "Times New Roman", Times, serif;
+    /*  margin-top: 66px;*/
+}
