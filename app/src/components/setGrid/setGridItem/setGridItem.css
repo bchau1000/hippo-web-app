@@ -1,0 +1,31 @@
+.grid-item {
+    background: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-rows: auto 24px 5fr;
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.grid-item .title {
+    font-size: 20px;
+    font-weight: bold;
+    width: 100%;
+    
+    word-break: break-word;
+}
+
+.grid-item .tags {
+    width: 100%;
+}
+
+.grid-item .desc {
+    width: 100%;
+    font-size: 16px;
+    padding: 20px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    word-break: break-word;
+}
