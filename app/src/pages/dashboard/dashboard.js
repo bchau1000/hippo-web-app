@@ -1,33 +1,26 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+
 import Navbar from '../../components/navbar/navbar.js';
 import Sidebar from '../../components/sidebar/sidebar.js';
-
-import { makeStyles, rgbToHex } from '@material-ui/core/styles';
-
+import SetGrid from '../../components/setGrid/setGrid.js';
 import './dashboard.css';
+
 
 const navbarHeight = 65;
 const sidebarWidth = 240;
 
 const classes = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-    },
-    content: {
-        flexGrow: 1,
-        backgroundColor: 'rgb(24, 24, 24)',
-    }
+
 }));
 
 class Dashboard extends React.Component {
-    
     render() {
         return (
-            <div className={classes.root}>
+            <div className="main-container">
                 <Navbar height={navbarHeight}></Navbar>
                 <Sidebar marginTop={navbarHeight} width={sidebarWidth}></Sidebar>
-                <main className={classes.content}>
-                </main>
+                <SetGrid></SetGrid>
             </div>
         );
     }

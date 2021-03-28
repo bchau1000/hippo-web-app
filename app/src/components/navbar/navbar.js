@@ -1,39 +1,25 @@
 import React from 'react';
-
-import './navbar.css';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-    AppBar,
-    Toolbar,
-    Typography,
-    Button,
-} from "@material-ui/core";
-
-const styles = makeStyles((props) => ({
-    root: {
-        flexGrow: 1,
-    },
-    title: {
-        flexGrow: 1,
-    },
-    appbar: {
-        background: 'rgb(33, 33, 33)',
-        height: props => props.height
-    }
-}))
+import "./navbar.css";
 
 export default function Navbar(props){
-    const classes = styles(props);
-
     return (
-        <div className={classes.root}>
-            <AppBar className={classes.appbar}>
-                <Toolbar>
-                    <Typography variant="h5" className={classes.title}>Study Buddy</Typography>
-                    <Button className="dashboard" color="inherit" href="/dashboard">Dashboard</Button>
-                    <Button className="title" color="inherit" href="/login">Login</Button>
-                </Toolbar>
-            </AppBar>
+        <div className="navbar-container">
+            <div className="left">
+                <div className="title">
+                    <a href="/dashboard">StudyBuddy</a>
+                </div>
+                <div className="button">
+                    <a href="/dashboard">Home</a>
+                </div>
+                <div className="button">
+                    <a href="/dashboard">Dashboard</a>
+                </div>
+            </div>
+            <div className="right">
+            <div className="title">
+                    <a href="/dashboard">Logout</a>
+                </div>
+            </div>
         </div>
     );
 
