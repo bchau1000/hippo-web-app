@@ -16,8 +16,8 @@ export default function Navbar(props){
                 </div>
             </div>
             <div className="right">
-            <div className="title">
-                    <a href="/dashboard">Logout</a>
+                <div className="button">
+                    <a href="/login">Logout</a>
                 </div>
             </div>
         </div>

@@ -2,7 +2,6 @@ import React from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import LayersIcon from '@material-ui/icons/Layers';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Divider from '@material-ui/core/Divider';
 import './sidebar.css';
 
 

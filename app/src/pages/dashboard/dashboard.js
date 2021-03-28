@@ -28,8 +28,9 @@ class Dashboard extends React.Component {
         return (
             <div className="main-container">
                 <Navbar/>
-                <Sidebar clickCreate={() => this.setState({currentPageView :"CreateSet"})} 
-                clickSet={() =>this.setState({currentPageView :"SetGrid"})} />
+                <Sidebar 
+                    clickCreate={() => this.setState({currentPageView :"CreateSet"})} 
+                    clickSet={() =>this.setState({currentPageView :"SetGrid"})} />
                 <div>{this.getPageViewDom()}</div>
             </div>
         );

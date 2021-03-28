@@ -20,6 +20,8 @@ img {
     flex-direction: row;
     align-items: center;
     margin-bottom: 10px;
+
+    transition: background 0.2s;
 }
 
 .sidebar-container .item .icon {
