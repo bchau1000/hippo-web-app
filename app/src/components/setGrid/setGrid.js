@@ -11,11 +11,11 @@ class SetGrid extends React.Component {
     render() {
         return (
             <div className="grid-container">
-                <SetGridItem></SetGridItem>
-                <SetGridItem></SetGridItem>
-                <SetGridItem></SetGridItem>
-                <SetGridItem></SetGridItem>
-                <SetGridItem></SetGridItem>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
+                <SetGridItem/>
             </div>
             
         )

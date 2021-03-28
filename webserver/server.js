@@ -45,6 +45,22 @@ app.post('/api/users', (request, response) => {
     
 });
 
+
+app.post('/api/studyset', (request, response) => {
+    console.log(request.body);
+    try{
+         pool.query('INSERT INTO studySets SET ?', request.body, (error, result) => {
+            if (error) throw error;
+     
+            response.status(201).send(`Study set has been created: ${result.insertId}`);
+        });
+    }
+    catch(err){
+        console.log(err);
+    }
+    
+});
+
 app.get('/api/users/:id', (request, response) => {
     const id = request.params.id;
  

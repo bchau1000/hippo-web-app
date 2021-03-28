@@ -1,18 +1,18 @@
 import React from 'react';
 
-import "./setGrid.css";
-
-class SetGrid extends React.Component {
+class CreateSet extends React.Component {
     constructor(props) {
         super(props);
+        
     }
 
     render() {
         return (
             <div className="grid-container">
+                <h1>SUP</h1>
             </div>
         )
     }
 }
 
-export default SetGrid;
+export default CreateSet;
