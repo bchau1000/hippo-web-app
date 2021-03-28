@@ -5,7 +5,7 @@ import "./setGridItem.css";
 
 export default function SetGridItem(props) {
     return (
-        <div className="grid-item">
+        <div className="grid-item" onClick = {props.onClick}>
             <div className="title">
                 CS132: Study Guide
             </div>

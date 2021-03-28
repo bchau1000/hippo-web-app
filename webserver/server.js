@@ -1,15 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const pool = require('./config');
-var passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
 const app = express();
 const port = 9000;
 
 //Middleware
 app.use(express.urlencoded({ extended: true }));
-app.use(passport.session());
-app.use(app.router);
 app.use(cors());
 app.use(express.json());
 
@@ -61,6 +57,16 @@ app.post('/api/studyset', (request, response) => {
     
 });
 
+app.get('/api/sets/:set_id', (request, response) => {
+    const set_id = request.params.set_id;
+ 
+    pool.query('SELECT setName,set_description FROM studySets WHERE set_id = ?', set_id, (error, result) => {
+        if (error) throw error;
+ 
+        response.send(result);
+    });
+});
+
 app.get('/api/users/:id', (request, response) => {
     const id = request.params.id;
  
@@ -74,20 +80,6 @@ app.get('/api/users/:id', (request, response) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////LOGIN FUNCTIONS//////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-      User.findOne({ username: username }, function(err, user) {
-        if (err) { return done(err); }
-        if (!user) {
-          return done(null, false, { message: 'Incorrect username.' });
-        }
-        if (!user.validPassword(password)) {
-          return done(null, false, { message: 'Incorrect password.' });
-        }
-        return done(null, user);
-      });
-    }
-  ));
 
 
 
