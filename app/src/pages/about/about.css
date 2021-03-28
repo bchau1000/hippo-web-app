@@ -2,10 +2,10 @@ html, body, #root, #root>div {
     height: 100%
 }
 
-.header-container{
+.about{
     position: relative;
     color: black;
     top: 25px;
     font-family: Georgia, serif;
-    /*  margin-top: 66px;*/
+    margin: 20px;
 }
