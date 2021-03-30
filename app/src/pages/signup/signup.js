@@ -17,6 +17,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+
 const API_URL = "http://localhost:9000/api/users";
 class SignUp extends React.Component {
   constructor(props) {

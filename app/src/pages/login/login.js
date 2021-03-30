@@ -31,10 +31,10 @@ class Login extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     if (
-      this.state.username === "admin@littech.in" &&
-      this.state.password === "secret"
+      this.state.username === "username" &&
+      this.state.password === "password"
     ) {
-      this.props.history.push("/home");
+      window.location.assign("/dashboard");
     } else {
       alert("Incorrect Credntials!");
     }
