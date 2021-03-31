@@ -1,6 +1,27 @@
 #flashcard-container
 {
     display: flex;
-    flex-direction: row;
-    
+    background: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    width:50%;
+    height: auto;
+    min-height: 150px;
+    align-content: stretch;
+    border-radius: 10px;
+}
+
+#desc
+{
+    width: 70%;
+    padding-top: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#term{
+    border-right: 2px dotted rgb(120,120,120);
+    width: 30%;
+    padding-top: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
 }

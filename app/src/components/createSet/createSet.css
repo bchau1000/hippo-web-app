@@ -4,7 +4,7 @@
     display: grid;
     grid-template-rows: 50px 200px auto 50px;
     grid-area: content;
-
+    
 }
 
 .meta-form {

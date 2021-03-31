@@ -24,12 +24,12 @@ class StudyView extends React.Component {
   render() {
     return (
       <div id="study-view-container">
-        <div>{this.state.set_qualities.setName}</div>
-        <div>{this.state.set_qualities.set_description}</div>
+        <span id= "title">{this.state.set_qualities.setName}</span>
+        <span id= "description">{this.state.set_qualities.set_description}</span>
         {
          
           this.state.flash_cards.map(obj => (
-            <FlashCard desc={obj.flashName} name={obj.flashDef}/>
+            <FlashCard name={obj.flashName} desc={obj.flashDef}/>
           ))
   
         }
