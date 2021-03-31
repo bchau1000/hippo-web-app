@@ -3,9 +3,10 @@
         height: 100%;
         width: 100%;
         display: grid;
-        
+        justify-content: center;
         grid-area: content;
-        grid-gap: 15px;
+        grid-gap: 30px;
+    
 }
 
 
