@@ -6,7 +6,6 @@ import {
     AppBar,
     Toolbar,
     Typography,
-    Button,
 } from "@material-ui/core";
 
 const styles = makeStyles((props) => ({

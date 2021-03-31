@@ -1,5 +1,4 @@
 import React from "react";
-import Redirect from "react-dom";
 import "./signup.css";
 
 import axios from 'axios';
@@ -13,7 +12,6 @@ import {
   FormControlLabel,
   Grid,
   Link,
-  makeStyles,
   TextField,
   Typography,
 } from "@material-ui/core";

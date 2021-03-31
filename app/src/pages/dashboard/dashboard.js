@@ -12,7 +12,7 @@ class Dashboard extends React.Component {
     super(props);
     this.state = {
       currentPageView: "SetGrid",
-      studySetList: [2, 20, 30, 40, 50, 60, 70, 80],
+      studySetList: [1, 20, 30, 40, 50, 60, 70, 80],
       currentSet: null,
     };
   }

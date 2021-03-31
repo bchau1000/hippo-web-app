@@ -5,7 +5,6 @@ html, body, #root, #root>div {
 
 .main-container {
     display: grid;
-    
     grid-template-columns: 15px 240px auto;
     grid-template-rows: 65px auto;
     grid-template-areas:

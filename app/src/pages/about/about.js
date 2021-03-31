@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import Navbar from '../../components/navbar/navbar.js';
+import React from 'react';
 import Topbar from '../../components/topbar/topbar.js';
 import './about.css';
 
@@ -10,7 +9,7 @@ class About extends React.Component {
         return (
             <div>
                 <div>
-                    //<Topbar height={topbarHeight}></Topbar>//
+                    <Topbar height={topbarHeight}></Topbar>
 
                 </div>
                 <div className="about">
