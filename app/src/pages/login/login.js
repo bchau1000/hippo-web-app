@@ -4,14 +4,12 @@ import {
   TextField,
   Grid,
   Paper,
-  AppBar,
   Typography,
-  Toolbar,
   Link,
 } from "@material-ui/core";
 
 import "./login.css";
-const BRAND_NAME = "Study Buddy";
+//const BRAND_NAME = "Study Buddy";
 
 class Login extends React.Component {
   constructor(props) {

@@ -2,9 +2,9 @@
     height: 100%;
     width: 100%;
     display: grid;
-    grid-template-rows: 50px 200px auto 50px;
+    grid-template-rows: 20px 200px auto 50px;
     grid-area: content;
-    
+    grid-gap: 30px;
 }
 
 .meta-form {
@@ -24,6 +24,7 @@
 .meta-form .field-container {
     display: flex;
     flex-direction: column;
+    font-size: 22px;
 }
 
 .meta-form .field-container .field-label{
@@ -33,7 +34,7 @@
     color: rgba(0, 0, 0, 0.3);
 }
 
-.meta-form input {
+.meta-form .field-container input{
     background: rgb(250, 250, 250);
     font-size: 18px;
     width: 100%;

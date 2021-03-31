@@ -4,10 +4,6 @@ import CardForm from "./cardForm/cardForm.js";
 import "./createSet.css";
 
 class CreateSet extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div className="container">
@@ -17,11 +13,11 @@ class CreateSet extends React.Component {
                         Create a new study set
                     </div>
                     <div className="field-container">
-                        <input id="title" placeholder="Enter a title..."></input>
+                        <input id="set-title" placeholder="Enter a title..."></input>
                         <div className="field-label">TITLE</div>
                     </div>
                     <div className="field-container">
-                        <input id="desc" placeholder="Add a description..."></input>
+                        <input id="set-desc" placeholder="Add a description..."></input>
                         <div className="field-label">DESCRIPTION</div>
                     </div>
                 </form>
@@ -42,3 +38,10 @@ class CreateSet extends React.Component {
 }
 
 export default CreateSet;
+
+/*
+
+
+<input id="title" placeholder="Enter a title..."></input>
+                        <div className="field-label">TITLE</div>
+*/
