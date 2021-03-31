@@ -14,7 +14,7 @@ class SetGrid extends React.Component {
             <div className="grid-container">
                {
                     this.studySetList.map((value,idx) => (
-                        <SetGridItem key = {idx} set_id = {value} onClick={this.props.onStudySetClick}/>
+                        <SetGridItem key = {idx} set_id = {value} onClick={() => {this.props.onStudySetClick(idx)}}/>
                     ))
                }
             </div>

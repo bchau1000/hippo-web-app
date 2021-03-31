@@ -85,7 +85,7 @@ app.get("/api/sets/cards/:set_id", (request, response) => {
             if (error) throw error;
 
             jsonResult[0].flash_cards = result;
-            response.status(201).send(jsonResult);
+            response.status(200).send(jsonResult);
           }
         );
       }

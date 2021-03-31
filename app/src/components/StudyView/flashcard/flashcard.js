@@ -1,5 +1,5 @@
 import React from 'react';
-
+import "./flashcard.css";
 class FlashCard extends React.Component {
     constructor(props) {
         super(props);
@@ -8,8 +8,9 @@ class FlashCard extends React.Component {
 
     render() {
         return (
-            <div id="container">
-                <div>{this.props.set_id}</div>
+            <div id="flashcard-container">
+                <div>{this.props.name}</div>
+                <div>{this.props.desc}</div>
             </div>
         )
     }
