@@ -2,7 +2,7 @@
     height: 100%;
     width: 100%;
     display: grid;
-    grid-template-rows: 20px 200px auto 50px;
+    grid-template-rows: 20px 200px 100px auto 100px 50px;
     grid-area: content;
     grid-gap: 30px;
 }
@@ -61,6 +61,44 @@
     grid-template-rows: repeat(auto-fill);
     grid-gap: 20px;
     margin-left: 10%;
+}
+
+.add-card-container {
+    min-width: 300px;
+    width: 72%;
+    margin-left: 10%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 13px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.add-card {
+    height: fit-content;
+    width: fit-content;
+
+    display: flex;
+    flex-direction: row;
+    transition: color 0.15s;
+}
+
+.add-card-text{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.add-card .icon {
+    color: red;
+    
+}
+
+.add-card-container:hover {
+    cursor:pointer;
+    color: rgb(22, 206, 120);
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
