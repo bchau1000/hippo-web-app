@@ -8,8 +8,9 @@
 }
 
 .meta-form {
-    justify-self: center;
-    width: 600px;
+    min-width: 300px;
+    width: 40%;
+    margin-left: 10%;
     display: grid;
     grid-template-rows: 40px, 60px, 60px;
     grid-gap: 15px;
@@ -55,10 +56,22 @@
 }
 
 .center-container {
-    width: 100%;
+    width: 90%;
     display: grid;
     grid-template-rows: repeat(auto-fill);
     grid-gap: 20px;
-    justify-content: center;
+    margin-left: 10%;
 }
 
+@media (min-width: 320px) and (max-width: 480px) {
+
+    .meta-form {
+        width: 93%;
+        margin-left: 0px;
+    }
+
+    .center-container {
+        width: 100%;
+        margin-left: 0px;
+    }
+}

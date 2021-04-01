@@ -32,7 +32,6 @@ CREATE TABLE flashCards(
   FOREIGN KEY(set_id) REFERENCES studySets(set_id) 
 );
 
-
 INSERT INTO users SET username="admin", pass="admin", email="admin@email.com", first_name="admin", last_name="admin";
 
 INSERT INTO studySets SET setName = "Bio Chapter 4 Terms", user_id = 1, set_description = "Terms for biology chapter 4 that includes anatomy and the process that occur";

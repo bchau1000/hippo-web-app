@@ -1,5 +1,109 @@
 .card-container {
-    height: 200px;
-    width: 600px;
-    background: red;
+    min-width: 300px;
+    min-height: 200px;
+    width: 80%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 13px;
+
+    display: grid;
+    grid-template-columns: 3fr 1px 4fr;
+    grid-template-rows: 3fr 10fr;
+    grid-template-areas: 
+        "options options options"
+        "term div desc"
+    ;
+    align-items: center;
+}
+
+.card-container .options {
+    height: 100%;
+    grid-area: options;
+    border-bottom: solid 1px rgba(150,150,150, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-container .options .left {
+    color: rgba(150, 150, 150, 0.4);
+    font-size: 18px;
+    font-weight: bold;
+    float: left;
+    padding-left: 7px;
+}
+
+.card-container .options .right {
+    float: right;
+    padding-right: 7px;
+    display: flex;
+    flex-direction: row;
+}
+
+.card-container .options .icon {
+    color: rgba(150, 150, 150, 0.4);
+    transition: color .1s;
+    padding-left: 5px;
+}
+
+.card-container .options .delete-icon:hover {
+    color: rgb(228, 54, 54);
+}
+
+.card-container .options .clear-icon:hover {
+    color: black;
+}
+
+.card-container .options .icon:hover {
+    cursor: pointer;
+}
+
+.card-container .term {
+    grid-area: term;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 10%;
+}
+
+.card-container .divider {
+    grid-area: div;
+    height: 65%;
+    background-color: rgba(150,150,150, 0.1);
+}
+
+.card-container .def {
+    grid-area: desc;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 10%;
+}
+
+label {
+    padding-top: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.3);
+}
+
+textarea {
+    height: 30px;
+    font-size: 18px;
+    width: 90%;
+    border: none;
+    border-bottom: 2.5px solid black;
+    transition: border-bottom .3s;
+    resize: none;
+}
+
+textarea:focus {
+    outline:none;
+    border-bottom: 2.5px solid rgb(22, 206, 120);
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .card-container {
+        width: 93%;
+    }
 }

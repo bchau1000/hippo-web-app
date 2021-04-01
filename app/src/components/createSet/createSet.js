@@ -4,6 +4,15 @@ import CardForm from "./cardForm/cardForm.js";
 import "./createSet.css";
 
 class CreateSet extends React.Component {
+    
+    deleteCard(cardNum) {
+        console.log("Deleting card: " + cardNum);
+    }
+
+    clearCard(cardNum) {
+        console.log("Clearing card: " + cardNum);
+    }
+
     render() {
         return (
             <div className="container">
@@ -22,14 +31,9 @@ class CreateSet extends React.Component {
                     </div>
                 </form>
                 <div className="center-container">
-                    <CardForm></CardForm>
-                    <CardForm></CardForm>
-                    <CardForm></CardForm>
-                    <CardForm></CardForm>
-                    <CardForm></CardForm>
-                    <CardForm></CardForm>
-                    <CardForm></CardForm>
-                    <CardForm></CardForm>
+                    <CardForm delete={this.deleteCard} clear={this.clearCard} cardNum="1"></CardForm>
+                    <CardForm delete={this.deleteCard} clear={this.clearCard} cardNum="2"></CardForm>
+                    <CardForm delete={this.deleteCard} clear={this.clearCard} cardNum="3"></CardForm>
                 </div>
                 <div className="submit-container"></div>
             </div>
@@ -38,10 +42,3 @@ class CreateSet extends React.Component {
 }
 
 export default CreateSet;
-
-/*
-
-
-<input id="title" placeholder="Enter a title..."></input>
-                        <div className="field-label">TITLE</div>
-*/
