@@ -8,24 +8,49 @@ class CreateSet extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            flash_cards: [0, 0, 0, 0],
+            title: "",
+            desc: "",
+            flash_cards: [{
+                "term": "",
+                "def": "",
+            }],
         }
     }
 
-    // front is a bool, true inserts a card to the front of the list, false appends a card to the back of the list
-    addCard(front) {
-        let new_flash_cards = this.state.flash_cards.slice();
+    setTitle = (new_title) => {
+        this.setState({
+            title: new_title,
+        });
+    }
 
+    setDesc = (new_desc) => {
+        this.setState({
+            desc: new_desc,
+        });
+    }
+
+    // front is a bool, true inserts a card to the front of the list, false appends a card to the back of the list
+    addCard = (front) => {
+        let new_flash_cards = this.state.flash_cards.slice();
+        let new_id_counter = this.state.id_counter + 1;
+        
         if(front) {
-            new_flash_cards.unshift(0);
+            new_flash_cards.unshift({
+                "term": "",
+                "def": "",
+            });
 
         }
         else {
-            new_flash_cards.push(0);
+            new_flash_cards.push({
+                "term": "",
+                "def": "",
+            });
         }
 
         this.setState({
             flash_cards: new_flash_cards,
+            id_counter: new_id_counter,
         });
     }
 
@@ -34,16 +59,48 @@ class CreateSet extends React.Component {
             let new_flash_cards = this.state.flash_cards.slice();
         
             new_flash_cards.splice(index, 1);
-
+            console.log(new_flash_cards);
             this.setState({
                 flash_cards: new_flash_cards,
-        });
+            });
         }
-        
     }
 
-    clearCard(index) {
-        console.log("Clearing card: " + index);
+    clearCard = (index) => {
+        let new_flash_cards = this.state.flash_cards.slice();
+
+        new_flash_cards[index] = {
+            "term": "",
+            "def": "",
+        }
+
+        this.setState({
+            flash_cards: new_flash_cards,
+        });
+    }
+
+    setCardTerm = (index, term) => {
+        let new_flash_cards = this.state.flash_cards.slice();
+
+        new_flash_cards[index] = {
+            "term": term,
+            "def": this.state.flash_cards[index].def,
+        }
+
+        this.setState({
+            flash_cards: new_flash_cards,
+        });
+    }
+
+    setCardDef = (index, def) => {
+        let new_flash_cards = this.state.flash_cards.slice();
+        new_flash_cards[index] = {
+            "term": this.state.flash_cards[index].term,
+            "def": def,
+        }
+        this.setState({
+            flash_cards: new_flash_cards,
+        });
     }
 
     render() {
@@ -55,11 +112,21 @@ class CreateSet extends React.Component {
                         Create a new study set
                     </div>
                     <div className="field-container">
-                        <input id="set-title" placeholder="Enter a title..."></input>
+                        <input 
+                            id="set-title" 
+                            placeholder="Enter a title..."
+                            value={this.state.title}
+                            onChange={event => this.setTitle(event.target.value)}
+                        />
                         <div className="field-label">TITLE</div>
                     </div>
                     <div className="field-container">
-                        <input id="set-desc" placeholder="Add a description..."></input>
+                        <input 
+                            id="set-desc" 
+                            placeholder="Add a description..."
+                            value={this.state.desc}
+                            onChange={event => this.setDesc(event.target.value)}
+                        />
                         <div className="field-label">DESCRIPTION</div>
                     </div>
                 </form>
@@ -73,7 +140,16 @@ class CreateSet extends React.Component {
 
                 <div className="center-container">
                     {this.state.flash_cards.map((_, index) => {
-                        return <CardForm delete={this.deleteCard} clear={this.clearCard} cardNum={index}></CardForm>;
+                        return (
+                            <CardForm 
+                                delete={this.deleteCard} 
+                                clear={this.clearCard} 
+                                setTerm={this.setCardTerm}
+                                setDef={this.setCardDef}
+                                info={this.state.flash_cards[index]}
+                                cardNum={index}
+                            />
+                        );
                     })}
                 </div>
                 

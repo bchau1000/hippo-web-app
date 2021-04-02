@@ -17,7 +17,9 @@ class Dashboard extends React.Component {
     };
   }
   getSetFromIdx(index) {
-    this.state.currentSet = this.state.studySetList[index];
+    this.setState({
+      currentSet: this.state.studySetList[index],
+    });
   }
   getPageViewDom() {
     switch (this.state.currentPageView) {

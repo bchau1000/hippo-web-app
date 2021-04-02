@@ -3,9 +3,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
 import "./cardForm.css";
 
+
+
 export default function CardForm(props) {
     return(
-        <form className="card-container">
+        <form id="card-form" className="card-container">
             <div className="options">
                 <div className="left">{props.cardNum}</div>
                 <div className="right">
@@ -14,12 +16,22 @@ export default function CardForm(props) {
                 </div>
             </div>
             <div className="term">
-                <textarea id="card-term" placeholder="Enter term"></textarea>
+                <textarea 
+                    form="card-form" 
+                    placeholder="Enter term" 
+                    value={props.info.term}
+                    onChange={event => props.setTerm(props.cardNum, event.target.value)}
+                />
                 <label htmlFor="card-term">TERM</label>
             </div>
             <div className="divider"></div>
             <div className="def">
-                <textarea id="card-def" placeholder="Enter definition"></textarea>
+                <textarea 
+                    form="card-form" 
+                    placeholder="Enter definition"
+                    value={props.info.def}
+                    onChange={event => props.setDef(props.cardNum, event.target.value)}
+                />
                 <label htmlFor="card-def">DEFINITION</label>
             </div>
         </form>

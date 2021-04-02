@@ -1,7 +1,7 @@
 import React from "react";
 import FlashCard from "./flashcard/flashcard.js";
  import "./StudyView.css";
-import axios from "axios";
+//import axios from "axios";
 const API_URL = "http://localhost:9000/api/sets/cards/";
 class StudyView extends React.Component {
   constructor(props) {
