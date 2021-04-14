@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 
 import "./login.css";
-//const BRAND_NAME = "Study Buddy";
+const API_URL = "http://localhost:9000/api/login";
 
 class Login extends React.Component {
   constructor(props) {
@@ -28,14 +28,30 @@ class Login extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    if (
-      this.state.username === "username" &&
-      this.state.password === "password"
-    ) {
-      window.location.assign("/dashboard");
-    } else {
-      alert("Incorrect Credntials!");
-    }
+
+    const body = JSON.stringify({
+      username: this.state.username,
+      password: this.state.password
+    })
+
+    const settings = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: body,
+    };
+
+    fetch(API_URL, settings)
+      .then(response => response.json())
+      .then((data) => {
+        if(data.accessToken === null) {
+          console.log("Invalid username or password");
+        }
+        else {
+          localStorage.setItem('token', data.accessToken);
+          window.location.href = "/dashboard";
+        }
+      }
+    );
   }
 
   render() {

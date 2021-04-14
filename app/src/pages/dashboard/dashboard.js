@@ -16,11 +16,17 @@ class Dashboard extends React.Component {
       currentSet: null,
     };
   }
+  
+  async componentDidMount() {
+    console.log(localStorage.getItem('token'));
+  }
+
   getSetFromIdx(index) {
     this.setState({
       currentSet: this.state.studySetList[index],
     });
   }
+
   getPageViewDom() {
     switch (this.state.currentPageView) {
       case "SetGrid":

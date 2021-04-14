@@ -2,6 +2,7 @@ import React from "react";
 import FlashCard from "./flashcard/flashcard.js";
  import "./StudyView.css";
 const API_URL = "http://localhost:9000/api/sets/cards/";
+
 class StudyView extends React.Component {
   constructor(props) {
     super(props);
@@ -23,8 +24,8 @@ class StudyView extends React.Component {
   render() {
     return (
       <div id="study-view-container">
-        <span id= "title">{this.state.set_qualities.setName}</span>
-        <span id= "description">{this.state.set_qualities.set_description}</span>
+        <span id="title">{this.state.set_qualities.setName}</span>
+        <span id="description">{this.state.set_qualities.set_description}</span>
         {
           this.state.flash_cards.map((obj, index) => (
             <FlashCard

@@ -11,25 +11,25 @@ function App() {
     <Router>
 
       <Switch>
-        <Route path="/">
+        <Route exact path="/dashboard">
           <Dashboard />
         </Route>
       </Switch>
 
       <Switch>
-        <Route path="/login">
+        <Route exact path="/login">
           <Login />
         </Route>
       </Switch>
 
       <Switch>
-        <Route path="/signup">
+        <Route exact path="/signup">
           <SignUp />
         </Route>
       </Switch>
 
       <Switch>
-        <Route path="/about">
+        <Route exact path="/about">
           <About />
         </Route>
       </Switch>
