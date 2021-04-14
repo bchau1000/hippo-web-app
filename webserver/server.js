@@ -4,33 +4,83 @@ const pool = require("./config");
 const app = express();
 const port = 9000;
 
-//Middleware
+// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
-app.set("json spaces", 2); //formats the JSON nicely
-
-app.get("/api", (req, res) => {
-  res.send("Hello world!");
-});
+app.set("json spaces", 2);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////GET USER FUNCTIONS//////////////////////////////////////////
+///////////////////////////////////USER REQUEST FUNCTIONS//////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
-app.get("/api/users", (request, response) => {
-  pool.query("SELECT * FROM users", (error, result) => {
-    if (error) throw error;
 
-    response.send(result);
-  });
+// Get all sets belonging to a user
+app.get("/api/users/:user_id/sets", (request, response) => {
+  const user_id = request.params.user_id;
+
+  pool.query(
+    "SELECT * FROM study_sets WHERE user_id = ?",
+    user_id,
+    (error, result) => {
+      if(error) response.send(error);
+      response.status(201).send(result);
+    }
+  );
 });
 
-app.post("/api/users", (request, response) => {
+// Get all cards belonging to a set
+app.get("/api/sets/:set_id/cards", (request, response) => {
+  const set_id = request.params.set_id;
+  try {
+    pool.query(
+      "SELECT f.id as 'id', f.term as 'term', f.definition as 'definition'\n" +
+      "FROM study_sets as s JOIN flash_cards as f\n" + 
+      "WHERE s.id = f.set_id AND s.id = ?",
+      set_id,
+      (error, result) => {
+        if(error) response.status(404).send(error);
+        response.status(201).send(result);
+      }
+    );
+  } catch (err) {
+    response.status(404).send(err);
+  }
+});
+
+// END USER REQUEST FUNCTIONS
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////CREATE SET FUNCTIONS//////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+// TO DO: Insert a new set 
+app.get("/api/users/:id/sets/new", (request, response) => {
+  console.log(request.body);
+  try {
+    pool.query("INSERT INTO study_sets SET ?", request.body, (error, result) => {
+      if (error) response.send(error);
+
+      response.status(201).send(`Study set has been created: ${result.insertId}`);
+    });
+  } catch (err) {
+    response.status(404).send(err);
+  }
+});
+
+// END CREATE SET FUNCTIONS
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////REGISTER/LOGIN FUNCTIONS//////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+// TO DO: Register a new user
+app.post("/api/register", (request, response) => {
   console.log(request.body);
   try {
     pool.query("INSERT INTO users SET ?", request.body, (error, result) => {
-      if (error) throw error;
-
+      if(error) response.send(error);
       response.status(201).send(`User added with ID: ${result.insertId}`);
     });
   } catch (err) {
@@ -39,75 +89,28 @@ app.post("/api/users", (request, response) => {
   }
 });
 
-app.post("/api/studyset", (request, response) => {
+// TO DO: Authenticate a user
+app.post("/api/login", (request, response) => {
   console.log(request.body);
   try {
-    pool.query("INSERT INTO studySets SET ?", request.body, (error, result) => {
-      if (error) throw error;
-
-      response
-        .status(201)
-        .send(`Study set has been created: ${result.insertId}`);
+    pool.query("INSERT INTO users SET ?", request.body, (error, result) => {
+      if(error) response.send(error);
+      response.status(201).send(`User added with ID: ${result.insertId}`);
     });
   } catch (err) {
-    console.log(err);
+    if (err.code === "ER_DUP_ENTRY")
+      response.status(400).send(`User name already taken`);
   }
 });
 
-app.get("/api/sets/:set_id", (request, response) => {
-  const set_id = request.params.set_id;
+// END REGISTER/LOGIN FUNCTIONS
 
-  pool.query(
-    "SELECT setName,set_description FROM studySets WHERE set_id = ?",
-    set_id,
-    (error, result) => {
-      if (error) throw error;
 
-      response.send(result);
-    }
-  );
+app.get("*", (request, response) => {
+  response
+    .status(404)
+    .send('404 Page Not Found');
 });
-app.get("/api/sets/cards/:set_id", (request, response) => {
-  const set_id = request.params.set_id;
-  try {
-    pool.query(
-      "SELECT setName,set_description FROM studySets WHERE set_id = ?",
-      set_id,
-      (error, result) => {
-        if (error) throw error;
-        var jsonResult = [{ set_qualities: {} }];
-        jsonResult[0].set_qualities = result[0];
-
-        pool.query(
-          "SELECT flashName,flashDef,qtype FROM flashCards WHERE set_id = ?",
-          set_id,
-          (error, result) => {
-            if (error) throw error;
-
-            jsonResult[0].flash_cards = result;
-            response.status(200).send(jsonResult);
-          }
-        );
-      }
-    );
-  } catch (err) {
-    response.status(404).send("Could not find");
-  }
-});
-
-app.get("/api/users/:id", (request, response) => {
-  const id = request.params.id;
-
-  pool.query("SELECT * FROM users WHERE user_id = ?", id, (error, result) => {
-    if (error) throw error;
-
-    response.send(result);
-  });
-});
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////LOGIN FUNCTIONS//////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////
 
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);

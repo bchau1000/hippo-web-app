@@ -26,7 +26,6 @@ class StudyView extends React.Component {
         <span id= "title">{this.state.set_qualities.setName}</span>
         <span id= "description">{this.state.set_qualities.set_description}</span>
         {
-         
           this.state.flash_cards.map((obj, index) => (
             <FlashCard
               key={index}
@@ -34,7 +33,6 @@ class StudyView extends React.Component {
               desc={obj.flashDef}
             />
           ))
-  
         }
       </div>
     );

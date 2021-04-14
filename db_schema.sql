@@ -4,40 +4,65 @@ USE study_buddy_db;
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
-  user_id int NOT NULL auto_increment,
+  id int PRIMARY KEY auto_increment,
   username VARCHAR(60) NOT NULL UNIQUE,
-  pass VARCHAR(20) NULL,
-  email VARCHAR(60) NULL UNIQUE ,
+  email VARCHAR(60) NULL UNIQUE,
+  password VARCHAR(20) NULL,
   first_name VARCHAR(40) NULL,
-  last_name VARCHAR(40) NULL,
-  PRIMARY KEY(user_id)
+  last_name VARCHAR(40) NULL
 );
 
-DROP TABLE IF EXISTS studySets;
-CREATE TABLE studySets(
-  set_id int NOT NULL auto_increment,
-  setName VARCHAR(60) NOT NULL UNIQUE,
-  user_id int,
-  set_description VARCHAR(300),
-  PRIMARY KEY(set_id),
-  FOREIGN KEY(user_id) REFERENCES users(user_id)
-  );
-
-DROP TABLE IF EXISTS flashCards;  
-CREATE TABLE flashCards(
-  qType TINYINT,
-  flashName VARCHAR(255),
-  flashDef VARCHAR(255),
-  set_id int,
-  FOREIGN KEY(set_id) REFERENCES studySets(set_id) 
+DROP TABLE IF EXISTS study_sets;
+CREATE TABLE study_sets(
+  id int PRIMARY KEY auto_increment,
+  title VARCHAR(60) NOT NULL UNIQUE,
+  description VARCHAR(300),
+  user_id int REFERENCES user(id)
 );
 
-INSERT INTO users SET username="admin", pass="admin", email="admin@email.com", first_name="admin", last_name="admin";
+DROP TABLE IF EXISTS subjects;
+CREATE TABLE subjects(
+	id int PRIMARY KEY auto_increment,
+    name VARCHAR(40) NOT NULL UNIQUE,
+    set_id int REFERENCES study_sets(id)
+);
 
-INSERT INTO studySets SET setName = "Bio Chapter 4 Terms", user_id = 1, set_description = "Terms for biology chapter 4 that includes anatomy and the process that occur";
+DROP TABLE IF EXISTS flash_cards;  
+CREATE TABLE flash_cards(
+  id int PRIMARY KEY auto_increment,
+  term VARCHAR(255),
+  definition VARCHAR(255),
+  q_type TINYINT,
+  set_id int REFERENCES study_sets(id)
+);
 
-INSERT INTO flashCards SET qType=0, flashName = "abdomen", flashDef = "the region of the body between the thorax and the pelvis", set_id = 1;
-INSERT INTO flashCards SET qType=0, flashName = "biomass", flashDef = "the total amount of living matter in a given unit area", set_id = 1;
-INSERT INTO flashCards SET qType=0, flashName = "biome", flashDef = "major ecological community with distinct climate and flora", set_id = 1;
-INSERT INTO flashCards SET qType=0, flashName = "cytoskeleton", flashDef = "a microscopic network of actin filaments and microtubules in the cytoplasm of many living cells that gives the cell shape and coherence", set_id = 1;
-INSERT INTO flashCards SET qType=0, flashName = "semipermeable membrane", flashDef = "a membrane (as a cell membrane) that allows some molecules to pass through but not others", set_id = 1;
+INSERT INTO users(username, email, password, first_name, last_name) VALUES('admin', 'admin@email.com', 'admin', 'admin', 'admin');
+INSERT INTO study_sets(title, description, user_id) VALUES('CS145: Embedded Software', 'A study guide regarding embedded software', 1);
+INSERT INTO study_sets(title, description, user_id) VALUES('CS132: Computer Networks', 'A study guide regarding computer networks', 1);
+INSERT INTO study_sets(title, description, user_id) VALUES('CS178: Machine Learning', 'A study guide regarding machine learning', 1);
+INSERT INTO study_sets(title, description, user_id) VALUES('CS161: Design and Analysis of Algorithms', 'A study guide regarding algorithms', 1);
+
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '1');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '2');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '3');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '4');
+
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '1');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '2');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '3');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '4');
+
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '1');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '2');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '3');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '4');
+
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '1');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '2');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '3');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '4');
+
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '1');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '2');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '3');
+INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES('A term here', 'Definition of the term here', 1, '4');
