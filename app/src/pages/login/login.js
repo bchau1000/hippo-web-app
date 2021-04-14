@@ -48,7 +48,8 @@ class Login extends React.Component {
         }
         else {
           localStorage.setItem('token', data.accessToken);
-          window.location.href = "/dashboard";
+
+          window.location.href = "/sets";
         }
       }
     );

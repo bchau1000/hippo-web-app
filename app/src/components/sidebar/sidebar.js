@@ -9,17 +9,17 @@ import './sidebar.css';
 export default function Sidebar(props) {
     return (
         <div className="sidebar-container">
-            <div className="item" onClick={props.clickCreate}>
+            <div className="item">
                 <AddIcon className="icon"></AddIcon>
-                <div className="text">Create</div>
+                <a className="text" href="/sets/new">Create</a>
             </div>
-            <div className="item" onClick={props.clickSet}>
+            <div className="item">
                 <LayersIcon className="icon"></LayersIcon>
-                <div className="text">Study Sets</div>
+                <a className="text" href="/sets">Study Sets</a>
             </div>
-            <div className="item" onClick={props.onClick}>
+            <div className="item">
                 <DeleteIcon className="icon"></DeleteIcon>
-                <div className="text">Trash</div>
+                <a className="text" href="/sets">Trash</a>
             </div>
         </div>
     );

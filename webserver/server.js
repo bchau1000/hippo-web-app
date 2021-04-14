@@ -26,14 +26,14 @@ app.set("json spaces", 2);
 //  Remove authJWT in app.get() functions to test
 //  URLs WITHOUT user authentication
 const authJWT = (request, response, next) => {
-  const auth = req.headers.authorization;
+  const auth = request.headers.authorization;
 
   if(auth) {
     const token = auth.split(' ')[1];
 
     jwt.verify(token, secretToken, (err, user) => {
       if(err)
-        return res.sendStatus(403);
+        return response.sendStatus(403);
 
       request.user = user;
       next();
@@ -49,12 +49,12 @@ const authJWT = (request, response, next) => {
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 // Get all sets belonging to a user
-app.get("/api/users/sets", authJWT, (request, response) => {
+app.post("/api/users/sets", authJWT, (request, response) => {
   const {id} = request.user;
 
   pool.query(
     "SELECT * FROM study_sets WHERE user_id = ?",
-    user_id,
+    id,
     (error, result) => {
       if(error) response.status(400).send(error);
       response.status(201).send(result);
@@ -141,10 +141,11 @@ app.post("/api/login", (request, response) => {
       if(result[0] === undefined)
         response.status(400).json({"accessToken": null});
       else {
-        const accessToken = jwt.sign({id: result.id, username: result.username, email: result.email}, secretToken);
 
+        const accessToken = jwt.sign({id: result[0].id, username: result[0].username, email: result[0].email}, secretToken);
         response.status(200).json({
-          accessToken
+          accessToken,
+
         });
       }
     });

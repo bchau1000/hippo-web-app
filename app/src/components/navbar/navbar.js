@@ -6,13 +6,13 @@ export default function Navbar(props){
         <div className="navbar-container">
             <div className="left">
                 <div className="title">
-                    <a href="/dashboard">StudyBuddy</a>
+                    <a href="/sets">StudyBuddy</a>
                 </div>
                 <div className="button">
-                    <a href="/dashboard">Home</a>
+                    <a href="/sets">Home</a>
                 </div>
                 <div className="button">
-                    <a href="/dashboard">Dashboard</a>
+                    <a href="/sets">Dashboard</a>
                 </div>
             </div>
             <div className="right">

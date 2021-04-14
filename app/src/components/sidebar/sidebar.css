@@ -2,6 +2,11 @@ img {
     border: 0;
 }
 
+.sidebar-container a {
+    text-decoration: none;
+    color: black;
+}
+
 .sidebar-container {
     width: 100%;
     height: 170px;

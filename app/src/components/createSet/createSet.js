@@ -45,7 +45,6 @@ class CreateSet extends React.Component {
                 "term": "",
                 "def": "",
             });
-
         }
         else {
             new_flash_cards.push({

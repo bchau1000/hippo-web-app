@@ -2,11 +2,15 @@ import React from 'react';
 
 import "./setGridItem.css";
 
+function redirect(id) {
+    console.log(id);
+}
+
 export default function SetGridItem(props) {
     return (
-        <div className="grid-item" onClick = {props.onClick}>
+        <div className="grid-item" onClick={() => redirect(props.id)}>
             <div className="title">
-                CS132: Study Guide
+                {props.title}
             </div>
             <div className="tags-container">
                 <div className="tag">Math</div>
@@ -14,9 +18,7 @@ export default function SetGridItem(props) {
                 <div className="tag">English</div>
             </div>
             <div className="desc">
-                Some text here about the details of this set of index cards. Just testing to see
-                how many characters we can fit on this one card. Hopefully it's about this
-                much. Maybe this much. Or this much.
+                {props.desc}
             </div>
         </div>
     )
