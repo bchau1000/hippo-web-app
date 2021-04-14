@@ -1,7 +1,6 @@
 import React from "react";
 import FlashCard from "./flashcard/flashcard.js";
  import "./StudyView.css";
-//import axios from "axios";
 const API_URL = "http://localhost:9000/api/sets/cards/";
 class StudyView extends React.Component {
   constructor(props) {
@@ -28,8 +27,12 @@ class StudyView extends React.Component {
         <span id= "description">{this.state.set_qualities.set_description}</span>
         {
          
-          this.state.flash_cards.map(obj => (
-            <FlashCard name={obj.flashName} desc={obj.flashDef}/>
+          this.state.flash_cards.map((obj, index) => (
+            <FlashCard
+              key={index}
+              name={obj.flashName} 
+              desc={obj.flashDef}
+            />
           ))
   
         }

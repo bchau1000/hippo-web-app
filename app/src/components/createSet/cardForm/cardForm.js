@@ -1,13 +1,13 @@
 import React from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
 import "./cardForm.css";
 
 
+export default function CardForm(props){
 
-export default function CardForm(props) {
-    return(
-        <form id="card-form" className="card-container">
+        return (<form id="card-form" className="card-container">
             <div className="options">
                 <div className="left">{props.cardNum}</div>
                 <div className="right">
@@ -16,7 +16,7 @@ export default function CardForm(props) {
                 </div>
             </div>
             <div className="term">
-                <textarea 
+                <TextareaAutosize
                     form="card-form" 
                     placeholder="Enter term" 
                     value={props.info.term}
@@ -26,7 +26,7 @@ export default function CardForm(props) {
             </div>
             <div className="divider"></div>
             <div className="def">
-                <textarea 
+                <TextareaAutosize
                     form="card-form" 
                     placeholder="Enter definition"
                     value={props.info.def}

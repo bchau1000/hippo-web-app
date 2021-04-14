@@ -10,10 +10,16 @@ class CreateSet extends React.Component {
         this.state = {
             title: "",
             desc: "",
-            flash_cards: [{
-                "term": "",
-                "def": "",
-            }],
+            flash_cards: [
+                {
+                    "term": "",
+                    "def": "",
+                },
+                {
+                    "term": "",
+                    "def": "",
+                },
+            ],
         }
     }
 
@@ -55,7 +61,7 @@ class CreateSet extends React.Component {
     }
 
     deleteCard = (index) => {
-        if(this.state.flash_cards.length > 1) {
+        if(this.state.flash_cards.length > 2) {
             let new_flash_cards = this.state.flash_cards.slice();
         
             new_flash_cards.splice(index, 1);
@@ -103,6 +109,10 @@ class CreateSet extends React.Component {
         });
     }
 
+    createSet = () => {
+        console.log(this.state.flash_cards);
+    }
+
     render() {
         return (
             <div className="container">
@@ -142,6 +152,7 @@ class CreateSet extends React.Component {
                     {this.state.flash_cards.map((_, index) => {
                         return (
                             <CardForm 
+                                key={index}
                                 delete={this.deleteCard} 
                                 clear={this.clearCard} 
                                 setTerm={this.setCardTerm}
@@ -160,14 +171,16 @@ class CreateSet extends React.Component {
                     </div>
                 </div>
 
-                <div className="submit-container"></div>
+                <div className="submit-container">
+                    <div 
+                        className="submit-button"
+                        onClick={() => this.createSet()}
+                    >Create</div>
+                </div>
+                <div></div>
             </div>
         )
     }
 }
 
 export default CreateSet;
-
-
-
-// <CardForm delete={this.deleteCard} clear={this.clearCard} cardNum="1"></CardForm>

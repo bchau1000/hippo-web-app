@@ -1,6 +1,7 @@
 .card-container {
     min-width: 300px;
-    min-height: 200px;
+    min-height: 150px;
+
     width: 80%;
     background: white;
     border-radius: 10px;
@@ -8,12 +9,12 @@
 
     display: grid;
     grid-template-columns: 3fr 1px 4fr;
-    grid-template-rows: 3fr 10fr;
+    grid-template-rows: 50px 10fr;
     grid-template-areas: 
         "options options options"
         "term div desc"
     ;
-    align-items: center;
+    
 }
 
 .card-container .options {
@@ -59,10 +60,11 @@
 }
 
 .card-container .term {
+    margin-top: 10px;
     grid-area: term;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     padding-left: 10%;
 }
 
@@ -73,21 +75,24 @@
 }
 
 .card-container .def {
+    margin-top: 10px;
     grid-area: desc;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     padding-left: 10%;
 }
 
 label {
     padding-top: 7px;
+    margin-bottom: 10px;
     font-size: 14px;
     font-weight: bold;
     color: rgba(0, 0, 0, 0.3);
 }
 
 textarea {
+    margin-top: 5px;
     height: 30px;
     font-size: 18px;
     width: 90%;
@@ -96,6 +101,7 @@ textarea {
     transition: border-bottom .3s;
     resize: none;
 }
+
 
 textarea:focus {
     outline:none;
