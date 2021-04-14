@@ -13,30 +13,30 @@ class SetGrid extends React.Component {
         };
     }
 
-    componentDidMount() {
-        const token = localStorage.getItem('token')
-        const body = JSON.stringify({
-            authorization: token,
-        });
-
-        const settings = {
-            method: 'POST',
-            headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token,
-                },
-            body: body,
-        };
-      
-        fetch(API_URL, settings)
-            .then(response => response.json())
-            .then((data) => {
-                this.populateStudySet(data);
-            }
-        );
+    async componentDidMount() {
+        const token = localStorage.getItem('token');
+        
+        if(token) {
+            const body = JSON.stringify({
+                authorization: token,
+            });
+    
+            const settings = {
+                method: 'POST',
+                headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token,
+                    },
+                body: body,
+            };
+          
+            const response = await fetch(API_URL, settings);
+            const json = await response.json();
+            this.populateStudySet(json);
+        }
     }
 
-    populateStudySet(studySet) {
+    async populateStudySet(studySet) {
         const length = studySet.length
         let newStudySet = [];
 

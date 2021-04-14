@@ -15,7 +15,7 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS study_sets;
 CREATE TABLE study_sets(
   id int PRIMARY KEY auto_increment,
-  title VARCHAR(60) NOT NULL UNIQUE,
+  title VARCHAR(60) NOT NULL,
   description VARCHAR(300),
   user_id int REFERENCES user(id)
 );
@@ -32,7 +32,7 @@ CREATE TABLE flash_cards(
   id int PRIMARY KEY auto_increment,
   term VARCHAR(255),
   definition VARCHAR(255),
-  q_type TINYINT,
+  q_type int,
   set_id int REFERENCES study_sets(id)
 );
 

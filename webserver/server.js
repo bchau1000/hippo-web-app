@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const jwt = require('jsonwebtoken'); // JSON Web Token for user authenticatio
 const bodyParser = require('body-parser'); // To parse JSON requests
+const async = require('async');
 const pool = require("./config");
 const app = express();
 const port = 9000;
@@ -56,8 +57,10 @@ app.post("/api/users/sets", authJWT, (request, response) => {
     "SELECT * FROM study_sets WHERE user_id = ?",
     id,
     (error, result) => {
-      if(error) response.status(400).send(error);
-      response.status(201).send(result);
+      if(error) 
+        response.status(400).send(error);
+      else
+        response.status(201).send(result);
     }
   );
 });
@@ -72,8 +75,10 @@ app.get("/api/sets/:set_id/cards", (request, response) => {
       "WHERE s.id = f.set_id AND s.id = ?",
       set_id,
       (error, result) => {
-        if(error) response.status(400).send(error);
-        response.status(201).send(result);
+        if(error) 
+          response.status(400).send(error);
+        else
+          response.status(201).send(result);
       }
     );
   } catch (err) {
@@ -89,15 +94,36 @@ app.get("/api/sets/:set_id/cards", (request, response) => {
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 // TO DO: Insert a new set 
-app.get("/api/users/:id/sets/new", (request, response) => {
-  console.log(request.body);
-  try {
-    pool.query("INSERT INTO study_sets SET ?", request.body, (error, result) => {
-      if(error) response.status(400).send(error);
+app.put("/api/sets/new", authJWT, (request, response) => {
+  const {id} = request.user;
+  const studySet = request.body;
 
-      response.status(201).send(`Study set has been created: ${result.insertId}`);
+  try{
+    pool.query("INSERT INTO study_sets(title, description, user_id) VALUES(?, ?, ?)", [studySet.title, studySet.description, id], (error, result) => {
+      if(error){
+        console.log(error);
+        response.status(401).send(error);
+      } 
+      else {
+
+        const flashCards = studySet.flash_cards;
+        const numCards = flashCards.length;
+        let values = [];
+
+        for(let i = 0; i < numCards; i++) 
+          values.push(new Array(flashCards[0].term, flashCards[0].def, 1, result.insertId));
+        pool.query("INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES ?", [values], (error, result) => {
+          if(error){
+            console.log(error);
+            response.status(401).send(error);
+          } 
+          console.log(values);
+          response.status(200).send(result);
+        })
+      }
     });
-  } catch (err) {
+  } catch(err) {
+    console.log(err);
     response.status(404).send(err);
   }
 });
