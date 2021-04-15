@@ -1,9 +1,8 @@
 import React from 'react';
-
 import "./setGridItem.css";
 
 function redirect(id) {
-    console.log(id);
+    window.location.href = "/sets/" + id + "/cards";
 }
 
 export default function SetGridItem(props) {

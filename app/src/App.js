@@ -1,33 +1,31 @@
 import "./App.css";
 import CreateSet from "./components/createSet/createSet.js";
-import SetGrid from "./components/setGrid/setGrid.js";
+import StudyView from "./pages/StudyView/StudyView.js";
+import SetGrid from "./components/sets/setGrid.js";
 import Navbar from "./components/navbar/navbar.js";
 import Sidebar from "./components/sidebar/sidebar.js";
-import Login from "./pages/login/login.js";
-import SignUp from "./pages/signup/signup.js";
-import About from "./pages/about/about.js";
+import Login from "./pages/Login/Login.js";
+import SignUp from "./pages/Register/Register.js";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
     return (
         <Router>
-            <Switch>
-                <Route exact path="/sets">
-                    <div className="main-container">
-                        <Navbar />
-                        <Sidebar />
+            <div className="main-container">
+                <Navbar />
+                <Sidebar />
+                <Switch>
+                    <Route exact path="/sets">
                         <SetGrid />
-                    </div>
-                </Route>
-                <Route exact path="/sets/new">
-                    <div className="main-container">
-                        <Navbar />
-                        <Sidebar />
+                    </Route>
+                    <Route exact path="/sets/new">
                         <CreateSet />
-                    </div>
-                </Route>
-            </Switch>
+                    </Route>
+                    <Route path="/sets/:id/cards" component={StudyView}/>
+
+                </Switch>
+            </div>
 
             <Switch>
                 <Route exact path="/login">
@@ -41,11 +39,6 @@ function App() {
                 </Route>
             </Switch>
 
-            <Switch>
-                <Route exact path="/about">
-                    <About />
-                </Route>
-            </Switch>
         </Router>
     );
 }

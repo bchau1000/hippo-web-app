@@ -8,7 +8,7 @@ import {
     Link,
 } from "@material-ui/core";
 
-import "./login.css";
+import "./Login.css";
 const API_URL = "http://localhost:9000/api/login";
 
 class Login extends React.Component {
@@ -67,11 +67,13 @@ class Login extends React.Component {
                             spacing={2}
                             className="login-form"
                         >
+
                             <Paper
                                 variant="elevation"
                                 elevation={2}
                                 className="login-background"
                             >
+
                                 <Grid item>
                                     <Typography component="h1" variant="h5" align="center">
                                         Sign in
@@ -137,7 +139,9 @@ class Login extends React.Component {
                                         </Link>
                                     </Grid>
                                 </Grid>
+
                             </Paper>
+
                         </Grid>
                     </Grid>
                 </Grid>

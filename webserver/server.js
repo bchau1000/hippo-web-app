@@ -70,13 +70,35 @@ app.get("/api/sets/:set_id/cards", (request, response) => {
     const set_id = request.params.set_id;
     try {
         pool.query(
-            "SELECT f.id as 'id', f.term as 'term', f.definition as 'definition'\n" +
+            "SELECT s.title as 'title', s.description as 'description',\n" +
+            "       f.id as 'id', f.term as 'term', f.definition as 'definition'\n" +
             "FROM study_sets as s JOIN flash_cards as f\n" +
             "WHERE s.id = f.set_id AND s.id = ?",
             set_id,
             (error, result) => {
                 if (error) response.status(400).send(error);
-                else response.status(201).send(result);
+                else {
+                    let send = {
+                        "title": "",
+                        "description": "",
+                        "flash_cards": [],
+                    };
+
+                    const length = result.length;
+
+                    send.title = result[0].title;
+                    send.description = result[0].description;
+                    send.flash_cards = [];
+
+                    for(let i = 0; i < length; i++){
+                        send.flash_cards.push({
+                            "id": result[i].id,
+                            "term": result[i].term,
+                            "definition": result[i].definition,
+                        });
+                    }
+                    response.status(201).send(send)
+                };
             }
         );
     } catch (err) {

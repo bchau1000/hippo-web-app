@@ -1,0 +1,23 @@
+#study-view-container 
+{
+    height: 100%;
+    width: 100%;
+    display: grid;
+    justify-content: center;
+    grid-area: content;
+    grid-gap: 30px;
+    
+}
+
+
+#description
+{
+    color:black;
+    font-size:25px;
+    height:30px;
+}
+
+#title
+{
+    font-size:40px;
+}

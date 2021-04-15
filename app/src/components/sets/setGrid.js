@@ -36,7 +36,7 @@ class SetGrid extends React.Component {
         }
     }
 
-    async populateStudySet(studySet) {
+    populateStudySet(studySet) {
         const length = studySet.length
         let newStudySet = [];
 
@@ -58,6 +58,7 @@ class SetGrid extends React.Component {
                             id={studySet.id}
                             title={studySet.title}
                             desc={studySet.description}
+                            onClick={this.redirect}
                         />
                     ))
                }
