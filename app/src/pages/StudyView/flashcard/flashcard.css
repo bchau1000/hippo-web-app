@@ -1,17 +1,18 @@
-#flashcard-container
+.flashcard-container
 {
     display: flex;
     background: white;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    width:50%;
+    width: 60%;
     height: auto;
     min-height: 150px;
+    margin-top: 30px;
     
     align-content: stretch;
     border-radius: 10px;
 }
 
-#desc
+.flashcard-container .desc
 {
     width: 70%;
     
@@ -21,7 +22,7 @@
     margin-bottom: 25px;
 }
 
-#term{
+.flashcard-container .term{
     border-right: 2px solid rgba(150,150,150,0.4);
     width: 30%;
     padding-left: 10px;

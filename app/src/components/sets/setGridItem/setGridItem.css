@@ -47,7 +47,8 @@
 .grid-item .desc {
     width: 100%;
     font-size: 16px;
-    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
     margin-top: 10px;
 }
 

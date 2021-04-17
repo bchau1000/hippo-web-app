@@ -3,7 +3,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CardForm from "./cardForm/cardForm.js";
 import "./createSet.css";
 
-const API_URL = "http://localhost:9000/api/sets/new";
+//const API_URL = "http://localhost:9000/api/sets/new";
 
 class CreateSet extends React.Component {
     
@@ -113,22 +113,22 @@ class CreateSet extends React.Component {
     async createSet() {
         const token = localStorage.getItem('token');
         if(token) {
-            const newSet = JSON.stringify({
-                title: this.state.title,
-                description: this.state.desc,
-                flash_cards: this.state.flash_cards,
-            });
+            //const newSet = JSON.stringify({
+            //    title: this.state.title,
+            //    description: this.state.desc,
+            //    flash_cards: this.state.flash_cards,
+            //});
             
-            const settings = {
-                method: 'PUT',
-                headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token,
-                    },
-                body: newSet,
-            };
+            //const settings = {
+            //    method: 'PUT',
+            //    headers: { 
+            //            'Content-Type': 'application/json',
+            //            'Authorization': 'Bearer ' + token,
+            //        },
+            //    body: newSet,
+            //};
             
-            const response = await fetch(API_URL, settings);
+            // const response = await fetch(API_URL, settings);
             // const json = await response.json();
 
             window.location.href = "/sets";

@@ -8,10 +8,10 @@ class FlashCard extends React.Component {
 
     render() {
         return (
-            <div id="flashcard-container">
-                <div id = "term">{this.props.name}</div>
+            <div className="flashcard-container">
+                <div className = "term">{this.props.name}</div>
                 
-                <div id = "desc">{this.props.desc}</div>        
+                <div className = "desc">{this.props.desc}</div>        
             </div>
         )
     }
