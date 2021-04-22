@@ -7,7 +7,7 @@ CREATE TABLE users (
   id int PRIMARY KEY auto_increment,
   username VARCHAR(60) NOT NULL UNIQUE,
   email VARCHAR(60) NULL UNIQUE,
-  password VARCHAR(20) NULL,
+  password VARCHAR(20) NOT NULL,
   first_name VARCHAR(40) NULL,
   last_name VARCHAR(40) NULL
 );
@@ -36,3 +36,4 @@ CREATE TABLE flash_cards(
   set_id int REFERENCES study_sets(id)
 );
 
+INSERT INTO users(username, email, password, first_name, last_name) VALUES('admin', 'admin@email.com', 'admin', 'admin', 'admin');

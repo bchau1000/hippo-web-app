@@ -9,6 +9,10 @@ import SignUp from "./pages/Register/Register.js";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+function authUser() {
+
+}
+
 function App() {
     return (
         <Router>

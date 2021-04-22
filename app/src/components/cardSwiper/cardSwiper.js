@@ -28,6 +28,8 @@ class CardSwiper extends React.Component {
                     this.props.cards.map((flashcard, index) => (
                         <SwiperSlide key={index}>
                             <Swiper
+                                id="flip-color"
+                                effect= 'flip'
                                 direction="vertical"
                             >
                                 <SwiperSlide>

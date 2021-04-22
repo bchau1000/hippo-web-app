@@ -26,7 +26,7 @@ class Login extends React.Component {
         });
     }
 
-    handleSubmit(event) {
+    async handleSubmit(event) {
         event.preventDefault();
 
         const body = JSON.stringify({
@@ -40,19 +40,15 @@ class Login extends React.Component {
             body: body,
         };
 
-        fetch(API_URL, settings)
-            .then(response => response.json())
-            .then((data) => {
-                if (data.accessToken === null) {
-                    console.log("Invalid username or password");
-                }
-                else {
-                    localStorage.setItem('token', data.accessToken);
+        const resp = await (await fetch(API_URL, settings)).json();
 
-                    window.location.href = "/sets";
-                }
-            }
-            );
+        if (resp.accessToken === null) {
+            console.log("Invalid username or password");
+        }
+        else {
+            localStorage.setItem('token', resp.accessToken);
+            window.location.href = "/sets";
+        }
     }
 
     render() {

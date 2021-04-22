@@ -189,6 +189,7 @@ app.post("/api/login", (request, response) => {
         username,
         password
     } = request.body;
+
     try {
         pool.query(
             "SELECT id, username, email\n" +
@@ -212,6 +213,7 @@ app.post("/api/login", (request, response) => {
                     );
                     response.status(200).json({
                         accessToken,
+                        username,
                     });
                 }
             }
