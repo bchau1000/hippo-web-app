@@ -2,14 +2,13 @@
 {
     display: flex;
     background: white;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     width: 60%;
     height: auto;
     min-height: 150px;
     margin-top: 30px;
     
     align-content: stretch;
-    border-radius: 10px;
 }
 
 .flashcard-container .desc

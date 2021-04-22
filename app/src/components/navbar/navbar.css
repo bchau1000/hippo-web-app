@@ -1,23 +1,32 @@
-.navbar-container {
-    width: 100%;
-    height: 100%;
-    background-color: rgb(33, 33, 33);
-    grid-area: header;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+a {
+    color: white;
+    text-decoration: none;
+}
 
+.navbar-container {
+    position: fixed;
+    grid-area: header;
+    width: 100vw;
+    height: 60px;
+    background: rgb(48, 48, 48);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
 
-    color: white;
+.navbar-container {
+    position: fixed;
+    z-index: 950;
 }
 
 .navbar-container .left{
-    margin-left: 20px;
+    
     height: 100%;
     display:flex;
     flex-direction: row;
+    
 }
 
 .navbar-container .right{
@@ -32,7 +41,6 @@
     height: 100%;
     align-items: center;
     display: flex;
-    color: grey;
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -42,7 +50,6 @@
     height: 100%;
     align-items: center;
     display: flex;
-    color: white;
     margin-right: 30px;
     font-weight: bold;
 }
@@ -52,16 +59,37 @@
     height: 100%;
     align-items: center;
     display: flex;
-    color: grey;
+
     padding-left: 10px;
     padding-right: 10px;
+}
+
+.navbar-container .left .dropdown {
+    height: 100%;
+    width: 150px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.navbar-container .left .dropdown .material-icons{
+    font-size: 30px;
+    color: rgb(238, 238, 238);
+}
+
+.navbar-list-icon {
+    height: 35px;
+    width: 35px;
+    object-fit: fill;
 }
 
 .button:hover {
     background-color: rgba(100, 100, 111, 0.2);
 }
 
-a {
-    color: white;
-    text-decoration: none;
+.dropdown:hover{
+    cursor: pointer;
 }
+

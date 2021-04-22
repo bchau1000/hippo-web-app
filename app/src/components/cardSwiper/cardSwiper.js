@@ -17,7 +17,6 @@ class CardSwiper extends React.Component {
         };
     }
 
-
     render() {
         return (
             <Swiper

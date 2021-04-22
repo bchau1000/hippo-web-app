@@ -1,5 +1,5 @@
 import React from 'react';
-import Collapsible from 'react-collapsible';
+import Sidebar from '../../components/sidebar/sidebar.js';
 import "./welcome.css";
 
 class WelcomePage extends React.Component {
