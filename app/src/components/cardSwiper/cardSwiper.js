@@ -1,43 +1,84 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { EffectFlip } from 'swiper';
+import SwiperCore, { EffectFlip, Pagination, Navigation, Keyboard, A11y } from 'swiper';
 
 import 'swiper/swiper.scss';
 import 'swiper/components/effect-flip/effect-flip.scss';
+import 'swiper/components/navigation/navigation.scss';
+import 'swiper/components/pagination/pagination.scss';
+import 'swiper/components/scrollbar/scrollbar.scss';
 import './cardSwiper.css';
 
-SwiperCore.use([EffectFlip]);
+SwiperCore.use([EffectFlip, Pagination, Keyboard, Navigation, A11y]);
 
 class CardSwiper extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            front: "",
+            isFlipped: false,
+            value: 0,
+            swiper: Swiper
         };
+    }
+
+    handleFlip(swiper) {
+        if(this.state.isFlipped) {
+            swiper.slidePrev();
+            this.setState({
+                isFlipped: !this.state.isFlipped
+            });
+        }
+        else {
+            swiper.slideNext();
+            this.setState({
+                isFlipped: !this.state.isFlipped
+            });
+        }
+        
     }
 
     render() {
         return (
             <Swiper
-                id="swiper-main-container"
-                spaceBetween={30}
+                id="swiper-outer-container"
+                allowTouchMove= {false}
+                pagination={{
+                    type:'fraction'
+                }}
+                keyboard={{
+                    enabled: true,
+                }}
             >
                 {
                     this.props.cards.map((flashcard, index) => (
                         <SwiperSlide key={index}>
                             <Swiper
-                                id="flip-color"
+                                id="swiper-inner-container"
                                 effect= 'flip'
                                 direction="vertical"
+                                allowTouchMove= {false}
+                                onClick={(swiper) => this.handleFlip(swiper)}
+                                keyboard={{
+                                    enabled: true,
+                                }}
                             >
-                                <SwiperSlide>
-                                    <div>
-                                        {flashcard.term}
+                                <SwiperSlide> 
+                                    <div id="swiper-inner-background">
+                                        <div id="swiper-inner">
+                                            {flashcard.term}
+                                        </div>
                                     </div>
                                 </SwiperSlide>
-                                <SwiperSlide>{flashcard.definition}</SwiperSlide>
+                                <SwiperSlide>
+                                    <div id="swiper-inner-background">
+                                        <div id="swiper-inner">
+                                            {flashcard.definition}
+                                        </div>
+                                    </div>
+                                </SwiperSlide>
                             </Swiper>
+                            
                         </SwiperSlide>
                     ))
                 }

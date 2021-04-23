@@ -9,7 +9,7 @@
     "desc"
     "carousel"
     "cards";
-    grid-template-rows: auto auto 300px auto;
+    grid-template-rows: auto auto 400px auto;
     grid-gap: 5px;
 }
 

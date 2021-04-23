@@ -2,7 +2,7 @@
     display:flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+    text-align: center;
     font-size: 25px;
     
 }
@@ -10,16 +10,24 @@
 .swiper-container {
     grid-area: carousel;
     height: 100%;
+    width: 65vh;
 }
 
-#swiper-main-container {
+#swiper-outer-container {
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    z-index: 900;
-    min-width: 350px;
-    width: 50vh;
+    
 }
 
-#flip-color {
-    background-color: white;
-    padding-left: 5px;
+#swiper-inner {
+    padding: 10px;
+}
+
+#swiper-inner-background {
+    height: 100%;
+    width: 100%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
 }

@@ -1,7 +1,4 @@
 import React from 'react';
-import AddIcon from '@material-ui/icons/Add';
-import LayersIcon from '@material-ui/icons/Layers';
-import DeleteIcon from '@material-ui/icons/Delete';
 import './sidebar.css';
 
 function handleClick(path) {
@@ -16,20 +13,20 @@ export default function Sidebar(props) {
             </div>
             <ul className="sidebar-items-container">
                 <li className="sidebar-item" onClick={() => handleClick("")}>
-                    <span class="material-icons">search</span>
-                    <text for="home">BROWSE</text>
+                    <span className="material-icons">search</span>
+                    <span htmlFor="home">BROWSE</span>
                 </li>
                 <li className="sidebar-item" onClick={() => handleClick("/sets")}>
-                    <span class="material-icons">layers</span>
-                    <text for="sets">SETS</text>
+                    <span className="material-icons">layers</span>
+                    <span htmlFor="sets">SETS</span>
                 </li>
                 <li className="sidebar-item" onClick={() => handleClick("/sets/new")}>
-                    <span class="material-icons">library_add</span>
-                    <text for="create">CREATE</text>
+                    <span className="material-icons">library_add</span>
+                    <span htmlFor="create">CREATE</span>
                 </li>
-                <li class="sidebar-item" onClick={() => handleClick("/settings")}>
-                    <span class="material-icons">settings</span>
-                    <text for="settings">SETTINGS</text>
+                <li className="sidebar-item" onClick={() => handleClick("/settings")}>
+                    <span className="material-icons">settings</span>
+                    <span htmlFor="settings">SETTINGS</span>
                 </li>
             </ul>
         </div>
