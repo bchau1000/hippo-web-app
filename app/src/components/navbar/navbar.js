@@ -9,7 +9,7 @@ export default function Navbar(props) {
                     <span className="material-icons">reorder</span>
                 </div>
                 <div className="title">
-                    <a href="/sets">StudyBuddy</a>
+                    <a href="/">Hippo</a>
                 </div>
                 
             </div>

@@ -10,7 +10,7 @@
 .swiper-container {
     grid-area: carousel;
     height: 100%;
-    width: 65vh;
+    width: 100%;
 }
 
 #swiper-outer-container {

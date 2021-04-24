@@ -14,19 +14,19 @@ export default function Sidebar(props) {
             <ul className="sidebar-items-container">
                 <li className="sidebar-item" onClick={() => handleClick("")}>
                     <span className="material-icons">search</span>
-                    <span htmlFor="home">BROWSE</span>
+                    <span htmlFor="home">Browse</span>
                 </li>
                 <li className="sidebar-item" onClick={() => handleClick("/sets")}>
                     <span className="material-icons">layers</span>
-                    <span htmlFor="sets">SETS</span>
+                    <span htmlFor="sets">Sets</span>
                 </li>
                 <li className="sidebar-item" onClick={() => handleClick("/sets/new")}>
                     <span className="material-icons">library_add</span>
-                    <span htmlFor="create">CREATE</span>
+                    <span htmlFor="create">Create</span>
                 </li>
                 <li className="sidebar-item" onClick={() => handleClick("/settings")}>
                     <span className="material-icons">settings</span>
-                    <span htmlFor="settings">SETTINGS</span>
+                    <span htmlFor="settings">Settings</span>
                 </li>
             </ul>
         </div>

@@ -6,7 +6,7 @@ import "./createSet.css";
 //const API_URL = "http://localhost:9000/api/sets/new";
 
 class CreateSet extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -41,8 +41,8 @@ class CreateSet extends React.Component {
     addCard = (front) => {
         let new_flash_cards = this.state.flash_cards.slice();
         let new_id_counter = this.state.id_counter + 1;
-        
-        if(front) {
+
+        if (front) {
             new_flash_cards.unshift({
                 "term": "",
                 "def": "",
@@ -62,9 +62,9 @@ class CreateSet extends React.Component {
     }
 
     deleteCard = (index) => {
-        if(this.state.flash_cards.length > 2) {
+        if (this.state.flash_cards.length > 2) {
             let new_flash_cards = this.state.flash_cards.slice();
-        
+
             new_flash_cards.splice(index, 1);
             console.log(new_flash_cards);
             this.setState({
@@ -111,14 +111,14 @@ class CreateSet extends React.Component {
     }
 
     async createSet() {
-        const token = localStorage.getItem('token');
-        if(token) {
+        const user = localStorage.getItem('token');
+        if (user) {
             //const newSet = JSON.stringify({
             //    title: this.state.title,
             //    description: this.state.desc,
             //    flash_cards: this.state.flash_cards,
             //});
-            
+
             //const settings = {
             //    method: 'PUT',
             //    headers: { 
@@ -127,7 +127,7 @@ class CreateSet extends React.Component {
             //        },
             //    body: newSet,
             //};
-            
+
             //const response = await fetch(API_URL, settings);
             //const json = await response.json();
 
@@ -137,70 +137,72 @@ class CreateSet extends React.Component {
 
     render() {
         return (
-            <div className="container">
-                <div></div>
-                <form className="meta-form">
-                    <div className="header">
-                        Create a new study set
+            <section className="create-set-container">
+                <div className="create-container">
+                    <form className="meta-form">
+                        <div className="header">
+                            Create a new study set
                     </div>
-                    <div className="field-container">
-                        <input 
-                            id="set-title" 
-                            placeholder="Enter a title..."
-                            value={this.state.title}
-                            onChange={event => this.setTitle(event.target.value)}
-                        />
-                        <div className="field-label">TITLE</div>
-                    </div>
-                    <div className="field-container">
-                        <input 
-                            id="set-desc" 
-                            placeholder="Add a description..."
-                            value={this.state.desc}
-                            onChange={event => this.setDesc(event.target.value)}
-                        />
-                        <div className="field-label">DESCRIPTION</div>
-                    </div>
-                </form>
+                        <div className="field-container">
+                            <input
+                                id="set-title"
+                                placeholder="Enter a title..."
+                                value={this.state.title}
+                                onChange={event => this.setTitle(event.target.value)}
+                            />
+                            <div className="field-label">TITLE</div>
+                        </div>
+                        <div className="field-container">
+                            <input
+                                id="set-desc"
+                                placeholder="Add a description..."
+                                value={this.state.desc}
+                                onChange={event => this.setDesc(event.target.value)}
+                            />
+                            <div className="field-label">DESCRIPTION</div>
+                        </div>
+                    </form>
 
-                <div className="add-card-container" onClick={() => this.addCard(true)}>
+
+                    <div className="add-card-container" onClick={() => this.addCard(true)}>
                         <div className="add-card">
                             <AddIcon className="add-card-icon"></AddIcon>
                             <div className="add-card-text">Add a card</div>
                         </div>
-                </div>
-
-                <div className="center-container">
-                    {this.state.flash_cards.map((_, index) => {
-                        return (
-                            <CardForm 
-                                key={index}
-                                delete={this.deleteCard} 
-                                clear={this.clearCard} 
-                                setTerm={this.setCardTerm}
-                                setDef={this.setCardDef}
-                                info={this.state.flash_cards[index]}
-                                cardNum={index}
-                            />
-                        );
-                    })}
-                </div>
-                
-                <div className="add-card-container" onClick={() => this.addCard(false)}>
-                    <div className="add-card">
-                        <AddIcon className="add-card-icon"></AddIcon>
-                        <div className="add-card-text">Add a card</div>
                     </div>
-                </div>
 
-                <div className="submit-container">
-                    <div 
-                        className="submit-button"
-                        onClick={() => this.createSet()}
-                    >Create</div>
+                    <div className="center-container">
+                        {this.state.flash_cards.map((_, index) => {
+                            return (
+                                <CardForm
+                                    key={index}
+                                    delete={this.deleteCard}
+                                    clear={this.clearCard}
+                                    setTerm={this.setCardTerm}
+                                    setDef={this.setCardDef}
+                                    info={this.state.flash_cards[index]}
+                                    cardNum={index}
+                                />
+                            );
+                        })}
+                    </div>
+
+                    <div className="add-card-container" onClick={() => this.addCard(false)}>
+                        <div className="add-card">
+                            <AddIcon className="add-card-icon"></AddIcon>
+                            <div className="add-card-text">Add a card</div>
+                        </div>
+                    </div>
+
+                    <div className="submit-container">
+                        <div
+                            className="submit-button"
+                            onClick={() => this.createSet()}
+                        >Create</div>
+                    </div>
+                    <div></div>
                 </div>
-                <div></div>
-            </div>
+            </section>
         )
     }
 }

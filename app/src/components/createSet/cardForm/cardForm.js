@@ -5,9 +5,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import "./cardForm.css";
 
 
-export default function CardForm(props){
+export default function CardForm(props) {
 
-        return (<form id="card-form" className="card-container">
+    return (
+        <form id="card-form" className="card-container">
             <div className="options">
                 <div className="left">{props.cardNum}</div>
                 <div className="right">
@@ -17,8 +18,8 @@ export default function CardForm(props){
             </div>
             <div className="term">
                 <TextareaAutosize
-                    form="card-form" 
-                    placeholder="Enter term" 
+                    form="card-form"
+                    placeholder="Enter term"
                     value={props.info.term}
                     onChange={event => props.setTerm(props.cardNum, event.target.value)}
                 />
@@ -27,7 +28,7 @@ export default function CardForm(props){
             <div className="divider"></div>
             <div className="def">
                 <TextareaAutosize
-                    form="card-form" 
+                    form="card-form"
                     placeholder="Enter definition"
                     value={props.info.def}
                     onChange={event => props.setDef(props.cardNum, event.target.value)}

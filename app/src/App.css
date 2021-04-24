@@ -1,24 +1,56 @@
 /*@import url("https://fonts.gstatic.com");*/
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap');
 
 html, body, #root, #root>div {
-  height: 100%;
-  background: rgb(245, 245, 245);
-  font-family: 'Rubik', sans-serif;
+    --color-text: rgb(24, 24, 24);
+    --color-bg: rgb(245, 245, 245);
+    --color-fg: white;
+    --color-primary: rgb(48, 48, 48);
+    --color-accent: rgb(22, 206, 120);
+
+    height: 100%;
+    background: var(--color-bg);
+    font-family: 'Fira Sans', sans-serif;
 }
 
 .main-container {
-  display: grid;
-  grid-template-columns: 150px 35px auto;
-  grid-template-rows: 60px 35px auto;
-  grid-template-areas:
-      "header header header"
-      "sidebar margin-left margin-top"
-      "sidebar margin-left content";
+    display: grid;
+    grid-template-columns: 150px 35px auto;
+    grid-template-rows: 60px 35px auto;
+    grid-template-areas:
+        "header header header"
+        "sidebar margin-left margin-top"
+        "sidebar margin-left content";
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  
+    .main-container {
+        display: grid;
+        grid-template-columns: 120px 35px auto;
+        grid-template-rows: 60px 35px auto;
+        grid-template-areas:
+            "header header header"
+            "sidebar margin-left margin-top"
+            "sidebar margin-left content";
+    }
   
 }
 
-
-@media (min-width: 320px) and (max-width: 480px) {
+@media (max-width: 767px) {
+    .main-container {
+        display: grid;
+        grid-template-rows: 60px 15px auto;
+        grid-template-columns: auto;
+        grid-template-areas:
+            "header"
+            "margin-top"
+            "content";
+    }
 }

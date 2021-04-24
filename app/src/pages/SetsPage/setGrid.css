@@ -1,0 +1,56 @@
+.studyset-container {
+    display: grid;
+    grid-area: content;
+    grid-template-rows: 25px 0.01em 10px auto;
+    
+}
+
+.grid-header-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 360px);
+    font-weight: bold;
+    font-size: 18px;
+    grid-gap: 35px;
+}
+
+.grid-header {
+    padding-right: 10px;
+    display: grid;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 360px);
+    grid-auto-rows: 200px;
+    grid-gap: 35px;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .grid-header-container {
+        grid-template-columns: repeat(auto-fill, 45%);
+        justify-content: center;
+    }
+    .grid-container {
+        grid-template-columns: repeat(auto-fill, 45%);
+        grid-auto-rows: 225px;
+        justify-content: center;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .grid-header-container {
+        justify-content: center;
+    }
+    .grid-container {
+        justify-content: center;
+        
+    }
+}
+@media (min-width: 320px) and (max-width: 480px) {
+    .grid-header-container {
+        justify-content: center;
+    }
+    .grid-container {
+        justify-content: center;
+    }
+}

@@ -41,8 +41,7 @@ class CardSwiper extends React.Component {
     render() {
         return (
             <Swiper
-                id="swiper-outer-container"
-                allowTouchMove= {false}
+                id="swiper-outer-container"                                               
                 pagination={{
                     type:'fraction'
                 }}

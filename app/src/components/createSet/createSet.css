@@ -1,16 +1,19 @@
-.container {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    grid-template-rows: 20px 200px 100px auto 100px 50px;
+.create-set-container {
     grid-area: content;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.create-container {
+    display: grid;
+    grid-template-rows: 200px 100px auto 100px 50px;
+    width: 60%;
     grid-gap: 30px;
 }
 
 .meta-form {
-    min-width: 300px;
-    width: 40%;
-    margin-left: 10%;
+    min-width: 100%;
     display: grid;
     grid-template-rows: 40px, 60px, 60px;
     grid-gap: 15px;
@@ -19,7 +22,7 @@
 .meta-form .header {
     font-size: 22px;
     font-weight: bold;
-    color: rgb(22, 22, 22);
+    color: var(--color-text);
 }
 
 .meta-form .field-container {
@@ -36,7 +39,7 @@
 }
 
 .meta-form .field-container input{
-    background: rgb(245, 245, 245);
+    background: var(--color-bg);
     font-size: 18px;
     width: 100%;
     height: 50%;
@@ -48,7 +51,7 @@
 
 .meta-form input:focus {
     outline:none;
-    border-bottom: 2.5px solid rgb(22, 206, 120);
+    border-bottom: 2.5px solid var(--color-accent);
 }
 
 ::-webkit-input-placeholder { /* WebKit browsers */
@@ -56,21 +59,17 @@
 }
 
 .center-container {
-    width: 90%;
     display: grid;
+    width: 100%;
     grid-template-rows: repeat(auto-fill);
+    grid-template-columns: auto;
     grid-gap: 20px;
-    margin-left: 10%;
-    
 }
 
 .add-card-container {
-    min-width: 300px;
-    width: 72%;
-    margin-left: 10%;
     background: white;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-
+    width: 100%;
     display: flex;
 
     justify-content: center;
@@ -85,7 +84,6 @@
     transition: color 0.2s;
     display: flex;
     flex-direction: row;
-    
 }
 
 .add-card-text{
@@ -100,23 +98,20 @@
 
 .add-card-container:hover {
     cursor:pointer;
-    color: rgb(22, 206, 120);
+    color: var(--color-accent);
     box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
 }
 
 .submit-container {
-    margin-left: 2%;
-    width: 90%;
     height: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
 }
 
 .submit-button {
     height: 100%;
     width: 200px;
-    background-color: rgb(22, 206, 120);
+    background-color: var(--color-accent);
     font-weight: bold;
     display: flex;
     justify-content: center;
@@ -131,14 +126,14 @@
     cursor:pointer;
 }
 
-@media (min-width: 320px) and (max-width: 480px) {
-    .meta-form {
-        width: 93%;
-        margin-left: 0px;
-    }
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .create-container {
+        width: 80%;
+    } 
+}
 
-    .center-container {
-        width: 100%;
-        margin-left: 0px;
-    }
+@media (max-width: 1024px) {
+    .create-container {
+        width: 90%;
+    } 
 }

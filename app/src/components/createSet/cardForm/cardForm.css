@@ -1,9 +1,9 @@
 .card-container {
-    min-width: 300px;
+    width: 100%;
     min-height: 150px;
 
-    width: 80%;
-    background: white;
+    
+    background-color: var(--color-fg);
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
     display: grid;
@@ -13,7 +13,6 @@
         "options options options"
         "term div desc"
     ;
-    
 }
 
 .card-container .options {
@@ -51,7 +50,7 @@
 }
 
 .card-container .options .clear-icon:hover {
-    color: black;
+    color: var(--color-text);
 }
 
 .card-container .options .icon:hover {
@@ -96,7 +95,9 @@ textarea {
     font-size: 18px;
     width: 90%;
     border: none;
+    background: var(--color-fg);
     border-bottom: 2.5px solid black;
+    color: var(--color-text);
     transition: border-bottom .3s;
     resize: none;
 }
@@ -104,11 +105,18 @@ textarea {
 
 textarea:focus {
     outline:none;
-    border-bottom: 2.5px solid rgb(22, 206, 120);
+    border-bottom: 2.5px solid var(--color-accent);
 }
 
-@media (min-width: 320px) and (max-width: 480px) {
+@media (max-width: 1024px) {
     .card-container {
-        width: 93%;
+        grid-template-rows: 50px 10fr;
+        grid-template-columns: auto 0px;
+        grid-template-areas: 
+            "options div"
+            "term div"
+            "desc div"
+        ;
+        padding-bottom: 5px;
     }
 }

@@ -1,9 +1,9 @@
 .flashcard-container
 {
     display: flex;
-    background: white;
+    background: var(--color-fg);
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    width: 60%;
+    width: 100%;
     height: auto;
     min-height: 150px;
     margin-top: 30px;
@@ -13,8 +13,7 @@
 
 .flashcard-container .desc
 {
-    width: 70%;
-    
+    width: 65%;
     padding-left: 10px;
     padding-right: 10px;
     margin:25px;
@@ -22,17 +21,10 @@
 }
 
 .flashcard-container .term{
-    border-right: 2px solid rgba(150,150,150,0.4);
-    width: 30%;
+    border-right: 0.1em solid rgba(150,150,150,0.4);
+    width: 35%;
     padding-left: 10px;
     padding-right: 10px;
     margin-top:25px;
     margin-bottom: 25px;   
-}
-
-
-@media (min-width: 320px) and (max-width: 480px) {
-    .main-container {
-
-    }
 }

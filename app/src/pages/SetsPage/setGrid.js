@@ -15,21 +15,21 @@ class SetGrid extends React.Component {
 
     async componentDidMount() {
         const token = localStorage.getItem('token');
-        
-        if(token) {
+
+        if (token) {
             const body = JSON.stringify({
                 authorization: token,
             });
-    
+
             const settings = {
                 method: 'POST',
-                headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token,
-                    },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token,
+                },
                 body: body,
             };
-          
+
             const response = await fetch(API_URL, settings);
             const json = await response.json();
             this.populateStudySet(json);
@@ -40,9 +40,9 @@ class SetGrid extends React.Component {
         const length = studySet.length
         let newStudySet = [];
 
-        for(let i = 0; i < length; i++) 
+        for (let i = 0; i < length; i++)
             newStudySet.push(studySet[i]);
-        
+
         this.setState({
             studySet: newStudySet
         });
@@ -50,19 +50,27 @@ class SetGrid extends React.Component {
 
     render() {
         return (
-            <div className="grid-container">
-               {
-                    this.state.studySet.map((studySet, idx) => (
-                        <SetGridItem 
-                            key={idx}
-                            id={studySet.id}
-                            title={studySet.title}
-                            desc={studySet.description}
-                            onClick={this.redirect}
-                        />
-                    ))
-               }
+
+            <div className="studyset-container">
+                <div className="grid-header-container">
+                    <span className="grid-header">All</span>
+                    <div></div>
+                </div>
+                <div className="grid-container">
+                    {
+                        this.state.studySet.map((studySet, idx) => (
+                            <SetGridItem
+                                key={idx}
+                                id={studySet.id}
+                                title={studySet.title}
+                                desc={studySet.description}
+                                onClick={this.redirect}
+                            />
+                        ))
+                    }
+                </div>
             </div>
+
         )
     }
 }

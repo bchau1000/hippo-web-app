@@ -46,7 +46,8 @@ class Login extends React.Component {
             console.log("Invalid username or password");
         }
         else {
-            localStorage.setItem('token', resp.accessToken);
+            const user = {'token': resp.accessToken};
+            localStorage.setItem('user', JSON.stringify(user));
             window.location.href = "/sets";
         }
     }

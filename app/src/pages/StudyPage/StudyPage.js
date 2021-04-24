@@ -1,10 +1,10 @@
 import React from "react";
 import FlashCard from "./flashcard/flashcard.js";
 import CardSwiper from "../../components/cardSwiper/cardSwiper.js";
-import "./StudyView.css";
+import "./StudyPage.css";
 const API_URL = "http://localhost:9000/api/sets/";
 
-class StudyView extends React.Component {
+class StudyPage extends React.Component {
 
 
     constructor(props) {
@@ -19,14 +19,14 @@ class StudyView extends React.Component {
     }
 
     async componentDidMount() {
-        const token = localStorage.getItem('token');
-        
-        if (token) {
+        const user = JSON.parse(localStorage.getItem('user'));
+        console.log(user)
+        if (user) {
             const settings = {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token,
+                    'Authorization': 'Bearer ' + user.token,
                 },
             }
             const response = await fetch(API_URL + this.state.set_id + "/cards", settings);
@@ -44,9 +44,8 @@ class StudyView extends React.Component {
 
     render() {
         return (
-            <div className="study-view-container">
+            <section className="study-view-container">
                 <span className="study-view-title">{this.state.title}</span>
-                <span className="study-view-description">{this.state.description}</span>
                 <CardSwiper cards={this.state.flash_cards} className="swiper-container"/>
                 <div className="study-view-cards">
                     {
@@ -59,10 +58,9 @@ class StudyView extends React.Component {
                         ))
                     }
                 </div>
-
-            </div>
+            </section>
         );
     }
 }
 
-export default StudyView;
+export default StudyPage;
