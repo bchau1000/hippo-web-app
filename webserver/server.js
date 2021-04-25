@@ -10,7 +10,7 @@ const port = 9000;
 // Master access tokens for JWT, MUST CHANGE DURING DEPLOYMENT
 const secretToken = "testing";
 const refreshSecretToken = "refreshTesting";
-const refreshTokens = [];
+let refreshTokens = [];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////MIDDLEWARE//////////////////////////////////////////
@@ -242,8 +242,12 @@ app.post("/api/login", (request, response) => {
 
 app.post('/api/logout', (request, response) => {
     const { token } = request.body;
-    refreshTokens = refreshTokens.filter(token => t !== token);
 
+    for(let i = 0; i < refreshTokens.length; i++)
+        if(refreshTokens[i] == token)
+            refreshTokens.splice(i, 1);
+
+    console.log("logged out");
     response.status(200).send("Successfully logged out");
 });
 

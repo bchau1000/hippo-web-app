@@ -9,68 +9,50 @@ import SignUp from "./pages/Register/Register.js";
 import WelcomePage from "./pages/WelcomePage/WelcomePage.js";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            showDropdown: false,
-        };
-    }
+export default function App(props) {
+    // Boolean value is stored as a string in local storage, JSON parse to get boolean value
+    const localSD = JSON.parse(localStorage.getItem('showDropdown'));
+    const [showDropdown, setShowDropdown] = useState((localSD !== null) ? localSD : false);
 
-    componentDidMount() {
-        const showDropdown = JSON.parse(localStorage.getItem('showDropdown'));
+    useEffect(() => {
+        localStorage.setItem('showDropdown', showDropdown);
+    });
 
-        if (showDropdown !== null)
-            this.setState({
-                showDropdown: showDropdown
-            });
-    }
+    return (
+        <Router>
+            <Switch>
+                <Route exact path="/login">
+                    <Login />
+                </Route>
+            </Switch>
 
-    handleDropdown = () => {
-        this.setState({
-            showDropdown: !this.state.showDropdown,
-        });
-        localStorage.setItem('showDropdown', !this.state.showDropdown);
-    }
-
-    render() {
-        return (
-            <Router>
+            <Switch>
+                <Route exact path="/signup">
+                    <SignUp />
+                </Route>
+            </Switch>
+            <div className="main-container">
+                {
+                    showDropdown && <Sidebar></Sidebar>
+                }
+                <Navbar onClick={() => setShowDropdown(!showDropdown)}></Navbar>
                 <Switch>
-                    <Route exact path="/login">
-                        <Login />
+                    <Route exact path="/">
+                        <WelcomePage />
                     </Route>
-                </Switch>
 
-                <Switch>
-                    <Route exact path="/signup">
-                        <SignUp />
+                    <Route exact path="/sets">
+                        <SetsPage />
                     </Route>
+                    <Route exact path="/sets/new">
+                        <CreateSetPage />
+                    </Route>
+                    <Route path="/sets/:id/cards" component={StudyPage} />
                 </Switch>
-                <div className="main-container">
-                    {
-                        this.state.showDropdown && <Sidebar></Sidebar>
-                    }
-                    <Navbar onClick={this.handleDropdown}></Navbar>
-                    <Switch>
-                        <Route exact path="/">
-                            <WelcomePage />
-                        </Route>
-
-                        <Route exact path="/sets">
-                            <SetsPage />
-                        </Route>
-                        <Route exact path="/sets/new">
-                            <CreateSetPage />
-                        </Route>
-                        <Route path="/sets/:id/cards" component={StudyPage} />
-                    </Switch>
-                </div>
-            </Router>
-        );
-    }
+            </div>
+        </Router>
+    );
 }
 
-export default App;
