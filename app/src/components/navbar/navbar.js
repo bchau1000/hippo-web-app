@@ -1,6 +1,10 @@
 import React from 'react';
 import "./navbar.css";
 
+function logout() {
+    localStorage.clear();
+}
+
 export default function Navbar(props) {
     return (
         <div className="navbar-container">
@@ -14,11 +18,13 @@ export default function Navbar(props) {
                 
             </div>
             <div className="right">
-                <div className="button">
-                    <a href="/login">Logout</a>
-                </div>
+                <a href="/" className="button">
+                    <span>Login</span>
+                </a>
+                <a className="button" href="/" onClick={() => logout()}>
+                    <span>Logout(Test)</span>
+                </a>
             </div>
         </div>
     )
-
 }

@@ -14,18 +14,18 @@ class SetGrid extends React.Component {
     }
 
     async componentDidMount() {
-        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
 
-        if (token) {
+        if (user) {
             const body = JSON.stringify({
-                authorization: token,
+                authorization: user.token,
             });
 
             const settings = {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token,
+                    'Authorization': 'Bearer ' + user.token,
                 },
                 body: body,
             };
@@ -33,6 +33,9 @@ class SetGrid extends React.Component {
             const response = await fetch(API_URL, settings);
             const json = await response.json();
             this.populateStudySet(json);
+        }
+        else {
+
         }
     }
 
@@ -50,7 +53,6 @@ class SetGrid extends React.Component {
 
     render() {
         return (
-
             <div className="studyset-container">
                 <div className="grid-header-container">
                     <span className="grid-header">All</span>
@@ -70,7 +72,6 @@ class SetGrid extends React.Component {
                     }
                 </div>
             </div>
-
         )
     }
 }

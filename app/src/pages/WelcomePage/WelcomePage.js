@@ -30,13 +30,12 @@ class WelcomePage extends React.Component {
                     </div>
                 </div>
                 <div className="features-container">
-                        <div></div>
+
                         <div className="features-grid-item">
                             <span className="features-header">
                                 Create
                             </span>
                             <p className="features-info">
-                                Insert some flavor text describing the parts of our app that support this header.
                                 Insert some flavor text describing the parts of our app that support this header.
                                 Insert some flavor text describing the parts of our app that support this header.
                                 Insert some flavor text describing the parts of our app that support this header.
@@ -50,7 +49,6 @@ class WelcomePage extends React.Component {
                                 Insert some flavor text describing the parts of our app that support this header.
                                 Insert some flavor text describing the parts of our app that support this header.
                                 Insert some flavor text describing the parts of our app that support this header.
-                                Insert some flavor text describing the parts of our app that support this header.
                             </p>
                         </div>
                         <div className="features-grid-item">
@@ -61,10 +59,8 @@ class WelcomePage extends React.Component {
                                 Insert some flavor text describing the parts of our app that support this header.
                                 Insert some flavor text describing the parts of our app that support this header.
                                 Insert some flavor text describing the parts of our app that support this header.
-                                Insert some flavor text describing the parts of our app that support this header.
                             </p>
                         </div>
-                        <div></div>
                 </div>
             </section>
         );

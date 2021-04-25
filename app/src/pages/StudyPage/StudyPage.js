@@ -20,7 +20,7 @@ class StudyPage extends React.Component {
 
     async componentDidMount() {
         const user = JSON.parse(localStorage.getItem('user'));
-        console.log(user)
+
         if (user) {
             const settings = {
                 method: 'GET',

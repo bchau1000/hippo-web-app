@@ -7,8 +7,10 @@ const pool = require("./config");
 const app = express();
 const port = 9000;
 
-// Master access token for JWT
+// Master access tokens for JWT, MUST CHANGE DURING DEPLOYMENT
 const secretToken = "testing";
+const refreshSecretToken = "refreshTesting";
+const refreshTokens = [];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////MIDDLEWARE//////////////////////////////////////////
@@ -204,16 +206,31 @@ app.post("/api/login", (request, response) => {
                         accessToken: null,
                     });
                 else {
-                    const accessToken = jwt.sign({
+                    const accessToken = jwt.sign(
+                        {
+                            id: result[0].id,
+                            username: result[0].username,
+                            email: result[0].email,
+                            
+                        },
+                        secretToken,
+                        {expiresIn: '20m'}
+                    );
+
+                    const refreshToken = jwt.sign(
+                        {
                             id: result[0].id,
                             username: result[0].username,
                             email: result[0].email,
                         },
-                        secretToken
+                        refreshSecretToken
                     );
+
+                    refreshTokens.push(refreshToken);
+
                     response.status(200).json({
                         accessToken,
-                        username,
+                        refreshToken
                     });
                 }
             }
@@ -221,6 +238,37 @@ app.post("/api/login", (request, response) => {
     } catch (err) {
         response.status(404).send(err);
     }
+});
+
+app.post('/api/logout', (request, response) => {
+    const { token } = request.body;
+    refreshTokens = refreshTokens.filter(token => t !== token);
+
+    response.status(200).send("Successfully logged out");
+});
+
+app.post('/api/token', (request, response) => {
+    const { token } = request.body;
+
+    if(!token) 
+        response.status(401);
+
+    if(!refreshTokens.includes(token))
+        response.status(403);
+    
+    jwt.verify(token, refreshSecretToken, (error, user) => {
+        if(error)
+            response.status(403);
+        const accessToken = jwt.sign(
+            {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+            },
+            secretToken,
+            {expiresIn: '20m'}
+        );
+    });
 });
 
 // END REGISTER/LOGIN FUNCTIONS

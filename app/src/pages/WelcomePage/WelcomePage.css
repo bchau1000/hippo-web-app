@@ -12,34 +12,32 @@
     grid-row-start: content;
     
     display: grid;
-    grid-template-rows: 45vh auto;
+    grid-template-rows: 60% auto;
     grid-template-areas:
     "banner"
     "features";
 }
 
-
 .banner-container {
     grid-area: banner;
-    width: 100%;
     background-color: var(--color-bg);
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .banner-title-container{
     display: flex;
     flex-direction: column;
+    width: 500px;
 }
 
 .banner-title{
+    width: 100%;
     font-size: 10em;
     font-weight: bold;
     color: rgba(48, 48, 48, 0.2);
-
-    opacity: 1 !important;
-    /*color: rgba(190, 190, 190, 0.4)*/
 }
 
 .start-container {
@@ -64,29 +62,29 @@
 
 .banner-summary {
     font-size: 1.5em;
-    width: 70vh;
 }
 
 .features-container {
     grid-area: features;
+    height: auto;
     width: 100%;
-    
-    background-color: var(--color-fg);
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     
-    display: grid;
-    grid-gap: 20px;
-    grid-template-columns: auto 400px 400px 400px auto;
-    grid-template-areas:"";
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
 }
 
 
 .features-grid-item {
-    
-    height: 300px;
+    max-width: 300px;
+    height: 80%;
     display: flex;
     flex-direction: column;
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 .features-header {
@@ -103,4 +101,36 @@
     width: 100%;
     height: fit-content;
     color: var(--color-text);
+}
+
+@media (max-width: 600px) {
+    .features-container {
+        flex-direction: column;
+    }
+    .banner-title{
+        margin-left: 15px;
+        font-size: 6em;
+    }
+    .banner-summary {
+        margin-left: 15px;
+        font-size: 1em;
+        width: 90%;
+    }
+
+    .banner-title-container{
+        width: 100%;
+    }
+    .start-container {
+        margin-top: 2vh;
+        margin-left: 15px;
+        background-color: var(--color-accent);
+    
+        width: fit-content;
+
+    }
+    
+    .start-text {
+        font-size: 15px;
+        margin:18px;
+    }
 }

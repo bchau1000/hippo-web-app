@@ -1,5 +1,5 @@
 import "./App.css";
-import CreateSet from "./components/createSet/createSet.js";
+import CreateSetPage from "./pages/CreateSetPage/CreateSetPage.js";
 import StudyPage from "./pages/StudyPage/StudyPage.js";
 import SetsPage from "./pages/SetsPage/setGrid.js";
 import Navbar from "./components/navbar/navbar.js";
@@ -63,7 +63,7 @@ class App extends React.Component {
                             <SetsPage />
                         </Route>
                         <Route exact path="/sets/new">
-                            <CreateSet />
+                            <CreateSetPage />
                         </Route>
                         <Route path="/sets/:id/cards" component={StudyPage} />
                     </Switch>

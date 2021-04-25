@@ -1,7 +1,7 @@
 import React from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import CardForm from "./cardForm/cardForm.js";
-import "./createSet.css";
+import "./CreateSetPage.css";
 
 //const API_URL = "http://localhost:9000/api/sets/new";
 
@@ -123,7 +123,7 @@ class CreateSet extends React.Component {
             //    method: 'PUT',
             //    headers: { 
             //            'Content-Type': 'application/json',
-            //            'Authorization': 'Bearer ' + token,
+            //            'Authorization': 'Bearer ' + user.token,
             //        },
             //    body: newSet,
             //};
