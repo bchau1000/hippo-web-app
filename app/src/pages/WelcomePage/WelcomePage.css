@@ -107,10 +107,13 @@
     .features-container {
         flex-direction: column;
     }
+
     .banner-title{
         margin-left: 15px;
         font-size: 6em;
+        width: 400px;
     }
+
     .banner-summary {
         margin-left: 15px;
         font-size: 1em;
@@ -120,13 +123,12 @@
     .banner-title-container{
         width: 100%;
     }
+
     .start-container {
         margin-top: 2vh;
         margin-left: 15px;
         background-color: var(--color-accent);
-    
         width: fit-content;
-
     }
     
     .start-text {

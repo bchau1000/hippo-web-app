@@ -22,7 +22,7 @@ class WelcomePage extends React.Component {
             <section className="welcome-container">
                 <div className="banner-container">
                     <div className="banner-title-container">
-                        <span className="banner-title">HIPPO</span>
+                        <span className="banner-title">Hippo.</span>
                         <span className="banner-summary">Create, browse, and learn from study sets to help you improve your grades. </span>
                         <a className="start-container" href="/">
                             <span className="start-text">Get Started</span>

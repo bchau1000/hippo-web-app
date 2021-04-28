@@ -7,6 +7,10 @@
     
 }
 
+.swiper-slide:hover {
+    cursor: pointer;
+}
+
 .swiper-container {
     grid-area: carousel;
     height: 100%;

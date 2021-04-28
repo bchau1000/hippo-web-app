@@ -48,7 +48,7 @@ export default function Navbar(props) {
                     <span className="material-icons">reorder</span>
                 </div>
                 <div className="title">
-                    <a href="/">Hippo</a>
+                    <a href="/">Hippo.</a>
                 </div>
                 
             </div>
