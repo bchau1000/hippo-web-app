@@ -8,7 +8,7 @@ The web-application was built using ReactJS, ExpressJS, and MySQL.
 TO DO: Add preview screenshots
 
 # Installation and Setup
-This project requires you to have [Node.js](https://nodejs.org/en/), [npm](https://www.npmjs.com/), and [MySQL](https://dev.mysql.com/downloads/mysql/) installed on your machine.
+This project requires you to have [Node.js](https://nodejs.org/en/download/), [npm](https://www.npmjs.com/get-npm), and [MySQL](https://dev.mysql.com/downloads/mysql/) installed on your machine.
 1. Clone the repository: `git clone https://github.com/bchau1000/hippo-web-app.git`
 2. Execute the database schema script: `mysql -u 'your_username' -p < /path/to/db_schema.sql`
 3. Configure the database variables in `/webserver/config.js`, you can also create a `.env` file and configure them there
