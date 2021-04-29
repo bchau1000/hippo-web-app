@@ -48,7 +48,25 @@ const authJWT = (request, response, next) => {
     }
 };
 
-// Cookie middleware
+app.get("/api/test", (_, response) => { 
+    try {
+        pool.query(
+            "SHOW TABLES",
+            (error, result) => {
+                if (error) response.status(400).send(error);
+
+                if (result.length)
+                    response.status(201).send(result);
+                else {
+                    response.status(404).send("404 Not Found");
+                }
+            }
+        );
+    }
+    catch (err) {
+        response.status(404).send(err);
+    }
+})
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////USER REQUEST FUNCTIONS//////////////////////////////////////////
@@ -67,18 +85,18 @@ app.get("/api/:username/sets", (request, response) => {
             username,
             (error, result) => {
                 if (error) response.status(400).send(error);
-
-                if(result.length)
+                if (result.length)
                     response.status(201).send(result);
                 else {
                     response.status(404).send("404 Not Found");
                 }
-                    
-            
+
+
             }
         );
     }
     catch (err) {
+        console.log("hello");
         response.status(404).send(err);
     }
 });
@@ -100,26 +118,32 @@ app.get("/api/sets/:set_id/cards", (request, response) => {
             (error, result) => {
                 if (error) response.status(400).send(error);
                 else {
-                    let send = {
-                        "title": "",
-                        "description": "",
-                        "flash_cards": [],
-                    };
 
                     const length = result.length;
+                    if (length) {
+                        let send = {
+                            "title": "",
+                            "description": "",
+                            "flash_cards": [],
+                        };
+                        send.title = result[0].title;
+                        send.description = result[0].description;
+                        send.flash_cards = [];
 
-                    send.title = result[0].title;
-                    send.description = result[0].description;
-                    send.flash_cards = [];
-
-                    for (let i = 0; i < length; i++) {
-                        send.flash_cards.push({
-                            "id": result[i].id,
-                            "term": result[i].term,
-                            "definition": result[i].definition,
-                        });
+                        for (let i = 0; i < length; i++) {
+                            send.flash_cards.push({
+                                "id": result[i].id,
+                                "term": result[i].term,
+                                "definition": result[i].definition,
+                            });
+                        }
+                        response.status(201).send(send)
                     }
-                    response.status(201).send(send)
+                    else {
+                        response.status(404).send("404 Not Found");
+                    }
+
+
                 };
             }
         );
@@ -262,7 +286,7 @@ app.post("/api/login", (request, response) => {
 
 app.post('/api/logout', (request, response) => {
     const { token } = request.body;
-    
+
     // Expire the refresh token if a user logs out
     for (let i = 0; i < refreshTokens.length; i++)
         if (refreshTokens[i] == token)

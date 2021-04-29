@@ -57,7 +57,7 @@ class CardSwiper extends React.Component {
                                 id="swiper-inner-container"
                                 effect= 'flip'
                                 direction="vertical"
-
+                                allowTouchMove={false}
                                 onClick={(swiper) => this.handleFlip(swiper)}
                                 keyboard={{
                                     enabled: true,

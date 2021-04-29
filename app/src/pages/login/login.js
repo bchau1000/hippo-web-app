@@ -1,5 +1,5 @@
 import React from "react";
-import parseJWT from "../../components/authUser/authUser.js";
+import parseJWT from "components/getUser/getUser.js";
 import {
     Button,
     TextField,

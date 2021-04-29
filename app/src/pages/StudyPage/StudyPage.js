@@ -1,6 +1,6 @@
 import React from "react";
 import FlashCard from "./flashcard/flashcard.js";
-import CardSwiper from "../../components/cardSwiper/cardSwiper.js";
+import CardSwiper from "components/cardSwiper/cardSwiper.js";
 import "./StudyPage.css";
 const API_URL = "http://localhost:9000/api/sets/";
 
