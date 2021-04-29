@@ -1,42 +1,41 @@
 import React from 'react';
-
 import "./setGrid.css";
 import SetGridItem from "./setGridItem/setGridItem.js";
 
-const API_URL = "http://localhost:9000/api/users/sets";
+let API_URL = "http://localhost:9000/api/";
 
 class SetGrid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            username: this.props.match.params.username,
             studySet: [],
         };
     }
 
     async componentDidMount() {
-        const user = JSON.parse(localStorage.getItem('user'));
+        const params = JSON.stringify({
+            username: this.state.username,
+        });
 
-        if (user) {
-            const body = JSON.stringify({
-                authorization: user.token,
-            });
-
-            const settings = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + user.token,
-                },
-                body: body,
-            };
-
-            const response = await fetch(API_URL, settings);
+        const settings = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            params: params,
+        };
+        
+        const response = await fetch(API_URL + this.state.username + "/sets", settings);
+        
+        if(response.status === 201) {
             const json = await response.json();
             this.populateStudySet(json);
         }
         else {
-
+            // TO DO: create a 404 not found page to redirect
         }
+
     }
 
     populateStudySet(studySet) {

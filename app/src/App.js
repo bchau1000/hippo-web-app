@@ -43,9 +43,7 @@ export default function App(props) {
                         <WelcomePage />
                     </Route>
 
-                    <Route exact path="/sets">
-                        <SetsPage />
-                    </Route>
+                    <Route exact path="/:username/sets" component={SetsPage}/>
                     <Route exact path="/sets/new">
                         <CreateSetPage />
                     </Route>

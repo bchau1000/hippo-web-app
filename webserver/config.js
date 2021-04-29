@@ -1,10 +1,12 @@
-var mysql = require('mysql');
+require('dotenv').config();
+const mysql = require('mysql');
 
+// process.env values configured in config.env file
 const config = {
-  host: "localhost",
-  user: "root",
-  password: "1234",
-  database: "study_buddy_db"
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: 'study_buddy_db'
 };
 
 const pool = mysql.createPool(config);

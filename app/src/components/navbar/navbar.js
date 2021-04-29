@@ -1,27 +1,35 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback} from 'react';
+import parseJWT from "../authUser/authUser.js";
 import "./navbar.css";
 
 const API_URL = "http://localhost:9000/api/logout";
 
 export default function Navbar(props) {
-    const isMounted = useRef(true);
     const [awaitResp, setAwaitResp] = useState(false);
+    const user = parseJWT();
 
     useEffect(() => {
-        isMounted.current = false;
+        if(user)
+            console.log("Logged in as: '" + user.username + "'.");
+        else
+            console.log("User is not currently logged in.")
+
     }, []);
+
 
     const sendRequest = useCallback(async () => {
         if(awaitResp)
             return;
         else {
-            
+            // Set to true to disable logout button (prevent spam clicking)
             setAwaitResp(true);
-            const user = JSON.parse(localStorage.getItem('user'));
-            localStorage.setItem('user', null);
 
+            // If a user is even logged in...
             if(user !== null) {
-                alert('hello');
+                // Wipe user from local storage
+                localStorage.setItem('user', null);
+
+                // Send logout request...
                 const body = JSON.stringify({
                     token: user.token,
                 });
@@ -33,10 +41,14 @@ export default function Navbar(props) {
                     },
                     body: body,
                 };
-                const response = await (await fetch(API_URL, settings)).json();
+                const response = await fetch(API_URL, settings);
+                if(response.status === 200) {
+                    const json = await response.json();
+                    console.log(json);
+                }
                 
-                if(isMounted.current)
-                    setAwaitResp(false);
+
+                setAwaitResp(false);
             }
         }
     }, [awaitResp]);
@@ -57,7 +69,7 @@ export default function Navbar(props) {
                     <span>Login</span>
                 </a>
                 <a className="button" disabled={awaitResp} href="/" onClick={sendRequest}>
-                    <span>Logout(Test)</span>
+                    <span>Logout</span>
                 </a>
             </div>
         </div>

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken"); // JSON Web Token for user authenticatio
@@ -8,8 +9,8 @@ const app = express();
 const port = 9000;
 
 // Master access tokens for JWT, MUST CHANGE DURING DEPLOYMENT
-const secretToken = "testing";
-const refreshSecretToken = "refreshTesting";
+const secretToken = process.env.JWT_SECRET;
+const refreshSecretToken = process.env.JWT_SECRET_REFRESH;
 let refreshTokens = [];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,24 +48,43 @@ const authJWT = (request, response, next) => {
     }
 };
 
+// Cookie middleware
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////USER REQUEST FUNCTIONS//////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 // Get all sets belonging to a user
-app.post("/api/users/sets", authJWT, (request, response) => {
-    const {
-        id
-    } = request.user;
+app.get("/api/:username/sets", (request, response) => {
+    const username = request.params.username;
 
-    pool.query(
-        "SELECT * FROM study_sets WHERE user_id = ?",
-        id,
-        (error, result) => {
-            if (error) response.status(400).send(error);
-            else response.status(201).send(result);
-        }
-    );
+    try {
+        pool.query(
+            "SELECT s.id as 'id', s.title as 'title', s.description as 'description'\n" +
+            "FROM study_sets as s JOIN (SELECT id FROM users WHERE username=?) as u\n" +
+            "WHERE s.user_id = u.id;\n"
+            ,
+            username,
+            (error, result) => {
+                if (error) response.status(400).send(error);
+
+                if(result.length)
+                    response.status(201).send(result);
+                else {
+                    response.status(404).send("404 Not Found");
+                }
+                    
+            
+            }
+        );
+    }
+    catch (err) {
+        response.status(404).send(err);
+    }
+});
+
+app.post("/api/users/sets/edit", authJWT, (request, response) => {
+
 });
 
 // Get all cards belonging to a set
@@ -92,7 +112,7 @@ app.get("/api/sets/:set_id/cards", (request, response) => {
                     send.description = result[0].description;
                     send.flash_cards = [];
 
-                    for(let i = 0; i < length; i++){
+                    for (let i = 0; i < length; i++) {
                         send.flash_cards.push({
                             "id": result[i].id,
                             "term": result[i].term,
@@ -141,7 +161,7 @@ app.put("/api/sets/new", authJWT, (request, response) => {
                             1,
                             result.insertId));
                     }
-                        
+
                     pool.query(
                         "INSERT INTO flash_cards(term, definition, q_type, set_id) VALUES ?",
                         [values],
@@ -211,10 +231,10 @@ app.post("/api/login", (request, response) => {
                             id: result[0].id,
                             username: result[0].username,
                             email: result[0].email,
-                            
+
                         },
                         secretToken,
-                        {expiresIn: '20m'}
+                        { expiresIn: '20m' }
                     );
 
                     const refreshToken = jwt.sign(
@@ -242,26 +262,26 @@ app.post("/api/login", (request, response) => {
 
 app.post('/api/logout', (request, response) => {
     const { token } = request.body;
-
-    for(let i = 0; i < refreshTokens.length; i++)
-        if(refreshTokens[i] == token)
+    
+    // Expire the refresh token if a user logs out
+    for (let i = 0; i < refreshTokens.length; i++)
+        if (refreshTokens[i] == token)
             refreshTokens.splice(i, 1);
 
-    console.log("logged out");
     response.status(200).send("Successfully logged out");
 });
 
 app.post('/api/token', (request, response) => {
     const { token } = request.body;
 
-    if(!token) 
+    if (!token)
         response.status(401);
 
-    if(!refreshTokens.includes(token))
+    if (!refreshTokens.includes(token))
         response.status(403);
-    
+
     jwt.verify(token, refreshSecretToken, (error, user) => {
-        if(error)
+        if (error)
             response.status(403);
         const accessToken = jwt.sign(
             {
@@ -270,7 +290,7 @@ app.post('/api/token', (request, response) => {
                 email: user.email,
             },
             secretToken,
-            {expiresIn: '20m'}
+            { expiresIn: '20m' }
         );
     });
 });

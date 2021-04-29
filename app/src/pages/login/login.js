@@ -1,4 +1,5 @@
 import React from "react";
+import parseJWT from "../../components/authUser/authUser.js";
 import {
     Button,
     TextField,
@@ -46,10 +47,10 @@ class Login extends React.Component {
             console.log("Invalid username or password");
         }
         else {
-            console.log(resp);
-            const user = {'token': resp.accessToken};
-            localStorage.setItem('user', JSON.stringify(user));
-            window.location.href = "/sets";
+            const newUser = {'token': resp.accessToken};
+            localStorage.setItem('user', JSON.stringify(newUser));
+            const user = parseJWT();
+            window.location.href = "/" + user.username + "/sets";
         }
     }
 
