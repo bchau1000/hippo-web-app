@@ -50,7 +50,9 @@ export default function App(props) {
             </Switch>
             <div className="main-container">
                 {
-                    showDropdown && <Sidebar onFocus={onFocus}></Sidebar>
+                    <div className = {`sidebar-transition ${showDropdown ? 'sidebar-transition-true': ""}`} >
+                    showDropdown && <Sidebar onFocus={onFocus}/>
+                    </div>
                 }
                 <Navbar onClick={() => setShowDropdown(!showDropdown)} showDropdown={showDropdown}></Navbar>
                 <Switch>

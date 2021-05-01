@@ -15,6 +15,17 @@ html, body, #root, #root>div {
     font-family: 'Fira Sans', sans-serif;
 }
 
+
+.sidebar-transition
+{
+    transition: margin .5s;
+    margin-left: -250px;
+}
+
+.sidebar-transition-true
+{
+    margin-left: 0;
+}
 .main-container {
     display: grid;
     grid-template-columns: 150px 35px auto;
