@@ -68,7 +68,7 @@ export default function Navbar(props) {
     }
 
     return (
-        <div className="navbar-container">
+        <div className="navbar-container no-select">
             <div className="left">
                 <div className="dropdown" onClick={() => { props.onClick() }}>
                     {
@@ -86,6 +86,9 @@ export default function Navbar(props) {
                 {
                     loginOptions(user)
                 }
+                <a className="button" href="/" onClick={() => localStorage.clear()}>
+                    <span >Clear</span>
+                </a>
             </div>
         </div>
     )

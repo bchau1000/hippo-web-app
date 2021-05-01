@@ -3,7 +3,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CardForm from "./cardForm/cardForm.js";
 import "./CreateSetPage.css";
 
-//const API_URL = "http://localhost:9000/api/sets/new";
+const API_URL = "http://localhost:9000/api/sets/new";
 
 class CreateSet extends React.Component {
 
@@ -113,23 +113,23 @@ class CreateSet extends React.Component {
     async createSet() {
         const user = localStorage.getItem('token');
         if (user) {
-            //const newSet = JSON.stringify({
-            //    title: this.state.title,
-            //    description: this.state.desc,
-            //    flash_cards: this.state.flash_cards,
-            //});
+            const newSet = JSON.stringify({
+                title: this.state.title,
+                description: this.state.desc,
+                flash_cards: this.state.flash_cards,
+            });
 
-            //const settings = {
-            //    method: 'PUT',
-            //    headers: { 
-            //            'Content-Type': 'application/json',
-            //            'Authorization': 'Bearer ' + user.token,
-            //        },
-            //    body: newSet,
-            //};
+            const settings = {
+                method: 'PUT',
+                headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + user.token,
+                    },
+                body: newSet,
+            };
 
-            //const response = await fetch(API_URL, settings);
-            //const json = await response.json();
+            const response = await fetch(API_URL, settings);
+            const json = await response.json();
 
             window.location.href = "/sets";
         }
@@ -140,9 +140,11 @@ class CreateSet extends React.Component {
             <section className="create-set-container">
                 <div className="create-container">
                     <form className="meta-form">
+
                         <div className="header">
                             Create a new study set
-                    </div>
+                        </div>
+
                         <div className="field-container">
                             <input
                                 id="set-title"
@@ -152,6 +154,7 @@ class CreateSet extends React.Component {
                             />
                             <div className="field-label">TITLE</div>
                         </div>
+                        
                         <div className="field-container">
                             <input
                                 id="set-desc"
@@ -161,8 +164,8 @@ class CreateSet extends React.Component {
                             />
                             <div className="field-label">DESCRIPTION</div>
                         </div>
-                    </form>
 
+                    </form>
 
                     <div className="add-card-container" onClick={() => this.addCard(true)}>
                         <div className="add-card">

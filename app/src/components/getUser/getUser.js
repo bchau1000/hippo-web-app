@@ -8,6 +8,9 @@ export default function parseJWT() {
         let decodeToken = jwt_decode(user.token);
         return decodeToken;
     }
-    else
+    else {
+        console.log(user);
         return null;
+    }
+        
 }

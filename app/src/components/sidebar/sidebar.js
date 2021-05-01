@@ -15,7 +15,7 @@ export default function Sidebar(props) {
 
     return (
         <div className="sidebar-wrapper">
-            <div className="sidebar-container">
+            <div className="sidebar-container no-select">
                 <div className="sidebar-collapse" />
 
                 <ul className="sidebar-items-container">

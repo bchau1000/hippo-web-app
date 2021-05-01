@@ -3,6 +3,8 @@ a {
     text-decoration: none;
 }
 
+
+
 .navbar-container {
     position: fixed;
     grid-area: header;
