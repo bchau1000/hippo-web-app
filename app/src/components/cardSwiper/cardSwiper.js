@@ -37,7 +37,7 @@ class CardSwiper extends React.Component {
         }
         
     }
-
+    /* allowTouchMove={false}*/
     render() {
         return (
             <Swiper
@@ -45,7 +45,8 @@ class CardSwiper extends React.Component {
                 pagination={{
                     type:'fraction'
                 }}
-
+                navigation={true}
+                allowTouchMove={false}
                 keyboard={{
                     enabled: true,
                 }}
@@ -57,7 +58,7 @@ class CardSwiper extends React.Component {
                                 id="swiper-inner-container"
                                 effect= 'flip'
                                 direction="vertical"
-                                allowTouchMove={false}
+                                
                                 onClick={(swiper) => this.handleFlip(swiper)}
                                 keyboard={{
                                     enabled: true,
@@ -89,7 +90,3 @@ class CardSwiper extends React.Component {
 };
 
 export default CardSwiper;
-
-/*
-
-*/

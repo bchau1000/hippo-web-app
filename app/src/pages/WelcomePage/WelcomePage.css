@@ -7,9 +7,7 @@
     /*
         Set grid area coverage welcome page should cover whole screen
     */
-    grid-column-start: sidebar;
-    grid-column-end: content;
-    grid-row-start: content;
+    grid-area: content;
     
     display: grid;
     grid-template-rows: 60% auto;

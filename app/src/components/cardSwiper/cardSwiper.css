@@ -17,6 +17,26 @@
     width: 100%;
 }
 
+.swiper-button-next {
+    opacity: 0.3;
+    transition: opacity 0.2s;
+    color: var(--color-text);
+}
+
+.swiper-button-prev {
+    opacity: 0.3;
+    transition: opacity 0.2s;
+    color: var(--color-text);
+}
+
+.swiper-button-next:hover {
+    opacity: 1;
+}
+
+.swiper-button-prev:hover {
+    opacity: 1;
+}
+
 #swiper-outer-container {
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     

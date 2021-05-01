@@ -2,7 +2,6 @@
     display: grid;
     grid-area: content;
     grid-template-rows: 25px 0.01em 10px auto;
-    
 }
 
 .grid-header-container {

@@ -51,7 +51,6 @@ export default function Sidebar(props) {
                     </li>
                 </ul>
             </div>
-            <div className="focus-container" onClick={() => props.onFocus()}/>
         </div>
     );
 }

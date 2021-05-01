@@ -73,4 +73,13 @@ html, body, #root, #root>div {
             "margin-top"
             "content";
     }
+
+    .focus-container {
+        position: fixed;
+        grid-template-rows: margin-top content;
+        background-color: rgba(99, 99, 99, 0.4);
+        width: 100vh;
+        height: 100vh;
+        z-index: 945;
+    }
 }

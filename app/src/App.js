@@ -51,7 +51,7 @@ export default function App(props) {
             <div className="main-container">
                 {
                     <div className = {`sidebar-transition ${showDropdown ? 'sidebar-transition-true': ""}`} >
-                    showDropdown && <Sidebar onFocus={onFocus}/>
+                    showDropdown && <Sidebar onFocus={onFocus} showDropdown={showDropdown}/>
                     </div>
                 }
                 <Navbar onClick={() => setShowDropdown(!showDropdown)} showDropdown={showDropdown}></Navbar>
@@ -66,6 +66,11 @@ export default function App(props) {
                     </Route>
                     <Route path="/sets/:id/cards" component={StudyPage} />
                 </Switch>
+
+                {
+                    showDropdown &&
+                    <div className="focus-container" onClick={() => onFocus()}/>
+                }
             </div>
         </Router>
     );
