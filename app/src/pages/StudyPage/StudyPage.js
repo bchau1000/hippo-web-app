@@ -19,34 +19,32 @@ class StudyPage extends React.Component {
     }
 
     async componentDidMount() {
-        const user = JSON.parse(localStorage.getItem('user'));
-
-        if (user) {
-            const settings = {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + user.token,
-                },
-            }
-            const response = await fetch(API_URL + this.state.set_id + "/cards", settings);
-            const data = await response.json();
+        const settings = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
+        const response = await fetch(API_URL + this.state.set_id + "/cards", settings);
+        if(response.status === 201) {
+            const json = await response.json();
             this.setState({
-                title: data.title,
-                description: data.description,
-                flash_cards: data.flash_cards,
+                title: json.title,
+                description: json.description,
+                flash_cards: json.flash_cards,
             });
         }
         else {
-            window.location.href = "/login";
+            console.log(response.status + " status received.");
         }
+        
     }
 
     render() {
         return (
             <section className="study-view-container">
                 <span className="study-view-title">{this.state.title}</span>
-                <CardSwiper cards={this.state.flash_cards} className="swiper-container"/>
+                <CardSwiper cards={this.state.flash_cards} className="swiper-container" />
                 <div className="study-view-cards">
                     {
                         this.state.flash_cards.map((flashcard, index) => (

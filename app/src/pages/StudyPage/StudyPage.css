@@ -4,12 +4,12 @@
     grid-area: content;
 
     display: grid;
+    grid-template-rows: auto 400px auto;
+    grid-template-columns: 26vw auto 26vw;
     grid-template-areas:
     "margin-l title margin-r"
     "margin-l carousel margin-r"
     "margin-l cards margin-r";
-    grid-template-rows: auto 400px auto;
-    grid-template-columns: 15vw auto 30vw;
     grid-gap: 5px;
 }
 
@@ -24,57 +24,29 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-@media (min-width: 1281px) {
-  
-    /* CSS */
     
 }
 
-/* 
-  ##Device = Laptops, Desktops
-  ##Screen = B/w 1025px to 1280px
-*/
 
 @media (min-width: 1025px) and (max-width: 1280px) {
   
     .study-view-container {
         grid-template-rows: auto 400px auto;
-        grid-template-columns: 12vw auto 12vw;
+        grid-template-columns: 15vw auto 15vw;
         grid-gap: 5px;
     }
   
 }
-
-/* 
-  ##Device = Tablets, Ipads (portrait)
-  ##Screen = B/w 768px to 1024px
-*/
 
 @media (min-width: 768px) and (max-width: 1024px) {
   
     .study-view-container {
         grid-template-rows: auto 400px auto;
-        grid-template-columns: 3vw auto 3vw;
+        grid-template-columns: 170px auto 3vw;
         grid-gap: 5px;
     }
   
 }
-
-/* 
-  ##Device = Tablets, Ipads (landscape)
-  ##Screen = B/w 768px to 1024px
-*/
-
-@media (min-width: 320px) and (max-width: 1024px) and (orientation: landscape) {
-    
-}
-
-/* 
-  ##Device = Low Resolution Tablets, Mobiles (Landscape)
-  ##Screen = B/w 481px to 767px
-*/
 
 @media (min-width: 481px) and (max-width: 767px) {
     .study-view-container {
@@ -84,11 +56,6 @@
     }
   
 }
-
-/* 
-  ##Device = Most of the Smartphones Mobiles (Portrait)
-  ##Screen = B/w 320px to 479px
-*/
 
 @media (min-width: 320px) and (max-width: 480px) {
     .study-view-container {

@@ -24,12 +24,9 @@ export default function App(props) {
     useEffect(() => {
         if(width < 768)
             setShowDropdown(false);
-    }, [width]);
-
-    useEffect(() => {
-        if(width > 768)
+        else
             localStorage.setItem('showDropdown', showDropdown);
-    }, [showDropdown]);
+    }, [width]);
     
     const onFocus = () => {
         setShowDropdown(false);
@@ -38,35 +35,22 @@ export default function App(props) {
     return (
         <Router>
             <Switch>
-                <Route exact path="/login">
-                    <Login />
-                </Route>
+                <Route exact path="/login" component={Login}/>
+                <Route exact path="/signup" component={SignUp}/>
             </Switch>
 
-            <Switch>
-                <Route exact path="/signup">
-                    <SignUp />
-                </Route>
-            </Switch>
             <div className="main-container">
-                {
-                    <div className = {`sidebar-transition ${showDropdown ? 'sidebar-transition-true': ""}`} >
-                    showDropdown && <Sidebar onFocus={onFocus} showDropdown={showDropdown}/>
-                    </div>
-                }
+                <div className = {`sidebar-transition ${showDropdown ? 'sidebar-transition-true': ""}`} >
+                    <Sidebar onFocus={onFocus} showDropdown={showDropdown}/>
+                </div>
+
                 <Navbar onClick={() => setShowDropdown(!showDropdown)} showDropdown={showDropdown}></Navbar>
                 <Switch>
-                    <Route exact path="/">
-                        <WelcomePage />
-                    </Route>
-
+                    <Route exact path="/" component={WelcomePage}/>
                     <Route exact path="/:username/sets" component={SetsPage}/>
-                    <Route exact path="/sets/new">
-                        <CreateSetPage />
-                    </Route>
-                    <Route path="/sets/:id/cards" component={StudyPage} />
+                    <Route exact path="/sets/new" component={CreateSetPage}/>
+                    <Route exact path="/sets/:id/cards" component={StudyPage} />
                 </Switch>
-
                 {
                     showDropdown &&
                     <div className="focus-container" onClick={() => onFocus()}/>

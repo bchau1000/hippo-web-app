@@ -2,7 +2,6 @@ import jwt_decode from "jwt-decode";
 
 //
 export default function parseJWT() {
-    
     const user = JSON.parse(localStorage.getItem('user'));
     
     if(user !== null) {
@@ -10,7 +9,6 @@ export default function parseJWT() {
         return decodeToken;
     }
     else {
-        console.log(user);
         return null;
     }
         

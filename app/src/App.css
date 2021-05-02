@@ -15,27 +15,6 @@ html, body, #root, #root>div {
     font-family: 'Fira Sans', sans-serif;
 }
 
-
-.sidebar-transition
-{
-    transition: margin .5s;
-    margin-left: -250px;
-}
-
-.sidebar-transition-true
-{
-    margin-left: 0;
-}
-.main-container {
-    display: grid;
-    grid-template-columns: 150px 35px auto;
-    grid-template-rows: 60px 35px auto;
-    grid-template-areas:
-        "header header header"
-        "sidebar margin-left margin-top"
-        "sidebar margin-left content";
-}
-
 .no-select {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -43,6 +22,25 @@ html, body, #root, #root>div {
        -moz-user-select: none;
         -ms-user-select: none;
             user-select: none;
+}
+
+
+.main-container {
+    display: grid;
+    grid-template-rows: 60px 35px auto;
+    grid-template-areas:
+        "header"
+        "margin-top"
+        "content";
+}
+
+.sidebar-transition {
+    transition: margin .5s;
+    margin-left: -250px;
+}
+
+.sidebar-transition-true {
+    margin-left: 0;
 }
 
 @media (min-width: 1025px) and (max-width: 1280px) {
@@ -53,12 +51,7 @@ html, body, #root, #root>div {
   
     .main-container {
         display: grid;
-        grid-template-columns: 120px 35px auto;
         grid-template-rows: 60px 35px auto;
-        grid-template-areas:
-            "header header header"
-            "sidebar margin-left margin-top"
-            "sidebar margin-left content";
     }
   
 }
@@ -68,10 +61,6 @@ html, body, #root, #root>div {
         display: grid;
         grid-template-rows: 60px 15px auto;
         grid-template-columns: auto;
-        grid-template-areas:
-            "header"
-            "margin-top"
-            "content";
     }
 
     .focus-container {

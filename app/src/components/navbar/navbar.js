@@ -9,11 +9,10 @@ export default function Navbar(props) {
     const [user] = useState(parseJWT());
 
     useEffect(() => {
-        if (user)
+        if (user !== null)
             console.log("Logged in as: '" + user.username + "'.");
         else
             console.log("User is not currently logged in.")
-
     }, [user]);
 
     const sendRequest = useCallback(async () => {
