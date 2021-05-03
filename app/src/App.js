@@ -20,16 +20,19 @@ export default function App(props) {
     const [showDropdown, setShowDropdown] = useState((localSD !== null) ? localSD : false);
     const {_, width} = useViewport();
 
-
     useEffect(() => {
         if(width < 768)
             setShowDropdown(false);
-        else
+    }, [])
+
+    useEffect(() => {
+        if(width >= 768)
             localStorage.setItem('showDropdown', showDropdown);
-    }, [width]);
+    }, [showDropdown]);
     
-    const onFocus = () => {
+    function onFocus() {
         setShowDropdown(false);
+        console.log("hello");
     }
 
     return (
@@ -44,7 +47,7 @@ export default function App(props) {
                     <Sidebar onFocus={onFocus} showDropdown={showDropdown}/>
                 </div>
 
-                <Navbar onClick={() => setShowDropdown(!showDropdown)} showDropdown={showDropdown}></Navbar>
+                <Navbar onClick={() => setShowDropdown(current => !current)} showDropdown={showDropdown}></Navbar>
                 <Switch>
                     <Route exact path="/" component={WelcomePage}/>
                     <Route exact path="/:username/sets" component={SetsPage}/>

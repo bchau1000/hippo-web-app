@@ -129,9 +129,15 @@ class CreateSet extends React.Component {
             };
 
             const response = await fetch(API_URL, settings);
-            const json = await response.json();
-
-            window.location.href = "/sets";
+            if(response.status === 201) {
+                const json = await response.json();
+                console.log(json);
+                window.location.href = "/sets";
+            }
+            else {
+                alert('Error inserting new set');
+            }
+                
         }
     }
 

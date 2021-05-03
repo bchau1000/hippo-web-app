@@ -1,9 +1,9 @@
 require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
-const jwt = require("jsonwebtoken"); // JSON Web Token for user authenticatio
-const bodyParser = require("body-parser"); // To parse JSON requests
-const async = require("async");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
+//const async = require("async");
 const pool = require("./config");
 const app = express();
 const port = 9000;
@@ -25,7 +25,7 @@ app.use(
 );
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.json());
+app.use(cookieParser());
 app.set("json spaces", 2);
 
 // User Auth Middleware:
@@ -79,7 +79,7 @@ app.get("/api/:username/sets", (request, response) => {
     try {
         pool.query(
             "SELECT s.id as 'id', s.title as 'title', s.description as 'description'\n" +
-            "FROM study_sets as s JOIN (SELECT id FROM users WHERE username=?) as u\n" +
+            "FROM sets as s JOIN (SELECT id FROM users WHERE username=?) as u\n" +
             "WHERE s.user_id = u.id;\n"
             ,
             username,
@@ -111,7 +111,7 @@ app.get("/api/sets/:set_id/cards", (request, response) => {
         pool.query(
             "SELECT s.title as 'title', s.description as 'description',\n" +
             "       f.id as 'id', f.term as 'term', f.definition as 'definition'\n" +
-            "FROM study_sets as s JOIN flash_cards as f\n" +
+            "FROM sets as s JOIN flash_cards as f\n" +
             "WHERE s.id = f.set_id AND s.id = ?",
             set_id,
             (error, result) => {
@@ -166,7 +166,7 @@ app.put("/api/sets/new", authJWT, (request, response) => {
 
     try {
         pool.query(
-            "INSERT INTO study_sets(title, description, user_id) VALUES(?, ?, ?)",
+            "INSERT INTO sets(title, description, user_id) VALUES(?, ?, ?)",
             [studySet.title, studySet.description, id],
             (error, result) => {
                 if (error) {
@@ -271,7 +271,7 @@ app.post("/api/login", (request, response) => {
 
                     refreshTokens.push(refreshToken);
 
-                    response.status(200).json({
+                    response.status(201).json({
                         accessToken,
                         refreshToken
                     });
@@ -327,19 +327,3 @@ app.get("*", (request, response) => {
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);
 });
-
-/*
-SCRAPPED FOR NOW
-app.get("/api/users/:user_id/sets", (request, response) => {
-  const user_id = request.params.user_id;
-
-  pool.query(
-    "SELECT * FROM study_sets WHERE user_id = ?",
-    user_id,
-    (error, result) => {
-      if(error) response.status(400).send(error);
-      response.status(201).send(result);
-    }
-  );
-});
-*/

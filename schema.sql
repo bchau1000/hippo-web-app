@@ -12,8 +12,15 @@ CREATE TABLE users (
   last_name VARCHAR(40) NULL
 );
 
-DROP TABLE IF EXISTS study_sets;
-CREATE TABLE study_sets(
+DROP TABLE IF EXISTS folders;
+CREATE TABLE folders(
+	id int PRIMARY KEY auto_increment,
+    name VARCHAR(60) NOT NULL,
+    user_id int REFERENCES user(id)
+);
+
+DROP TABLE IF EXISTS sets;
+CREATE TABLE sets(
   id int PRIMARY KEY auto_increment,
   title VARCHAR(60) NOT NULL,
   description VARCHAR(200),
@@ -31,9 +38,13 @@ DROP TABLE IF EXISTS flash_cards;
 CREATE TABLE flash_cards(
   id int PRIMARY KEY auto_increment,
   term VARCHAR(255),
-  definition VARCHAR(500),
+  definition VARCHAR(1000),
   q_type int,
   set_id int REFERENCES study_sets(id)
 );
 
-INSERT INTO users(username, email, password, first_name, last_name) VALUES('admin', 'admin@email.com', 'admin', 'admin', 'admin');
+DROP TABLE IF EXISTS folders_and_sets;
+CREATE TABLE folders_and_sets(
+	folder_id int REFERENCES folders(id),
+    set_id int REFERENCES sets(id)
+);
