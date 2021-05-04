@@ -2,11 +2,9 @@ import React from "react";
 import FlashCard from "./flashcard/flashcard.js";
 import CardSwiper from "components/cardSwiper/cardSwiper.js";
 import "./StudyPage.css";
-const API_URL = "http://localhost:9000/api/sets/";
+const API_URL = "/api/sets/";
 
 class StudyPage extends React.Component {
-
-
     constructor(props) {
         super(props);
         this.state = {
@@ -37,7 +35,6 @@ class StudyPage extends React.Component {
         else {
             console.log(response.status + " status received.");
         }
-        
     }
 
     render() {

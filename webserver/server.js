@@ -13,17 +13,18 @@ const secretToken = process.env.JWT_SECRET;
 const refreshSecretToken = process.env.JWT_SECRET_REFRESH;
 let refreshTokens = [];
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////MIDDLEWARE//////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////
-
-// Libraries
 app.use(
     express.urlencoded({
+        origin: 'http://localhost:3000',
         extended: true,
     })
 );
-app.use(cors());
+
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 app.set("json spaces", 2);
@@ -31,22 +32,28 @@ app.set("json spaces", 2);
 // User Auth Middleware:
 //  Remove authJWT in app.get() functions to test
 //  URLs WITHOUT user authentication
-const authJWT = (request, response, next) => {
-    const auth = request.headers.authorization;
 
-    if (auth) {
-        const token = auth.split(" ")[1];
+const authUser = (request, response, next) => {
+    const token = request.cookies.token;
+    const refreshToken = request.cookies.refreshToken;
 
+    if(refreshTokens.includes(refreshToken)) {
         jwt.verify(token, secretToken, (err, user) => {
-            if (err) return response.sendStatus(403);
+            if (err) 
+                return response.sendStatus(403);
 
+            request.token = token;
             request.user = user;
             next();
         });
-    } else {
-        response.sendStatus(401);
     }
-};
+    else {
+        response.status(404).send({
+            'status': 404,
+            'message': 'Refresh token already expired.'
+        });
+    }
+}
 
 app.get("/api/test", (_, response) => { 
     try {
@@ -100,7 +107,7 @@ app.get("/api/:username/sets", (request, response) => {
     }
 });
 
-app.post("/api/users/sets/edit", authJWT, (request, response) => {
+app.post("/api/users/sets/edit", authUser, (request, response) => {
 
 });
 
@@ -158,13 +165,14 @@ app.get("/api/sets/:set_id/cards", (request, response) => {
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 // Insert a new set
-app.put("/api/sets/new", authJWT, (request, response) => {
+app.put("/api/sets/new", authUser, (request, response) => {
     const {
         id
     } = request.user;
     const studySet = request.body;
 
     try {
+        console.log(studySet);
         pool.query(
             "INSERT INTO sets(title, description, user_id) VALUES(?, ?, ?)",
             [studySet.title, studySet.description, id],
@@ -179,8 +187,8 @@ app.put("/api/sets/new", authJWT, (request, response) => {
 
                     for (let i = 0; i < numCards; i++) {
                         values.push(new Array(
-                            flashCards[0].term,
-                            flashCards[0].def,
+                            flashCards[i].term,
+                            flashCards[i].def,
                             1,
                             result.insertId));
                     }
@@ -193,8 +201,11 @@ app.put("/api/sets/new", authJWT, (request, response) => {
                                 console.log(error);
                                 response.status(400).send(error);
                             }
-                            console.log(values);
-                            response.status(200).send(result);
+                            response.status(201).send({
+                                'status': 201,
+                                'user': request.user.username,
+                                'content': result
+                            });
                         }
                     );
                 }
@@ -244,24 +255,23 @@ app.post("/api/login", (request, response) => {
             (error, result) => {
                 if (error) response.status(400).send(error);
 
-                if (result[0] === undefined)
-                    response.status(400).json({
-                        accessToken: null,
-                    });
+                if (result[0] === undefined) {
+                    response.status(400).send({
+                        'status': 400,
+                        'message': 'Invalid username or password.'
+                    })
+                }
                 else {
-                    const accessToken = jwt.sign(
-                        {
+                    const accessToken = jwt.sign({
                             id: result[0].id,
                             username: result[0].username,
                             email: result[0].email,
-
                         },
                         secretToken,
                         { expiresIn: '20m' }
                     );
 
-                    const refreshToken = jwt.sign(
-                        {
+                    const refreshToken = jwt.sign({
                             id: result[0].id,
                             username: result[0].username,
                             email: result[0].email,
@@ -271,27 +281,57 @@ app.post("/api/login", (request, response) => {
 
                     refreshTokens.push(refreshToken);
 
-                    response.status(201).json({
-                        accessToken,
-                        refreshToken
+                    response.cookie(
+                        'token', accessToken, {
+                            httpOnly: true,
+                            maxAge: 2592000000 // 30 days in ms
+                        }
+                    );
+
+                    response.cookie(
+                        'refreshToken', refreshToken, {
+                            httpOnly: true,
+                            maxAge: 2592000000 // 30 days in ms
+                        }
+                    );
+
+                    response.status(201).send({
+                        'status': 201,
+                        'message': 'User successfully signed in.'
                     });
+
                 }
             }
         );
     } catch (err) {
-        response.status(404).send(err);
+        response.status(404).send({
+            'status': 404,
+            'message': err,
+        });
     }
 });
 
 app.post('/api/logout', (request, response) => {
-    const { token } = request.body;
+    const token = request.cookies.refreshToken;
 
-    // Expire the refresh token if a user logs out
-    for (let i = 0; i < refreshTokens.length; i++)
-        if (refreshTokens[i] == token)
+    for (let i = 0; i < refreshTokens.length; i++) {
+        if (refreshTokens[i] == token) {
             refreshTokens.splice(i, 1);
+        }
+    }
 
-    response.status(200).send("Successfully logged out");
+    response.status(201).send({
+        'status': 201,
+        'message': 'User successfully logged out.'
+    });
+});
+
+app.post('/api/auth', authUser, (request, response) => {
+    response.status(201).send({
+        'status': 201,
+        'message': 'User is logged in.',
+        'content': request.token
+    });
 });
 
 app.post('/api/token', (request, response) => {

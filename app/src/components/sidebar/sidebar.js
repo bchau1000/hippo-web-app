@@ -1,8 +1,7 @@
-import parseJWT from "components/getUser/getUser.js";
 import './sidebar.css';
 
 export default function Sidebar(props) {
-    const user = parseJWT();
+
 
     return (
         <div className="sidebar-container no-select">
@@ -18,7 +17,7 @@ export default function Sidebar(props) {
                 <li className="sidebar-item">
                     <a
                         className="sidebar-link-wrapper"
-                        href={user === null ? "/login" : "/" + user.username + "/sets"}
+                        href={props.user === null ? "/login" : "/" + props.user.username + "/sets"}
                     >
                         <span className="material-icons">layers</span>
                         <span htmlFor="sets">Sets</span>
@@ -27,7 +26,7 @@ export default function Sidebar(props) {
                 <li className="sidebar-item">
                     <a
                         className="sidebar-link-wrapper"
-                        href={user === null ? "/login" : "/sets/new"}
+                        href={props.user === null ? "/login" : "/sets/new"}
                     >
                         <span className="material-icons">library_add</span>
                         <span htmlFor="create">Create</span>

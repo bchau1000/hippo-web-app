@@ -1,19 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import parseJWT from "components/getUser/getUser.js";
 import "./navbar.css";
 
-const API_URL = "http://localhost:9000/api/logout";
+const API_URL = "/api/logout";
 
 export default function Navbar(props) {
     const [awaitResp, setAwaitResp] = useState(false);
-    const [user] = useState(parseJWT());
 
     useEffect(() => {
-        if (user !== null)
-            console.log("Logged in as: '" + user.username + "'.");
-        else
-            console.log("User is not currently logged in.")
-    }, [user]);
+        console.log(props.user);
+    }, []);
 
     const sendRequest = useCallback(async () => {
         if (awaitResp)
@@ -23,19 +18,18 @@ export default function Navbar(props) {
             setAwaitResp(true);
 
             // If a user is even logged in...
-            if (user !== null) {
+            if (props.user !== null) {
                 // Wipe user from local storage
                 localStorage.setItem('user', null);
 
                 // Send logout request...
                 const body = JSON.stringify({
-                    token: user.token,
                 });
                 const settings = {
                     method: 'POST',
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + user.token,
                     },
                     body: body,
                 };
@@ -47,7 +41,7 @@ export default function Navbar(props) {
                 setAwaitResp(false);
             }
         }
-    }, [awaitResp, user]);
+    }, [awaitResp, props.user]);
 
     function loginOptions(user) {
         if (user === null) {
@@ -83,7 +77,7 @@ export default function Navbar(props) {
             </div>
             <div className="right">
                 {
-                    loginOptions(user)
+                    loginOptions(props.user)
                 }
                 <a className="button" href="/" onClick={() => localStorage.clear()}>
                     <span >Clear</span>

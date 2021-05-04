@@ -20,6 +20,7 @@ class SetGrid extends React.Component {
 
         const settings = {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },

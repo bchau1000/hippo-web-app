@@ -3,10 +3,9 @@ import AddIcon from '@material-ui/icons/Add';
 import CardForm from "./cardForm/cardForm.js";
 import "./CreateSetPage.css";
 
-const API_URL = "http://localhost:9000/api/sets/new";
+const API_URL = "/api/sets/new";
 
 class CreateSet extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -111,33 +110,41 @@ class CreateSet extends React.Component {
     }
 
     async createSet() {
-        const user = localStorage.getItem('token');
+        const user = this.props.user;
+
         if (user) {
+            let flash_cards = this.state.flash_cards;
+            let new_flash_cards = [];
+
+            for(let i = 0; i < flash_cards.length; i++) 
+                if(flash_cards[i].term.length || flash_cards[i].def.length)
+                    new_flash_cards.push(flash_cards[i]);
+            
             const newSet = JSON.stringify({
                 title: this.state.title,
                 description: this.state.desc,
-                flash_cards: this.state.flash_cards,
+                flash_cards: new_flash_cards,
             });
 
             const settings = {
                 method: 'PUT',
+                credentials: 'include',
                 headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + user.token,
-                    },
+                    'Content-Type': 'application/json',
+                },
                 body: newSet,
             };
 
             const response = await fetch(API_URL, settings);
+
             if(response.status === 201) {
                 const json = await response.json();
                 console.log(json);
-                window.location.href = "/sets";
+                
             }
             else {
-                alert('Error inserting new set');
+                console.log('Error inserting new set');
             }
-                
         }
     }
 
