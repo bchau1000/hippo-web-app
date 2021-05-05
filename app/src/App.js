@@ -1,6 +1,7 @@
 import "./App.css";
 
 import CreateSetPage from "pages/CreateSetPage/CreateSetPage.js";
+import EditSetPage from "pages/EditSetPage/EditSetPage.js";
 import StudyPage from "pages/StudyPage/StudyPage.js";
 import SetsPage from "pages/SetsPage/setGrid.js";
 import Navbar from "components/navbar/navbar.js";
@@ -89,6 +90,7 @@ export default function App(props) {
                 <Switch>
                     <Route exact path="/" component={WelcomePage}/>
                     <Route exact path="/:username/sets" render={(props) => <SetsPage {...props}/>}/>
+                    <Route exact path="/:username/sets/:id/edit"></Route>
                     <Route exact path="/sets/new" render={(props) => <CreateSetPage user={user} {...props}/>}/>
                     <Route exact path="/sets/:id/cards" render={(props) => <StudyPage {...props}/>}/>
                 </Switch>

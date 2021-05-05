@@ -2,24 +2,52 @@
     background: white;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     display: grid;
-    grid-template-rows: auto 24px 5fr;
-    padding-top: 20px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-
+    grid-template-rows: 26px auto 24px 5fr;
+    grid-template-areas:
+    "options"
+    "title"
+    "tags"
+    "description";
+    padding: 10px;
     transition: box-shadow .3s;
 }
 
+.grid-item .options {
+    grid-area: options;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.grid-item .options button{
+    color: rgba(150, 150, 150, 0.4);
+    border: none;
+    background: white;
+    transition: color 0.2s;
+    width: 40px;
+}
+
+.grid-item .options button:hover{
+    cursor: pointer;
+}
+
+.grid-item .options button .edit:hover{
+    color: rgb(24, 24, 24);
+}
+
+.grid-item .options button .delete:hover{
+    color: rgb(228, 54, 54);
+}
+
 .grid-item .title {
+    grid-area: title;
     font-size: 20px;
     font-weight: bold;
     width: 100%;
-    
     word-break: break-word;
 }
 
 .grid-item .tags-container {
+    grid-area: tags;
     height: 100%;
     width: 100%;
     display: flex;
@@ -45,6 +73,7 @@
 }
 
 .grid-item .desc {
+    grid-area: description;
     width: 100%;
     font-size: 16px;
     overflow: hidden;

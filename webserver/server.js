@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
-//const async = require("async");
+const async = require("async");
 const pool = require("./config");
 const app = express();
 const port = 9000;
@@ -161,7 +161,7 @@ app.get("/api/sets/:set_id/cards", (request, response) => {
 // END USER REQUEST FUNCTIONS
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////CREATE SET FUNCTIONS//////////////////////////////////////////
+///////////////////////////////////SETS FUNCTIONS//////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 // Insert a new set
@@ -217,7 +217,90 @@ app.put("/api/sets/new", authUser, (request, response) => {
     }
 });
 
-// END CREATE SET FUNCTIONS
+app.delete("/api/sets/delete", authUser, (request, response) => {
+    const set_id = request.body.set_id;
+    const user_id = request.user.id;
+
+    try {
+        async.series([
+            // Confirm this user owns this study set
+            // Delete this set from any folders
+            // Delete all flash_cards in this set
+            // Delete all subjects in this set
+            // Delete the study set
+
+            function(callback) {
+                pool.query(
+                    "SELECT count(*) as 'count'\n" +
+                    "FROM sets\n" + 
+                    "WHERE id = ? AND user_id = ?;",
+                    [set_id, user_id], 
+                    (error, result) => {
+                        if(error) {
+                            response.status(400).send({
+                                'status': 400,
+                                'message': error,
+                            });
+                            return;
+                        }
+
+                        if(result[0].count < 1) {
+                            response.status(401).send({
+                                'status': 401,
+                                'message': 'Must be the owner of a set to delete it'
+                            })
+                            return;
+                        }
+                        else 
+                            callback(null, result); // continue
+                    }
+                );
+            },
+            function(callback) {
+                pool.query(
+                    "DELETE FROM folders_and_sets WHERE set_id = ?;" +
+                    "DELETE FROM subjects WHERE set_id = ?;" + 
+                    "DELETE FROM flash_cards WHERE set_id = ?;" +
+                    "DELETE FROM sets WHERE id = ?;", 
+                    [set_id, set_id, set_id, set_id], 
+                    (error, result) => {
+                        if(error){
+                            response.status(400).send({
+                                'status': 400,
+                                'message': error,
+                            });
+                            return;
+                        }
+
+                        callback(null, result);
+                    }
+                );
+            },
+        ], function(error, result) {
+            if(error) {
+                response.status(400).send({
+                    'status': 400,
+                    'message': error,
+                });
+            }
+
+            response.status(201).send({
+                'status': 201,
+                'message': 'Deleted study set: ' + set_id,
+                'content': result,
+            });
+        })
+        
+    }
+    catch(err) {
+        response.status(404).send({
+            'status': 404,
+            'message': err,
+        });
+    }
+})
+
+// END SETS FUNCTIONS
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////REGISTER/LOGIN FUNCTIONS//////////////////////////////////////////
@@ -225,17 +308,36 @@ app.put("/api/sets/new", authUser, (request, response) => {
 
 // TO DO: Register a new user
 app.post("/api/register", (request, response) => {
-    console.log(request.body);
+    const user = [request.body.username, request.body.email, request.body.password,
+                  request.body.firstName, request.body.lastName];
     try {
-        pool.query("INSERT INTO users SET ?", request.body, (error, result) => {
-            if (error) response.status(400).send(error);
+        pool.query(
+            "INSERT INTO users(username, email, password, first_name, last_name) VALUES(?, ?, ?, ?, ?)", 
+            user,
+            (error, result) => {
+            if (error) {
+                console.log(error);
+                response.status(400).send(error);
+            }
             else {
-                response.status(201).send(`User added with ID: ${result.insertId}`);
+                response.status(201).send({
+                    'status': 201,
+                    'message': 'User successfully registered.',
+                    'content': result,
+                });
             }
         });
     } catch (err) {
         if (err.code === "ER_DUP_ENTRY")
-            response.status(400).send(`Username already taken`);
+            response.status(400).send({
+                'status': 400,
+                'message': 'Username is already taken.'
+            });
+        else
+            response.status(404).send({
+                'status': 404,
+                'message': 'Error in query.'
+            });
     }
 });
 

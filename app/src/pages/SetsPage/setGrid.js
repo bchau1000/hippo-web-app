@@ -10,6 +10,7 @@ class SetGrid extends React.Component {
         this.state = {
             username: this.props.match.params.username,
             studySet: [],
+            update: false,
         };
     }
 
@@ -36,7 +37,6 @@ class SetGrid extends React.Component {
         else {
             // TO DO: create a 404 not found page to redirect
         }
-
     }
 
     populateStudySet(studySet) {
@@ -49,6 +49,35 @@ class SetGrid extends React.Component {
         this.setState({
             studySet: newStudySet
         });
+    }
+
+     onDelete = async (event, set_id) => {
+        event.stopPropagation(); // Stops parent onClick
+        const confirm = window.confirm(
+            "Are you sure you want to delete this set? This action cannot be undone."
+        );
+
+        if (confirm) {
+            const body = JSON.stringify({
+                'set_id': set_id,
+            });
+    
+            const settings = {
+                method: 'DELETE',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: body,
+            };
+    
+            const response = await fetch('/api/sets/delete', settings);
+            if (response.status === 201) {
+                this.setState({
+                    studySet: this.state.studySet.filter(set => set.id !== set_id),
+                })
+            }
+        }
     }
 
     render() {
@@ -67,6 +96,7 @@ class SetGrid extends React.Component {
                                 title={studySet.title}
                                 desc={studySet.description}
                                 onClick={this.redirect}
+                                onDelete={this.onDelete}
                             />
                         ))
                     }

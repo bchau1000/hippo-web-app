@@ -16,7 +16,7 @@ import {
     Typography,
 } from "@material-ui/core";
 
-const API_URL = "http://localhost:9000/api/users";
+const API_URL = "api/register";
 class SignUp extends React.Component {
     constructor(props) {
         super(props);
@@ -31,23 +31,32 @@ class SignUp extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleSubmit(event) {
+    async handleSubmit(event) {
         event.preventDefault();
-        axios
-            .post(API_URL, {
-                first_name: this.state.firstName,
-                last_name: this.state.lastName,
-                username: this.state.username,
-                email: this.state.email,
-                pass: this.state.password,
-            })
-            .then(function (response) {
-                console.log(response);
-                window.location.assign("/login");
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+
+        const body = JSON.stringify({
+            'firstName': this.state.firstName,
+            'lastName': this.state.lastName,
+            'username': this.state.username,
+            'password': this.state.password,
+            'email': this.state.email,
+        });
+
+        const settings = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: body,
+        };
+
+        const response = await fetch(API_URL, settings);
+        if(response.status === 201) {
+            const json = await response.json();
+            console.log(json);
+        }
+        else 
+            console.log("Failed to register user");
     }
 
     handleChange(event) {

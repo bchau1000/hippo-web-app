@@ -1,6 +1,6 @@
 import React from 'react';
 import AddIcon from '@material-ui/icons/Add';
-import CardForm from "./cardForm/cardForm.js";
+import CardForm from "components/cardForm/cardForm.js";
 import "./CreateSetPage.css";
 
 const API_URL = "/api/sets/new";
