@@ -1,0 +1,74 @@
+.sandbox-wrapper {
+    grid-area: content;
+    display: grid;
+}
+
+.sandbox-container {
+    display: grid;
+    grid-template-columns: max-content auto;
+    grid-template-rows: 25px auto;
+    grid-template-areas: 
+    "sb-buttons sb-buttons"
+    "sb-sidebar sb-content";
+}
+
+.sb-button-container {
+    grid-area: sb-buttons;
+}
+
+.sb-sidebar-container {
+    grid-area: sb-sidebar;
+    
+    background-color: white;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    z-index: 2;
+    transition: margin 0.4s;
+    width: 150px;
+    overflow: hidden;
+}
+
+.sb-show{
+    margin-left: -150px;
+    
+}
+
+.sb-hide {
+    margin-left: 0px;
+}
+
+.sb-content-show {
+    transform: scaleY(1); 
+}   
+
+.sb-content-hide {
+    transform: scaleY(0); 
+}
+
+.sb-sidebar-button {
+    width: 100%;
+    border: none;
+    background: grey;
+    height: 100px;
+    transition: overflow 0.2s;
+}
+
+.sb-content-container {
+    z-index: 1;
+    
+       
+    transform-origin: top;
+    transition: transform 0.26s ease;
+    
+    grid-area: sb-content;
+    background-color: white;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 300px));
+    grid-auto-rows: 300px;
+    gap: 10px;
+    overflow: hidden;
+}
+
+.sb-content-item {
+    background-color: red;
+}

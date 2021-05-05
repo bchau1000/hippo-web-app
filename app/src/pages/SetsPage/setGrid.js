@@ -1,4 +1,5 @@
 import React from 'react';
+import isOwner from 'components/isOwner/isOwner.js';
 import "./setGrid.css";
 import SetGridItem from "./setGridItem/setGridItem.js";
 
@@ -27,10 +28,10 @@ class SetGrid extends React.Component {
             },
             params: params,
         };
-        
+
         const response = await fetch(API_URL + this.state.username + "/sets", settings);
-        
-        if(response.status === 201) {
+
+        if (response.status === 201) {
             const json = await response.json();
             this.populateStudySet(json);
         }
@@ -51,32 +52,40 @@ class SetGrid extends React.Component {
         });
     }
 
-     onDelete = async (event, set_id) => {
+    onDelete = async (event, set_id) => {
         event.stopPropagation(); // Stops parent onClick
-        const confirm = window.confirm(
-            "Are you sure you want to delete this set? This action cannot be undone."
-        );
+        if (await isOwner(set_id)) {
+            const confirm = window.confirm(
+                "Are you sure you want to delete this set? This action cannot be undone."
+            );
 
-        if (confirm) {
-            const body = JSON.stringify({
-                'set_id': set_id,
-            });
-    
-            const settings = {
-                method: 'DELETE',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: body,
-            };
-    
-            const response = await fetch('/api/sets/delete', settings);
-            if (response.status === 201) {
-                this.setState({
-                    studySet: this.state.studySet.filter(set => set.id !== set_id),
-                })
+            if (confirm) {
+                const body = JSON.stringify({
+                    'set_id': set_id,
+                });
+
+                const settings = {
+                    method: 'DELETE',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: body,
+                };
+
+                const response = await fetch('/api/sets/delete', settings);
+                if (response.status === 201) {
+                    this.setState({
+                        studySet: this.state.studySet.filter(set => set.id !== set_id),
+                    })
+                }
+                else if (response.status === 401) {
+                    alert('You must be the owner of this set to edit/delete it.');
+                }
             }
+        }
+        else {
+            alert('You must be the owner of this set to edit/delete it.');
         }
     }
 

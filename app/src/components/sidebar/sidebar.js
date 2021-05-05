@@ -33,9 +33,9 @@ export default function Sidebar(props) {
                     </a>
                 </li>
                 <li className="sidebar-item">
-                    <a className="sidebar-link-wrapper" href="/settings">
+                    <a className="sidebar-link-wrapper" href="/sandbox">
                         <span className="material-icons">settings</span>
-                        <span htmlFor="settings">Settings</span>
+                        <span htmlFor="settings">Sandbox</span>
                     </a>
                 </li>
             </ul>

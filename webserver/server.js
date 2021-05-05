@@ -247,7 +247,7 @@ app.delete("/api/sets/delete", authUser, (request, response) => {
                         if(result[0].count < 1) {
                             response.status(401).send({
                                 'status': 401,
-                                'message': 'Must be the owner of a set to delete it'
+                                'message': 'Must be the owner of a set to edit/delete it'
                             })
                             return;
                         }
@@ -434,6 +434,50 @@ app.post('/api/auth', authUser, (request, response) => {
         'message': 'User is logged in.',
         'content': request.token
     });
+});
+
+// Used to check if the requesting user is the owner of a set
+app.post('/api/owner', authUser, (request, response) => {
+    const set_id = request.body.set_id;
+    const user_id = request.user.id;
+
+    try {
+        pool.query(
+            "SELECT count(*) as 'count'\n" +
+            "FROM sets\n" + 
+            "WHERE id = ? AND user_id = ?;",
+            [set_id, user_id], 
+            (error, result) => {
+                if(error) {
+                    response.status(400).send({
+                        'status': 400,
+                        'message': error,
+                    });
+                }
+    
+                if(result[0].count < 1) {
+                    response.status(401).send({
+                        'status': 401,
+                        'message': 'Must be the owner of a set to edit/delete it'
+                    })
+                }
+                else {
+                    response.status(201).send({
+                        'status': 201,
+                        'message': 'User is the owner of this set.'
+                    });
+                }
+                
+            }
+        );
+    }
+    catch(error) {
+        response.status(404).send({
+            'status': 404,
+            'message': error,
+        })
+    }
+    
 });
 
 app.post('/api/token', (request, response) => {

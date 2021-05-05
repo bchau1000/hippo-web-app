@@ -9,6 +9,7 @@ import Sidebar from "components/sidebar/sidebar.js";
 import Login from "pages/Login/Login.js";
 import SignUp from "pages/Register/Register.js";
 import WelcomePage from "pages/WelcomePage/WelcomePage.js";
+import SandBox from "pages/SandBox/SandBox.js";
 import jwt_decode from "jwt-decode";
 
 
@@ -88,11 +89,12 @@ export default function App(props) {
                     user={user}
                 />
                 <Switch>
+                    <Route exact path="/sandbox" render={(props) => <SandBox {...props}/>}/>
                     <Route exact path="/" component={WelcomePage}/>
                     <Route exact path="/:username/sets" render={(props) => <SetsPage {...props}/>}/>
-                    <Route exact path="/:username/sets/:id/edit"></Route>
+                    <Route exact path="/sets/:set_id/edit" render={(props) => <EditSetPage user={user} {...props}/>}/>
                     <Route exact path="/sets/new" render={(props) => <CreateSetPage user={user} {...props}/>}/>
-                    <Route exact path="/sets/:id/cards" render={(props) => <StudyPage {...props}/>}/>
+                    <Route exact path="/sets/:set_id/cards" render={(props) => <StudyPage {...props}/>}/>
                 </Switch>
                 {
                     showDropdown &&

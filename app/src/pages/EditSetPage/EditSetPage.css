@@ -1,8 +1,15 @@
-.create-set-container {
+.edit-set-container {
     grid-area: content;
     display: flex;
     justify-content: center;
     width: 100%;
+    /*margin-left: -90%;*/
+    overflow: hidden;
+}
+
+.edit-set-show {
+    transition: margin-left 0.3s ease;
+    margin-left: 0;
 }
 
 .create-container {
@@ -125,6 +132,7 @@
     background-color: rgba(22, 206, 120, 0.7);
     cursor:pointer;
 }
+
 
 @media (min-width: 1025px) and (max-width: 1280px) {
     .create-container {

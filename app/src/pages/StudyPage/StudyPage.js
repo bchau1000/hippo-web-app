@@ -1,61 +1,63 @@
-import React from "react";
+import {useState, useEffect} from "react";
 import FlashCard from "./flashcard/flashcard.js";
 import CardSwiper from "components/cardSwiper/cardSwiper.js";
+import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
 import "./StudyPage.css";
+
 const API_URL = "/api/sets/";
 
-class StudyPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            set_id: this.props.match.params.id,
-            title: "",
-            description: "",
-            flash_cards: [],
-        };
-        this.componentDidMount = this.componentDidMount.bind(this);
-    }
+export default function StudyPage(props) {
+    const set_id = props.match.params.set_id;
+    const [title, setTitle] = useState("");
+    const [_, setDesc] = useState("");
+    const [flashCards, setFlashCards] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    async componentDidMount() {
-        const settings = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+    useEffect(() => {
+        async function getData() {
+            setLoading(true);
+            const settings = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+            const response = await fetch(API_URL + set_id + "/cards", settings);
+            if (response.status === 201) {
+                const json = await response.json();
+                setTitle(json.title);
+                setDesc(json.desc);
+                setFlashCards(json.flash_cards);
+            }
+            else {
+                console.log(response.status + " status received.");
+            }
+            setLoading(false);
         }
-        const response = await fetch(API_URL + this.state.set_id + "/cards", settings);
-        if(response.status === 201) {
-            const json = await response.json();
-            this.setState({
-                title: json.title,
-                description: json.description,
-                flash_cards: json.flash_cards,
-            });
-        }
-        else {
-            console.log(response.status + " status received.");
-        }
-    }
+        getData();
+    }, [])
 
-    render() {
-        return (
-            <section className="study-view-container">
-                <span className="study-view-title">{this.state.title}</span>
-                <CardSwiper cards={this.state.flash_cards} className="swiper-container" />
-                <div className="study-view-cards">
-                    {
-                        this.state.flash_cards.map((flashcard, index) => (
-                            <FlashCard
-                                key={index}
-                                name={flashcard.term}
-                                desc={flashcard.definition}
-                            />
-                        ))
-                    }
-                </div>
-            </section>
+    if(loading) {
+        return(
+            <LoadingAnim gridArea={"content"}/>
         );
     }
-}
 
-export default StudyPage;
+    return (
+        <section className="study-view-container">
+            <span className="study-view-title">{title}</span>
+            <CardSwiper cards={flashCards} className="swiper-container" />
+            <div className="study-view-cards">
+                {
+                    flashCards.map((flashCard, index) => (
+                        <FlashCard
+                            key={index}
+                            name={flashCard.term}
+                            definition={flashCard.definition}
+                        />
+                    ))
+                }
+            </div>
+        </section>
+    );
+}
