@@ -40,8 +40,7 @@ class CardSwiper extends React.Component {
     /* allowTouchMove={false}*/
     render() {
         return (
-            <Swiper
-                id="swiper-outer-container"                                               
+            <Swiper                                          
                 pagination={{
                     type:'fraction'
                 }}
@@ -50,6 +49,7 @@ class CardSwiper extends React.Component {
                 keyboard={{
                     enabled: true,
                 }}
+                id="swiper-outer-container"
             >
                 {
                     this.props.cards.map((flashcard, index) => (

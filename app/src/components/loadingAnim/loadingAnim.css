@@ -11,7 +11,7 @@
     position: relative;
     width: 80px;
     height: 80px;
-  }
+}
 
 .loading-anim div {
     box-sizing: border-box;
@@ -24,7 +24,7 @@
     border-radius: 50%;
     animation: loading-anim 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     border-color: rgb(200, 200, 200) transparent transparent transparent;
-  }
+}
 .loading-anim div:nth-child(1) {
     animation-delay: -0.45s;
 }
@@ -32,14 +32,14 @@
     animation-delay: -0.3s;
 }
 .loading-anim div:nth-child(3) {
-  animation-delay: -0.15s;
+    animation-delay: -0.15s;
 }
 @keyframes loading-anim {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
 }
 

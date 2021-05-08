@@ -1,8 +1,9 @@
 .grid-item {
-    background: white;
+    background: var(--color-fg);
+    
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     display: grid;
-    grid-template-rows: 26px auto 24px 5fr;
+    grid-template-rows: 26px auto 24px 4fr;
     grid-template-areas:
     "options"
     "title"
@@ -12,29 +13,45 @@
     transition: box-shadow .3s;
 }
 
-.grid-item .options {
+.grid-item .info-options {
+    grid-area: options;
+    display: flex;
+    flex-direction: row;
+}
+
+.grid-item .info-options .info{
+    grid-area: options;
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    align-items: center;
+    gap: 5px;
+}
+
+.grid-item .info-options .options{
     grid-area: options;
     display: flex;
     flex-direction: row-reverse;
+    width: 50%;
 }
 
-.grid-item .options button{
+.grid-item .info-options .options button{
     color: rgba(150, 150, 150, 0.4);
     border: none;
-    background: white;
+    background: var(--color-fg);
     transition: color 0.2s;
     width: 40px;
 }
 
-.grid-item .options button:hover{
+.grid-item .info-options .options button:hover{
     cursor: pointer;
 }
 
-.grid-item .options button .edit:hover{
+.grid-item .info-options .options button .edit:hover{
     color: rgb(24, 24, 24);
 }
 
-.grid-item .options button .delete:hover{
+.grid-item .info-options .options button .delete:hover{
     color: rgb(228, 54, 54);
 }
 
@@ -44,6 +61,7 @@
     font-weight: bold;
     width: 100%;
     word-break: break-word;
+    margin-top: 10px;
 }
 
 .grid-item .tags-container {
@@ -52,15 +70,17 @@
     width: 100%;
     display: flex;
     flex-direction: row;
+    margin-top: 2px;
 }
 
 .grid-item .tags-container .tag{
     height: 100%;
     width: auto;
-    font-size: 13px;
-    color: white;
+    font-size: 15px;
+    color: var(--color-text);
+
     background-color: rgb(22, 206, 120);
-    margin-top: 2px;
+    margin-top: 4px;
     
     display: flex;
     align-items: center;
@@ -78,7 +98,7 @@
     font-size: 16px;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .grid-item:hover {

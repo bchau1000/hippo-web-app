@@ -1,0 +1,8 @@
+.profile-pic-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(69, 90, 100);
+    color: rgb(240, 240, 240);
+    border-radius: 100%;
+}

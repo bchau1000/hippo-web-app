@@ -440,6 +440,7 @@ app.post('/api/auth', authUser, (request, response) => {
 app.post('/api/owner', authUser, (request, response) => {
     const set_id = request.body.set_id;
     const user_id = request.user.id;
+    const username = request.user.username;
 
     try {
         pool.query(
@@ -464,7 +465,7 @@ app.post('/api/owner', authUser, (request, response) => {
                 else {
                     response.status(201).send({
                         'status': 201,
-                        'message': 'User is the owner of this set.'
+                        'message': username
                     });
                 }
                 

@@ -3,8 +3,6 @@ a {
     text-decoration: none;
 }
 
-
-
 .navbar-container {
     position: fixed;
     grid-area: header;
@@ -15,12 +13,8 @@ a {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-.navbar-container {
-    position: fixed;
-    z-index: 950;
+    z-index: 2;
+    
 }
 
 .navbar-container .left{

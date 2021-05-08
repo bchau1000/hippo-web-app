@@ -3,19 +3,20 @@ import "./App.css";
 import CreateSetPage from "pages/CreateSetPage/CreateSetPage.js";
 import EditSetPage from "pages/EditSetPage/EditSetPage.js";
 import StudyPage from "pages/StudyPage/StudyPage.js";
-import SetsPage from "pages/SetsPage/setGrid.js";
+import SetsPageRework from "pages/SetsPageRework/SetsPageRework.js";
 import Navbar from "components/navbar/navbar.js";
 import Sidebar from "components/sidebar/sidebar.js";
 import Login from "pages/Login/Login.js";
 import SignUp from "pages/Register/Register.js";
 import WelcomePage from "pages/WelcomePage/WelcomePage.js";
 import SandBox from "pages/SandBox/SandBox.js";
+import useViewport from "components/getViewport/getViewport.js";
 import jwt_decode from "jwt-decode";
 
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import React, { useState, useEffect, useCallback } from "react";
-import useViewport from "components/getViewport/getViewport.js";
+
 
 export default function App(props) {
     const [user, setUser] = useState(null);
@@ -82,6 +83,8 @@ export default function App(props) {
                         user={user}
                     />
                 </div>
+                <div className={`sidebar-margin ${showDropdown ? 'sidebar-transition-true' : ""}`}/>
+
 
                 <Navbar
                     onClick={() => setShowDropdown(current => !current)}
@@ -91,7 +94,7 @@ export default function App(props) {
                 <Switch>
                     <Route exact path="/sandbox" render={(props) => <SandBox {...props}/>}/>
                     <Route exact path="/" component={WelcomePage}/>
-                    <Route exact path="/:username/sets" render={(props) => <SetsPage {...props}/>}/>
+                    <Route exact path="/:username/sets" render={(props) => <SetsPageRework width={width} {...props}/>}/>
                     <Route exact path="/sets/:set_id/edit" render={(props) => <EditSetPage user={user} {...props}/>}/>
                     <Route exact path="/sets/new" render={(props) => <CreateSetPage user={user} {...props}/>}/>
                     <Route exact path="/sets/:set_id/cards" render={(props) => <StudyPage {...props}/>}/>
@@ -104,3 +107,5 @@ export default function App(props) {
         </Router>
     );
 }
+
+//<Route exact path="/:username/sets" render={(props) => <SetsPage {...props}/>}/>

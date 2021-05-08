@@ -28,10 +28,18 @@ html, body, #root, #root>div {
 .main-container {
     display: grid;
     grid-template-rows: 60px 35px auto;
+    grid-template-columns: fit-content(150px) auto;
     grid-template-areas:
-        "header"
-        "margin-top"
-        "content";
+        "header header"
+        "sidebar margin-top"
+        "sidebar content";
+}
+
+.sidebar-margin {
+    grid-area: sidebar;
+    width: 150px;
+    margin-left: -250px;
+    transition: margin .5s;
 }
 
 .sidebar-transition {
@@ -61,6 +69,14 @@ html, body, #root, #root>div {
         display: grid;
         grid-template-rows: 60px 15px auto;
         grid-template-columns: auto;
+        grid-template-areas:
+        "header"
+        "margin-top"
+        "content";
+    }
+
+    .sidebar-margin {
+        display: none;
     }
 
     .focus-container {
