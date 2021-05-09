@@ -37,9 +37,9 @@ const authUser = (request, response, next) => {
     const token = request.cookies.token;
     const refreshToken = request.cookies.refreshToken;
 
-    if(refreshTokens.includes(refreshToken)) {
+    if (refreshTokens.includes(refreshToken)) {
         jwt.verify(token, secretToken, (err, user) => {
-            if (err) 
+            if (err)
                 return response.sendStatus(403);
 
             request.token = token;
@@ -55,7 +55,7 @@ const authUser = (request, response, next) => {
     }
 }
 
-app.get("/api/test", (_, response) => { 
+app.get("/api/test", (_, response) => {
     try {
         pool.query(
             "SHOW TABLES",
@@ -158,6 +158,82 @@ app.get("/api/sets/:set_id/cards", (request, response) => {
     }
 });
 
+app.get('/api/:username/folders', (request, response) => {
+    const username = request.params.username;
+    try {
+        pool.query(
+            "SELECT * FROM users WHERE username = ?;",
+            username,
+            (error, result) => {
+                if (error) {
+                    response.status(401).send({
+                        'status': 401,
+                        'content': error
+                    });
+                }
+
+                if (result.length < 1) {
+                    response.status(401).send({
+                        'status': 401,
+                        'content': 'Username does not exist.'
+                    })
+                }
+                else {
+                    const user_id = result[0].id;
+                    pool.query(
+                        "SELECT f.id as 'folder_id', f.name as 'folder_name', fs.set_id as 'set_id'," +
+                        "s.title as 'set_title', s.description as 'set_description' ,f.user_id\n" +
+                        "FROM folders as f, folders_and_sets as fs, sets as s\n" +
+                        "WHERE f.id = fs.folder_id AND s.id = fs.set_id AND f.user_id = ?;",
+                        user_id,
+                        (error, result) => {
+                            if (error) {
+                                response.status(401).send({
+                                    'status': 401,
+                                    'content': error
+                                });
+                            }
+                            const len = result.length;
+                            let parsed = {};
+                            let send = [];
+
+                            for (let i = 0; i < len; i++) {
+                                const set = {
+                                    "id": result[i].set_id,
+                                    "title": result[i].set_title,
+                                    "description": result[i].set_description
+                                }
+
+                                if (parsed[result[i].folder_name] === undefined)
+                                    parsed[result[i].folder_name] = [set];
+                                else
+                                    parsed[result[i].folder_name].push(set);
+
+
+                            }
+
+                            Object.keys(parsed).forEach(function (key) {
+                                send.push({
+                                    "name": key,
+                                    "sets": parsed[key]
+                                })
+                            });
+
+                            response.status(201).send(send);
+                        }
+                    )
+                }
+            }
+        )
+    }
+    catch (error) {
+        response.status(404).send({
+            'status': 404,
+            'content': error
+        });
+    }
+});
+
 // END USER REQUEST FUNCTIONS
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -229,14 +305,14 @@ app.delete("/api/sets/delete", authUser, (request, response) => {
             // Delete all subjects in this set
             // Delete the study set
 
-            function(callback) {
+            function (callback) {
                 pool.query(
                     "SELECT count(*) as 'count'\n" +
-                    "FROM sets\n" + 
+                    "FROM sets\n" +
                     "WHERE id = ? AND user_id = ?;",
-                    [set_id, user_id], 
+                    [set_id, user_id],
                     (error, result) => {
-                        if(error) {
+                        if (error) {
                             response.status(400).send({
                                 'status': 400,
                                 'message': error,
@@ -244,27 +320,27 @@ app.delete("/api/sets/delete", authUser, (request, response) => {
                             return;
                         }
 
-                        if(result[0].count < 1) {
+                        if (result[0].count < 1) {
                             response.status(401).send({
                                 'status': 401,
                                 'message': 'Must be the owner of a set to edit/delete it'
                             })
                             return;
                         }
-                        else 
+                        else
                             callback(null, result); // continue
                     }
                 );
             },
-            function(callback) {
+            function (callback) {
                 pool.query(
                     "DELETE FROM folders_and_sets WHERE set_id = ?;" +
-                    "DELETE FROM subjects WHERE set_id = ?;" + 
+                    "DELETE FROM subjects WHERE set_id = ?;" +
                     "DELETE FROM flash_cards WHERE set_id = ?;" +
-                    "DELETE FROM sets WHERE id = ?;", 
-                    [set_id, set_id, set_id, set_id], 
+                    "DELETE FROM sets WHERE id = ?;",
+                    [set_id, set_id, set_id, set_id],
                     (error, result) => {
-                        if(error){
+                        if (error) {
                             response.status(400).send({
                                 'status': 400,
                                 'message': error,
@@ -276,8 +352,8 @@ app.delete("/api/sets/delete", authUser, (request, response) => {
                     }
                 );
             },
-        ], function(error, result) {
-            if(error) {
+        ], function (error, result) {
+            if (error) {
                 response.status(400).send({
                     'status': 400,
                     'message': error,
@@ -290,15 +366,15 @@ app.delete("/api/sets/delete", authUser, (request, response) => {
                 'content': result,
             });
         })
-        
+
     }
-    catch(err) {
+    catch (err) {
         response.status(404).send({
             'status': 404,
             'message': err,
         });
     }
-})
+});
 
 // END SETS FUNCTIONS
 
@@ -309,24 +385,24 @@ app.delete("/api/sets/delete", authUser, (request, response) => {
 // TO DO: Register a new user
 app.post("/api/register", (request, response) => {
     const user = [request.body.username, request.body.email, request.body.password,
-                  request.body.firstName, request.body.lastName];
+    request.body.firstName, request.body.lastName];
     try {
         pool.query(
-            "INSERT INTO users(username, email, password, first_name, last_name) VALUES(?, ?, ?, ?, ?)", 
+            "INSERT INTO users(username, email, password, first_name, last_name) VALUES(?, ?, ?, ?, ?)",
             user,
             (error, result) => {
-            if (error) {
-                console.log(error);
-                response.status(400).send(error);
-            }
-            else {
-                response.status(201).send({
-                    'status': 201,
-                    'message': 'User successfully registered.',
-                    'content': result,
-                });
-            }
-        });
+                if (error) {
+                    console.log(error);
+                    response.status(400).send(error);
+                }
+                else {
+                    response.status(201).send({
+                        'status': 201,
+                        'message': 'User successfully registered.',
+                        'content': result,
+                    });
+                }
+            });
     } catch (err) {
         if (err.code === "ER_DUP_ENTRY")
             response.status(400).send({
@@ -365,19 +441,19 @@ app.post("/api/login", (request, response) => {
                 }
                 else {
                     const accessToken = jwt.sign({
-                            id: result[0].id,
-                            username: result[0].username,
-                            email: result[0].email,
-                        },
+                        id: result[0].id,
+                        username: result[0].username,
+                        email: result[0].email,
+                    },
                         secretToken,
                         { expiresIn: '20m' }
                     );
 
                     const refreshToken = jwt.sign({
-                            id: result[0].id,
-                            username: result[0].username,
-                            email: result[0].email,
-                        },
+                        id: result[0].id,
+                        username: result[0].username,
+                        email: result[0].email,
+                    },
                         refreshSecretToken
                     );
 
@@ -385,16 +461,16 @@ app.post("/api/login", (request, response) => {
 
                     response.cookie(
                         'token', accessToken, {
-                            httpOnly: true,
-                            maxAge: 2592000000 // 30 days in ms
-                        }
+                        httpOnly: true,
+                        maxAge: 2592000000 // 30 days in ms
+                    }
                     );
 
                     response.cookie(
                         'refreshToken', refreshToken, {
-                            httpOnly: true,
-                            maxAge: 2592000000 // 30 days in ms
-                        }
+                        httpOnly: true,
+                        maxAge: 2592000000 // 30 days in ms
+                    }
                     );
 
                     response.status(201).send({
@@ -445,18 +521,18 @@ app.post('/api/owner', authUser, (request, response) => {
     try {
         pool.query(
             "SELECT count(*) as 'count'\n" +
-            "FROM sets\n" + 
+            "FROM sets\n" +
             "WHERE id = ? AND user_id = ?;",
-            [set_id, user_id], 
+            [set_id, user_id],
             (error, result) => {
-                if(error) {
+                if (error) {
                     response.status(400).send({
                         'status': 400,
                         'message': error,
                     });
                 }
-    
-                if(result[0].count < 1) {
+
+                if (result[0].count < 1) {
                     response.status(401).send({
                         'status': 401,
                         'message': 'Must be the owner of a set to edit/delete it'
@@ -468,17 +544,17 @@ app.post('/api/owner', authUser, (request, response) => {
                         'message': username
                     });
                 }
-                
+
             }
         );
     }
-    catch(error) {
+    catch (error) {
         response.status(404).send({
             'status': 404,
             'message': error,
         })
     }
-    
+
 });
 
 app.post('/api/token', (request, response) => {

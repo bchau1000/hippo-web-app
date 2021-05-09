@@ -9,23 +9,26 @@ export default function FolderCollapsible(props) {
     const [containerHeight, setContainerHeight] = useState('240px');
     const [calcHeight, setCalcHeight] = useState(240);
     const [showFolders, setShowFolders] = useState(props.showFolder);
-    const folderId = props.folderId;
-    const sets = props.sets;
 
     useEffect(() => {
+        let setLen = props.sets.length;
+
+        if (props.showOptions)
+            setLen += 1;
+
         if (width > 1280)
             // 4 per row
-            setCalcHeight(245 * Math.ceil((sets.length + 1) / 4));
+            setCalcHeight(245 * Math.ceil((setLen) / 4));
         else if (width >= 1025 && width <= 1280)
             // 3 per row
-            setCalcHeight(245 * Math.ceil((sets.length + 1) / 3));
+            setCalcHeight(245 * Math.ceil((setLen) / 3));
         else if (width >= 550 && width <= 1024)
             // 2 per row
-            setCalcHeight(245 * Math.ceil((sets.length + 1) / 2));
+            setCalcHeight(245 * Math.ceil((setLen) / 2));
         else if (width < 550)
-            setCalcHeight(245 * sets.length);
+            setCalcHeight(245 * setLen);
 
-    }, [width])
+    }, [props.showOptions, props.sets, width])
 
     useEffect(() => {
         if (showFolders)
@@ -51,7 +54,12 @@ export default function FolderCollapsible(props) {
                 >
                     expand_more
                 </span>
-                <span>All</span>
+                <span>
+                    {props.folder
+                        ? props.folder.name
+                        : "All"
+                    }
+                </span>
                 <span></span>
             </button>
 
@@ -61,7 +69,7 @@ export default function FolderCollapsible(props) {
             >
                 <div className="folder-collapsible-position">
                     {
-                        sets.map((sets, idx) => {
+                        props.sets.map((sets, idx) => {
                             return (<SetGridItem
                                 key={idx}
                                 id={sets.id}
@@ -73,13 +81,17 @@ export default function FolderCollapsible(props) {
                         })
                     }
 
-                    <button
-                        className="add-set-card"
-                        onClick={() => props.onAdd()}
-                    >
-                        <span className="material-icons">add</span>
-                        <span>Add to folder</span>
-                    </button>
+                    {
+                        props.showOptions &&
+                        <button
+                            className="add-set-card"
+                            onClick={() => props.onAdd()}
+                        >
+                            <span className="material-icons">add</span>
+                            <span>Add to folder</span>
+                        </button>
+                    }
+
                 </div>
             </div>
         </div>

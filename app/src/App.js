@@ -15,12 +15,11 @@ import jwt_decode from "jwt-decode";
 
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 
 
 export default function App(props) {
     const [user, setUser] = useState(null);
-    const [awaitResp, setAwaitResp] = useState(false);
     const localSD = JSON.parse(localStorage.getItem('showDropdown'));
     const [showDropdown, setShowDropdown] = useState((localSD !== null) ? localSD : false);
     const width = useViewport();
@@ -31,12 +30,7 @@ export default function App(props) {
             stored refresh tokens in the backend.
         */
         async function getUser() {
-            if(awaitResp)
-                return;
-
-            setAwaitResp(true);
             const body = JSON.stringify({
-
             });
 
             const settings = {
@@ -53,7 +47,6 @@ export default function App(props) {
             }
             else 
                 console.log('User not currently logged in.')
-            setAwaitResp(false);
         }
         getUser();
     }, []);
@@ -66,7 +59,7 @@ export default function App(props) {
     useEffect(() => {
         if (width >= 768)
             localStorage.setItem('showDropdown', showDropdown);
-    }, [showDropdown]);
+    }, [showDropdown, width]);
 
     return (
         <Router>
@@ -107,5 +100,3 @@ export default function App(props) {
         </Router>
     );
 }
-
-//<Route exact path="/:username/sets" render={(props) => <SetsPage {...props}/>}/>

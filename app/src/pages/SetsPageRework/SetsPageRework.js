@@ -8,7 +8,6 @@ import "./SetsPageRework.css";
 
 export default function SetsPageRework(props) {
     const username = props.match.params.username;
-    //const width = useViewport();
     const [loading, setLoading] = useState(true);
     const [folders, setFolders] = useState([]);
     const [allSets, setAllSets] = useState([]);
@@ -25,18 +24,24 @@ export default function SetsPageRework(props) {
                 }
             }
 
-            const response = await fetch('/api/' + username + '/sets', settings);
-            const json = await response.json();
+            let response = await fetch('/api/' + username + '/sets', settings);
+            let json = await response.json();
 
             if (response.status === 201)
                 setAllSets(json);
             else
                 console.log(json);
 
+            response = await fetch('/api/' + username + '/folders', settings);
+            json = await response.json();
+
+            if (response.status === 201)
+                setFolders(json);
+
             setLoading(false);
         }
         getData();
-    }, []);
+    }, [username]);
 
     async function onDelete(event, set_id) {
         event.stopPropagation(); // Stops parent onClick
@@ -60,28 +65,34 @@ export default function SetsPageRework(props) {
                 };
 
                 const response = await fetch('/api/sets/delete', settings);
-                if (response.status === 201)
+                if (response.status === 201) {
+                    const len = folders.length;
+                    let newFolders = folders.slice();
+                    for(let i = 0; i < len; i++)
+                        newFolders[i].sets = newFolders[i].sets.filter(set => set.id !== set_id);
+
+                    setFolders(newFolders);
                     setAllSets(allSets.filter(set => set.id !== set_id));
-                else if (response.status === 401) 
+                }
+                else if (response.status === 401)
                     alert('You must be the owner of this set to edit/delete it.');
             }
         }
-        else 
+        else
             alert('You must be the owner of this set to edit/delete it.');
     }
 
     async function onEdit(event, set_id) {
         event.stopPropagation(); // Stops parent onClick
-    
+
         if (await isOwner(set_id))
             window.location.href = "/sets/" + set_id + "/edit";
         else
             alert('You must be the owner of this set to edit/delete it.');
     }
 
-    async function onAdd(set_id, folder_id) {
-
-    }
+    //async function onAdd(set_id, folder_id) {
+    //}
 
     if (loading) {
         return (
@@ -102,6 +113,7 @@ export default function SetsPageRework(props) {
             <div className="all-sets-container">
                 <FolderCollapsible
                     showFolder={true}
+                    showOptions={false}
                     sets={allSets}
                     onDelete={onDelete}
                     onEdit={onEdit}
@@ -109,13 +121,21 @@ export default function SetsPageRework(props) {
                 />
             </div>
             <div className="all-folders-container">
-                <FolderCollapsible
-                    showFolder={false}
-                    sets={allSets}
-                    onDelete={onDelete}
-                    onEdit={onEdit}
-                    onAdd={() => setShowModal(true)}
-                />
+                {
+                    folders.map((folder, idx) => {
+                        return <FolderCollapsible
+                            key={idx}
+                            showOptions={true}
+                            showFolder={false}
+                            sets={folder.sets}
+                            folder={folder}
+                            onDelete={onDelete}
+                            onEdit={onEdit}
+                            onAdd={() => setShowModal(true)}
+                        />
+                    })
+                }
+
             </div>
         </section>
     )

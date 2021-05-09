@@ -1,13 +1,9 @@
 import { useState, useEffect } from 'react';
-import CardForm from 'components/cardForm/cardForm.js';
+//import CardForm from 'components/cardForm/cardForm.js';
 import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
 import isOwner from 'components/isOwner/isOwner.js';
 import AddIcon from '@material-ui/icons/Add';
 import './EditSetPage.css';
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 export default function EditSetPage(props) {
     const set_id = props.match.params.set_id;
@@ -17,7 +13,6 @@ export default function EditSetPage(props) {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        
         async function getCards() {
             setLoading(true);
             //await sleep(500);
@@ -31,7 +26,7 @@ export default function EditSetPage(props) {
                         'Content-Type': 'application/json',
                     },
                 }
-                
+
                 const response = await fetch('/api/sets/' + set_id + '/cards', settings);
                 const json = await response.json();
                 if (response.status === 201) {
@@ -46,17 +41,14 @@ export default function EditSetPage(props) {
             }
         }
         getCards();
-        
-    }, []);
 
-    // {`edit-set-container ${loading ? "":"edit-set-show"}`}
+    }, [set_id]);
 
-    if(loading) {
-        return(
-            <LoadingAnim gridArea={"content"}/>
+    if (loading) {
+        return (
+            <LoadingAnim gridArea={"content"} />
         );
     }
-        
 
     return (
         <section className="edit-set-container">
@@ -97,7 +89,11 @@ export default function EditSetPage(props) {
                 </div>
 
                 <div className="center-container">
-
+                    {flashCards.map((_, index) => {
+                        return (
+                            <div />
+                        );
+                    })}
                 </div>
 
                 <div className="add-card-container" onClick={() => {/*this.addCard(false)*/ }}>
@@ -118,23 +114,14 @@ export default function EditSetPage(props) {
         </section>
     );
 }
-
 /*
-
- */
-
-/*
-{flashCards.map((_, index) => {
-    return (
-        <CardForm
-            key={index}
-            delete={this.deleteCard}
-            clear={this.clearCard}
-            setTerm={this.setCardTerm}
-            setDef={this.setCardDef}
-            info={flashCards[index]}
-            cardNum={index}
-        />
-    );
-})}
+<CardForm
+    key={index}
+    delete={this.deleteCard}
+    clear={this.clearCard}
+    setTerm={this.setCardTerm}
+    setDef={this.setCardDef}
+    info={flashCards[index]}
+    cardNum={index}
+/>
 */

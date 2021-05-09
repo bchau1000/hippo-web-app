@@ -19,7 +19,7 @@ export default function SetGridItem(props) {
     return (
         <div className="grid-item" onClick={() => redirect(props.id)}>
             <div className="info-options">
-                <a href="" className="info">
+                <a href={"/"} className="info">
                     <ProfilePic dimensions={'25px'} username={"admin"} fontSize={'16px'}/>
                     <span style={{fontWeight:'500', color: 'rgb(24, 24, 24)'}}>admin</span>
                 </a>

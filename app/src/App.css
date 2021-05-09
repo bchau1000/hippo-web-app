@@ -85,6 +85,6 @@ html, body, #root, #root>div {
         background-color: rgba(99, 99, 99, 0.4);
         width: 100vh;
         height: 100vh;
-        z-index: 945;
+        z-index: 1;
     }
 }

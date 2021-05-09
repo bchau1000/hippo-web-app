@@ -1,14 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import "./navbar.css";
 
 const API_URL = "/api/logout";
 
 export default function Navbar(props) {
     const [awaitResp, setAwaitResp] = useState(false);
-
-    useEffect(() => {
-        console.log(props.user);
-    }, []);
 
     const sendRequest = useCallback(async () => {
         if (awaitResp)
@@ -34,8 +30,9 @@ export default function Navbar(props) {
                     body: body,
                 };
                 const response = await fetch(API_URL, settings);
-                if (response.status === 200) {
-                    //const json = await response.json();
+                if (response.status === 201) {
+                    const json = await response.json();
+                    console.log(json);
                 }
 
                 setAwaitResp(false);
