@@ -17,7 +17,7 @@ export default function FolderCollapsible(props) {
     useEffect(() => {
         let setLen = folder.sets.length;
 
-        if (props.showOptions)
+        if (props.isFolder)
             setLen += 1;
 
         if (width > 1280)
@@ -32,7 +32,7 @@ export default function FolderCollapsible(props) {
         else if (width < 550)
             setCalcHeight(245 * setLen);
 
-    }, [props.showOptions, folder, width])
+    }, [props.isFolder, folder, width])
 
     useEffect(() => {
         if (showFolders)
@@ -41,6 +41,12 @@ export default function FolderCollapsible(props) {
             setContainerHeight('0px');
 
     }, [calcHeight, showFolders]);
+
+    const onRemove = (event, setId) => {
+        event.stopPropagation();
+        const newSets = folder.sets.filter((set) => set.id !== setId);
+        props.onEditFolder(null, folder, newSets);
+    }
 
     return (
         <div className="folder-collapsible-wrapper">
@@ -54,6 +60,9 @@ export default function FolderCollapsible(props) {
                     >
                         <EditFolderModal
                             allSets={props.allSets}
+                            folder={folder}
+                            onEditFolder={props.onEditFolder}
+                            setShowEditModal={() => setShowEditModal(false)}
                         />
                     </ModalTemplate>
                 }
@@ -80,7 +89,7 @@ export default function FolderCollapsible(props) {
                         }
                     </span>
                 </button>
-                {props.showOptions &&
+                {props.isFolder &&
                     <button
                         className="folder-collapsible-delete-button"
                         onClick={() => props.onDeleteFolder(props.folder.id)}
@@ -103,12 +112,13 @@ export default function FolderCollapsible(props) {
                                 desc={sets.description}
                                 onDelete={props.onDelete}
                                 onEdit={props.onEdit}
+                                onRemove={onRemove}
+                                isFolder={props.isFolder}
                             />)
                         })
                     }
 
-                    {
-                        props.showOptions &&
+                    { props.isFolder &&
                         <button
                             className="add-set-card"
                             onClick={() => setShowEditModal(true)}

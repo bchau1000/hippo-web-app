@@ -47,6 +47,10 @@ export default function SetsPageRework(props) {
         getData();
     }, [username]);
 
+    useEffect(() => {
+        console.log(folders);
+    }, [folders])
+
     async function onDelete(event, set_id) {
         event.stopPropagation(); // Stops parent onClick
         if (await isOwner(set_id)) {
@@ -84,6 +88,11 @@ export default function SetsPageRework(props) {
         }
         else
             alert('You must be the owner of this set to edit/delete it.');
+    }
+
+    async function onRemove(event, set_id) {
+        event.stopPropagation();
+        console.log(set_id);
     }
 
     async function onEdit(event, set_id) {
@@ -135,8 +144,45 @@ export default function SetsPageRework(props) {
         bottomOfPage.current.scrollIntoView({ behavior: 'smooth' });
     }
     
-    const onEditFolder = (folder_id, sets) => {
+    const onEditFolder = async (event, folder, newSets) => {
+        if(event)
+            event.preventDefault();
 
+        newSets = newSets.filter((set) => set.id !== null);
+
+        const body = JSON.stringify({
+            "id" : folder.id,
+            "name": folder.name,
+            "sets": newSets
+        })
+
+        const settings = {
+            method: "PUT",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: body,
+        }
+        const response = await fetch("/api/folders/edit", settings);
+
+        if(response.status === 201) {
+            const updatedFolder = JSON.parse(body);
+            let newFolders = folders.slice();
+            let i = 0;
+            let found = false;
+            const length = newFolders.length;
+
+            while(i < length && !found) {
+                if(newFolders[i].id === updatedFolder.id) {
+                    newFolders[i] = updatedFolder;
+                    found = true;
+                }
+                i++;
+            }
+            
+            setFolders(newFolders);
+        }
     }
 
     if (loading) {
@@ -159,7 +205,6 @@ export default function SetsPageRework(props) {
                 </ModalTemplate>
             }
 
-
             <div className="sets-buttons-container">
                 <button onClick={() => setShowFolderModal(true)}>
                     <span className="material-icons">
@@ -170,12 +215,13 @@ export default function SetsPageRework(props) {
             </div>
             <div className="all-sets-container">
                 <FolderCollapsible
+                    isFolder={false}
                     showFolder={true}
-                    showOptions={false}
                     folder={{ "name": "All", "sets": allSets }}
                     onDeleteFolder={onDeleteFolder}
                     onEditFolder={onEditFolder}
                     onDelete={onDelete}
+                    onRemove={onRemove}
                     onEdit={onEdit}
                     allSets={allSets}
                 />
@@ -185,7 +231,7 @@ export default function SetsPageRework(props) {
                     folders.map((folder, idx) => {
                         return <FolderCollapsible
                             key={idx}
-                            showOptions={true}
+                            isFolder={true}
                             showFolder={false}
                             folder={folder}
                             onDeleteFolder={onDeleteFolder}

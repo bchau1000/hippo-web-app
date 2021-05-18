@@ -15,22 +15,44 @@ async function onEdit(event, set_id) {
         alert('You must be the owner of this set to edit/delete it.');
 }
 
+
+
 export default function SetGridItem(props) {
+    function setOptions() {
+        if(props.isFolder) {
+            return (
+                <div className="options">
+                    <button onClick={(event) => props.onRemove(event, props.id)}>
+                        <span className="material-icons edit">close</span>
+                    </button>
+                </div>
+            )
+        }
+        return (
+            <div className="options">
+                <button onClick={(event) => props.onDelete(event, props.id)}>
+                    <span className="material-icons delete">delete</span>
+                </button>
+                <button onClick={(event) => onEdit(event, props.id)}>
+                    <span className="material-icons edit">edit</span>
+                </button>
+            </div>
+        )
+    }
+
+
     return (
         <div className="grid-item" onClick={() => redirect(props.id)}>
             <div className="info-options">
                 <a href={"/"} className="info">
-                    <ProfilePic dimensions={'25px'} username={"admin"} fontSize={'16px'}/>
-                    <span style={{fontWeight:'500', color: 'rgb(24, 24, 24)'}}>admin</span>
+                    <ProfilePic dimensions={'25px'} username={"admin"} fontSize={'16px'} />
+                    <span style={{ fontWeight: '500', color: 'rgb(24, 24, 24)' }}>admin</span>
                 </a>
-                <div className="options">
-                    <button onClick={(event) => props.onDelete(event, props.id)}>
-                        <span className="material-icons delete">delete</span>
-                    </button>
-                    <button onClick={(event) => onEdit(event, props.id)}>
-                        <span className="material-icons edit">edit</span>
-                    </button>
-                </div>
+
+                {
+                    setOptions()
+                }
+
             </div>
             <div className="title">
                 {props.title}

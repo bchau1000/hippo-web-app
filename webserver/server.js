@@ -197,7 +197,7 @@ app.get('/api/:username/folders', (request, response) => {
                             let parsed = {};
                             let metaData = {};
                             let send = [];
-                            
+
 
                             for (let i = 0; i < len; i++) {
                                 const set = {
@@ -205,7 +205,7 @@ app.get('/api/:username/folders', (request, response) => {
                                     "title": result[i].title,
                                     "description": result[i].description
                                 }
-                                
+
                                 if (parsed[result[i].folder_id] === undefined)
                                     parsed[result[i].folder_id] = [set];
                                 else
@@ -221,7 +221,7 @@ app.get('/api/:username/folders', (request, response) => {
                                     "sets": parsed[key]
                                 })
                             });
-                            
+
                             response.status(201).send(send);
                         }
                     )
@@ -248,26 +248,26 @@ app.put("/api/folders/new", authUser, (request, response) => {
             'INSERT INTO folders(name, user_id) VALUES(?, ?);',
             [folder_name, user_id],
             (error, result) => {
-                if(error) {
+                if (error) {
                     response.status(401).send({
                         'status': 401,
                         'content': error,
                     });
                     return;
                 }
-                
+
                 const folder_id = result.insertId;
                 const len = sets.length;
 
-                if(len == 0) {
+                if (len == 0) {
                     response.status(201).send({
                         'status': 201,
                         'content': "Added new folder",
                     });
-                } 
-                else{
+                }
+                else {
                     let insert_sets = [];
-                    for(let i = 0; i < len; i++) {
+                    for (let i = 0; i < len; i++) {
                         insert_sets.push(new Array(
                             folder_id,
                             sets[i].id
@@ -278,7 +278,7 @@ app.put("/api/folders/new", authUser, (request, response) => {
                         'INSERT INTO folders_and_sets(folder_id, set_id) VALUES ?;',
                         [insert_sets],
                         (error, result) => {
-                            if(error) {
+                            if (error) {
                                 response.status(401).send({
                                     'status': 401,
                                     'content': error,
@@ -294,11 +294,11 @@ app.put("/api/folders/new", authUser, (request, response) => {
                         }
                     )
                 }
-                
+
             }
         )
     }
-    catch(error) {
+    catch (error) {
         response.status(404).send({
             'status': 404,
             'content': error,
@@ -306,16 +306,61 @@ app.put("/api/folders/new", authUser, (request, response) => {
     }
 });
 
+app.put("/api/folders/edit", authUser, (request, response) => {
+    const folder_id = request.body.id;
+    const sets = request.body.sets;
+
+    const length = sets.length;
+    let insertValues = [];
+
+    for (let i = 0; i < length; i++) {
+        if (folder_id !== null)
+            insertValues.push(new Array(
+                folder_id,
+                sets[i].id
+            ));
+    }
+
+    try {
+        pool.query(
+            "DELETE FROM folders_and_sets WHERE folder_id = ?;" +
+            "INSERT INTO folders_and_sets(folder_id, set_id) VALUES ?;",
+            [folder_id, insertValues],
+            (error, _) => {
+                if (error) {
+                    console.log(error);
+                    response.status(401).send({
+                        "status": 401,
+                        "content": error,
+                    });
+                    return;
+                }
+
+                response.status(201).send({
+                    "status": 201,
+                    "content": "Successfully edited folder",
+                })
+            }
+        );
+    }
+    catch (error) {
+        response.status(404).send({
+            "status": 404,
+            "content": error,
+        });
+        return;
+    }
+});
+
 app.delete("/api/folders/delete", authUser, (request, response) => {
-    const user_id = request.user.id;
     const folder_id = request.body.folder_id;
     try {
         pool.query(
             "DELETE FROM folders WHERE id = ?;\n" +
-            "DELETE FROM folders_and_sets WHERE folder_id = ?;", 
-            [folder_id, folder_id], 
+            "DELETE FROM folders_and_sets WHERE folder_id = ?;",
+            [folder_id, folder_id],
             (error, result) => {
-                if(error) {
+                if (error) {
                     response.status(401).send({
                         "status": 401,
                         "content": error,

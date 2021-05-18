@@ -21,7 +21,6 @@ export default function AddFolderModal(props) {
             const value = JSON.parse(event.target.value);
             newSelectedSets = newSelectedSets.filter((set) => set.id !== JSON.parse(value.id));
         }
-
         setSelectedSets(newSelectedSets);
     }
 
