@@ -1,0 +1,117 @@
+.folder-modal-container {
+    width: 300px;
+    height: 440px;
+    background-color: white;
+    border-radius: 5px;
+    
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.folder-modal-form {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 80px 300px 20px;
+    grid-gap: 10px;
+    grid-template-areas:
+    "input-form"
+    "sets-form"
+    "submit-form";
+    justify-content: center;
+    
+}
+
+.folder-modal-input-container {
+    grid-area: input-form;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.folder-modal-input-container input{
+    border: none;
+    width: 100%;
+    font-size: 16px;
+    border-bottom: 2px solid rgb(24, 24, 24);
+    padding-bottom: 5px;
+    transition: border-bottom 0.26s ease;
+}
+
+.folder-modal-input-container input:focus{
+    outline: none;
+    border-bottom: 2px solid var(--color-accent);
+}
+
+.folder-modal-sets {
+    grid-area: sets-form;
+    width: 270px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(24, 24, 24, 0.1);
+    background-color: var(--color-bg);
+}
+
+.folder-modal-set-checkbox-wrapper {
+    margin: 0px;
+    padding-left: 10px;
+    padding-right: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 50px;
+    border-bottom: 1px solid rgba(24, 24, 24, 0.1);
+    color: rgb(24, 24, 24);
+    font-weight:normal;
+}
+
+.folder-modal-set-checkbox-wrapper input{
+    border-radius: 0px;
+}
+.folder-modal-set-checkbox-wrapper span{
+    
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 80%;
+}
+
+.folder-modal-set-checkbox-wrapper:hover{
+    background-color: rgba(180, 180, 180, 0.5);
+    cursor:pointer;
+}
+
+.folder-modal-sets::-webkit-scrollbar {
+    
+}
+
+.folder-modal-search-submit{
+    grid-area: submit-form;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.folder-modal-search-submit button{
+    background-color: var(--color-accent);
+    border: none;
+    padding: 5px;
+    font-size: 16px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    font-weight: bold;
+    transition: background-color 0.26s ease;
+    border-radius: 2px;
+}
+
+.folder-modal-search-submit button:hover{
+    cursor: pointer;
+    background-color: rgba(22, 206, 120, 0.7);
+}
+

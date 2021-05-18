@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import useViewport from "components/getViewport/getViewport.js";
 import SetGridItem from '../setGridItem/setGridItem.js';
+import ModalTemplate from 'components/modalTemplate/modalTemplate.js';
+import EditFolderModal from 'pages/SetsPageRework/editFolderModal/editFolderModal.js';
 
 import "./folderCollapsible.css";
 
@@ -9,9 +11,11 @@ export default function FolderCollapsible(props) {
     const [containerHeight, setContainerHeight] = useState('240px');
     const [calcHeight, setCalcHeight] = useState(240);
     const [showFolders, setShowFolders] = useState(props.showFolder);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const folder = props.folder;
 
     useEffect(() => {
-        let setLen = props.sets.length;
+        let setLen = folder.sets.length;
 
         if (props.showOptions)
             setLen += 1;
@@ -28,7 +32,7 @@ export default function FolderCollapsible(props) {
         else if (width < 550)
             setCalcHeight(245 * setLen);
 
-    }, [props.showOptions, props.sets, width])
+    }, [props.showOptions, folder, width])
 
     useEffect(() => {
         if (showFolders)
@@ -40,37 +44,59 @@ export default function FolderCollapsible(props) {
 
     return (
         <div className="folder-collapsible-wrapper">
-            <button
-                className="folder-collapsible-button"
-                onClick={() => setShowFolders(current => !current)}
-            >
-                <span className={
-                    `material-icons 
-                        ${showFolders ?
-                        "expand-button expand-flipped" :
-                        "expand-button"
-                    }`
-                }
-                >
-                    expand_more
-                </span>
-                <span>
-                    {props.folder
-                        ? props.folder.name
-                        : "All"
-                    }
-                </span>
-                <span></span>
-            </button>
+            <div className="folder-options-container">
+                {
+                    showEditModal &&
+                    <ModalTemplate
 
+                        showModal={showEditModal}
+                        closeModal={() => setShowEditModal(false)}
+                    >
+                        <EditFolderModal
+                            allSets={props.allSets}
+                        />
+                    </ModalTemplate>
+                }
+                <button
+                    className="folder-collapsible-button"
+                    onClick={() => setShowFolders(current => !current)}
+                >
+                    <span
+                        className={
+                            `material-icons 
+                            ${showFolders
+                                ? "expand-button expand-flipped"
+                                : "expand-button"
+                            }
+                        `
+                        }
+                    >
+                        expand_more
+                </span>
+                    <span>
+                        {props.folder
+                            ? props.folder.name
+                            : "All"
+                        }
+                    </span>
+                </button>
+                {props.showOptions &&
+                    <button
+                        className="folder-collapsible-delete-button"
+                        onClick={() => props.onDeleteFolder(props.folder.id)}
+                    >
+                        <span className="material-icons">delete</span>
+                    </button>
+                }
+            </div>
             <div
                 className={`folder-collapsible-container ${showFolders ? "" : "collapsible-hide"}`}
                 style={{ height: containerHeight }}
             >
                 <div className="folder-collapsible-position">
                     {
-                        props.sets.map((sets, idx) => {
-                            return (<SetGridItem
+                        folder.sets.map((sets, idx) => {
+                            return (sets.id && <SetGridItem
                                 key={idx}
                                 id={sets.id}
                                 title={sets.title}
@@ -85,10 +111,10 @@ export default function FolderCollapsible(props) {
                         props.showOptions &&
                         <button
                             className="add-set-card"
-                            onClick={() => props.onAdd()}
+                            onClick={() => setShowEditModal(true)}
                         >
-                            <span className="material-icons">add</span>
-                            <span>Add to folder</span>
+                            <span className="material-icons">edit</span>
+                            <span>&nbsp;Edit folder</span>
                         </button>
                     }
 

@@ -1,6 +1,6 @@
-export default async function isOwner(set_id) {
+export default async function isOwnerFolder(folder_id) {
     const body = JSON.stringify({
-        'set_id': set_id,
+        'folder_id': folder_id,
     })
 
     const settings = {
@@ -12,7 +12,7 @@ export default async function isOwner(set_id) {
         body: body,
     }
 
-    const response = await fetch('/api/owner/sets', settings);
+    const response = await fetch('/api/owner/folders', settings);
 
     if(response.status === 201) 
         return true;

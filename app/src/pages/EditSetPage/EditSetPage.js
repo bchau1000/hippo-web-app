@@ -114,14 +114,3 @@ export default function EditSetPage(props) {
         </section>
     );
 }
-/*
-<CardForm
-    key={index}
-    delete={this.deleteCard}
-    clear={this.clearCard}
-    setTerm={this.setCardTerm}
-    setDef={this.setCardDef}
-    info={flashCards[index]}
-    cardNum={index}
-/>
-*/

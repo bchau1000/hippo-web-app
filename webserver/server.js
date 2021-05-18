@@ -107,7 +107,7 @@ app.get("/api/:username/sets", (request, response) => {
     }
 });
 
-app.post("/api/users/sets/edit", authUser, (request, response) => {
+app.put("/api/sets/edit", authUser, (request, response) => {
 
 });
 
@@ -181,10 +181,10 @@ app.get('/api/:username/folders', (request, response) => {
                 else {
                     const user_id = result[0].id;
                     pool.query(
-                        "SELECT f.id as 'folder_id', f.name as 'folder_name', fs.set_id as 'set_id'," +
-                        "s.title as 'set_title', s.description as 'set_description' ,f.user_id\n" +
-                        "FROM folders as f, folders_and_sets as fs, sets as s\n" +
-                        "WHERE f.id = fs.folder_id AND s.id = fs.set_id AND f.user_id = ?;",
+                        "SELECT f.id as 'folder_id', f.name as 'folder_name', fs.set_id as 'set_id', title, description\n" +
+                        "FROM folders as f LEFT JOIN (folders_and_sets as fs, sets as s)\n" +
+                        "ON f.id = fs.folder_id AND s.id = fs.set_id\n" +
+                        "WHERE f.user_id = ?;",
                         user_id,
                         (error, result) => {
                             if (error) {
@@ -195,30 +195,33 @@ app.get('/api/:username/folders', (request, response) => {
                             }
                             const len = result.length;
                             let parsed = {};
+                            let metaData = {};
                             let send = [];
+                            
 
                             for (let i = 0; i < len; i++) {
                                 const set = {
                                     "id": result[i].set_id,
-                                    "title": result[i].set_title,
-                                    "description": result[i].set_description
+                                    "title": result[i].title,
+                                    "description": result[i].description
                                 }
-
-                                if (parsed[result[i].folder_name] === undefined)
-                                    parsed[result[i].folder_name] = [set];
+                                
+                                if (parsed[result[i].folder_id] === undefined)
+                                    parsed[result[i].folder_id] = [set];
                                 else
-                                    parsed[result[i].folder_name].push(set);
+                                    parsed[result[i].folder_id].push(set);
 
-
+                                metaData[result[i].folder_id] = result[i].folder_name;
                             }
 
                             Object.keys(parsed).forEach(function (key) {
                                 send.push({
-                                    "name": key,
+                                    "id": key,
+                                    "name": metaData[key],
                                     "sets": parsed[key]
                                 })
                             });
-
+                            
                             response.status(201).send(send);
                         }
                     )
@@ -233,6 +236,106 @@ app.get('/api/:username/folders', (request, response) => {
         });
     }
 });
+
+app.put("/api/folders/new", authUser, (request, response) => {
+    const user_id = request.user.id;
+    const folder_name = request.body.name;
+    const sets = request.body.sets;
+    console.log()
+
+    try {
+        pool.query(
+            'INSERT INTO folders(name, user_id) VALUES(?, ?);',
+            [folder_name, user_id],
+            (error, result) => {
+                if(error) {
+                    response.status(401).send({
+                        'status': 401,
+                        'content': error,
+                    });
+                    return;
+                }
+                
+                const folder_id = result.insertId;
+                const len = sets.length;
+
+                if(len == 0) {
+                    response.status(201).send({
+                        'status': 201,
+                        'content': "Added new folder",
+                    });
+                } 
+                else{
+                    let insert_sets = [];
+                    for(let i = 0; i < len; i++) {
+                        insert_sets.push(new Array(
+                            folder_id,
+                            sets[i].id
+                        ));
+                    }
+
+                    pool.query(
+                        'INSERT INTO folders_and_sets(folder_id, set_id) VALUES ?;',
+                        [insert_sets],
+                        (error, result) => {
+                            if(error) {
+                                response.status(401).send({
+                                    'status': 401,
+                                    'content': error,
+                                });
+                                console.log(error);
+                                return;
+                            }
+
+                            response.status(201).send({
+                                'status': 201,
+                                'content': "Added new folder with sets",
+                            });
+                        }
+                    )
+                }
+                
+            }
+        )
+    }
+    catch(error) {
+        response.status(404).send({
+            'status': 404,
+            'content': error,
+        })
+    }
+});
+
+app.delete("/api/folders/delete", authUser, (request, response) => {
+    const user_id = request.user.id;
+    const folder_id = request.body.folder_id;
+    try {
+        pool.query(
+            "DELETE FROM folders WHERE id = ?;\n" +
+            "DELETE FROM folders_and_sets WHERE folder_id = ?;", 
+            [folder_id, folder_id], 
+            (error, result) => {
+                if(error) {
+                    response.status(401).send({
+                        "status": 401,
+                        "content": error,
+                    })
+                }
+
+                response.status(201).send({
+                    "status": 201,
+                    "content": result
+                })
+            }
+        )
+    }
+    catch (error) {
+        response.status(404).send({
+            "status": 404,
+            "content": error,
+        });
+    }
+})
 
 // END USER REQUEST FUNCTIONS
 
@@ -513,7 +616,7 @@ app.post('/api/auth', authUser, (request, response) => {
 });
 
 // Used to check if the requesting user is the owner of a set
-app.post('/api/owner', authUser, (request, response) => {
+app.post('/api/owner/sets', authUser, (request, response) => {
     const set_id = request.body.set_id;
     const user_id = request.user.id;
     const username = request.user.username;
@@ -536,6 +639,50 @@ app.post('/api/owner', authUser, (request, response) => {
                     response.status(401).send({
                         'status': 401,
                         'message': 'Must be the owner of a set to edit/delete it'
+                    })
+                }
+                else {
+                    response.status(201).send({
+                        'status': 201,
+                        'message': username
+                    });
+                }
+
+            }
+        );
+    }
+    catch (error) {
+        response.status(404).send({
+            'status': 404,
+            'message': error,
+        })
+    }
+
+});
+
+app.post('/api/owner/folders', authUser, (request, response) => {
+    const folder_id = request.body.folder_id;
+    const user_id = request.user.id;
+    const username = request.user.username;
+
+    try {
+        pool.query(
+            "SELECT count(*) as 'count'\n" +
+            "FROM folders\n" +
+            "WHERE id = ? AND user_id = ?;",
+            [folder_id, user_id],
+            (error, result) => {
+                if (error) {
+                    response.status(400).send({
+                        'status': 400,
+                        'message': error,
+                    });
+                }
+
+                if (result[0].count < 1) {
+                    response.status(401).send({
+                        'status': 401,
+                        'message': 'Must be the owner of a folder to delete it'
                     })
                 }
                 else {

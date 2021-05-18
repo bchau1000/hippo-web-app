@@ -18,3 +18,35 @@
     flex-direction: column;
 }
 
+.sets-buttons-container {
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.sets-buttons-container button{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    gap: 10px;
+    height: 35px;
+    border-radius: 5px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    
+    background-color: var(--color-fg);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    
+    transition: box-shadow 0.26s;
+}
+
+.sets-buttons-container button:hover{
+    box-shadow: rgba(99, 99, 99, 0.5) 0px 2px 8px 0px;
+}
