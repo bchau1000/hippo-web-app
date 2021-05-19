@@ -1,5 +1,6 @@
 import "./App.css";
 
+import BrowsePage from "pages/BrowsePage/BrowsePage.js";
 import CreateSetPage from "pages/CreateSetPage/CreateSetPage.js";
 import EditSetPage from "pages/EditSetPage/EditSetPage.js";
 import StudyPage from "pages/StudyPage/StudyPage.js";
@@ -85,12 +86,13 @@ export default function App(props) {
                     user={user}
                 />
                 <Switch>
-                    <Route exact path="/sandbox" render={(props) => <SandBox {...props}/>}/>
-                    <Route exact path="/" component={WelcomePage}/>
-                    <Route exact path="/:username/sets" render={(props) => <SetsPageRework width={width} {...props}/>}/>
-                    <Route exact path="/sets/:set_id/edit" render={(props) => <EditSetPage user={user} {...props}/>}/>
-                    <Route exact path="/sets/new" render={(props) => <CreateSetPage user={user} {...props}/>}/>
-                    <Route exact path="/sets/:set_id/cards" render={(props) => <StudyPage {...props}/>}/>
+                    <Route exact path="/sandbox" render={(props) => <SandBox {...props}/>} />
+                    <Route exact path="/" component={WelcomePage} />
+                    <Route exact path="/:username/sets" render={(props) => <SetsPageRework width={width} {...props}/>} />
+                    <Route exact path="/sets/:set_id/edit" render={(props) => <EditSetPage user={user} {...props}/>} />
+                    <Route exact path="/sets/new" render={(props) => <CreateSetPage user={user} {...props}/>} />
+                    <Route exact path="/sets/:set_id/cards" render={(props) => <StudyPage {...props}/>} />
+                    <Route exact path="/browse" render={(props) => <BrowsePage {...props}/>} />
                 </Switch>
                 {
                     showDropdown &&

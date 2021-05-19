@@ -7,7 +7,7 @@ export default function Sidebar(props) {
 
             <ul className="sidebar-items-container">
                 <li className="sidebar-item">
-                    <a className="sidebar-link-wrapper" href="/">
+                    <a className="sidebar-link-wrapper" href="/browse">
                         <span className="material-icons">search</span>
                         <span htmlFor="home">Browse</span>
                     </a>

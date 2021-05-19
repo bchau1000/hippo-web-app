@@ -3,10 +3,10 @@ const mysql = require('mysql');
 
 // process.env values configured in config.env file
 const config = {
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: 'study_buddy_db',
+  host: 'us-cdbr-east-03.cleardb.com',
+  user: 'bee76e1eaa5928',
+  password: '0d12aea4',
+  database: 'heroku_12744ef9b4aeebc',
   multipleStatements: true,
 };
 

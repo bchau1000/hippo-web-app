@@ -1,5 +1,3 @@
-
-
 export async function isOwner(username) {
     const body = JSON.stringify({
         "username": username,
