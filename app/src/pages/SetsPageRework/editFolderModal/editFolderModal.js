@@ -3,10 +3,8 @@ import './editFolderModal.css';
 
 export default function EditFolderModal(props) {
     const sets = props.allSets;
-
     const [selectedSets, setSelectedSets] = useState(props.folder.sets);
     const [filterSets, setFilterSets] = useState(props.allSets);
-
     const [input, setInput] = useState("");
 
     useEffect(() => {
@@ -25,7 +23,6 @@ export default function EditFolderModal(props) {
             const value = JSON.parse(event.target.value);
             newSelectedSets = newSelectedSets.filter((set) => set.id !== JSON.parse(value.id));
         }
-
         setSelectedSets(newSelectedSets);
     }
 
@@ -79,8 +76,9 @@ export default function EditFolderModal(props) {
                         className="edit-folder-modal-submit"
                         onClick={
                             async (event) => {
+                                event.preventDefault();
                                 await props.onEditFolder(event, props.folder, selectedSets);
-                                props.setShowEditModal();
+                                props.setShowEditModal(false);
                             }
                         }
 

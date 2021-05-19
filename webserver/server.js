@@ -309,39 +309,75 @@ app.put("/api/folders/new", authUser, (request, response) => {
 app.put("/api/folders/edit", authUser, (request, response) => {
     const folder_id = request.body.id;
     const sets = request.body.sets;
-
     const length = sets.length;
     let insertValues = [];
 
     for (let i = 0; i < length; i++) {
-        if (folder_id !== null)
+        if (folder_id !== null) {
             insertValues.push(new Array(
                 folder_id,
                 sets[i].id
             ));
+        }
     }
 
     try {
-        pool.query(
-            "DELETE FROM folders_and_sets WHERE folder_id = ?;" +
-            "INSERT INTO folders_and_sets(folder_id, set_id) VALUES ?;",
-            [folder_id, insertValues],
-            (error, _) => {
-                if (error) {
-                    console.log(error);
-                    response.status(401).send({
-                        "status": 401,
-                        "content": error,
-                    });
-                    return;
-                }
+        async.series([
+            function (callback) {
+                pool.query(
+                    "DELETE FROM folders_and_sets WHERE folder_id = ?;",
+                    [folder_id],
+                    (error, result) => {
+                        if (error) {
+                            console.log(error);
+                            response.status(401).send({
+                                "status": 401,
+                                "content": error,
+                            });
+                            return;
+                        }
 
-                response.status(201).send({
-                    "status": 201,
-                    "content": "Successfully edited folder",
-                })
+                        callback(null, result);
+                    }
+                );
+            },
+            function (callback) {
+                if(length > 0) {
+                    pool.query(
+                        "INSERT INTO folders_and_sets(folder_id, set_id) VALUES ?;",
+                        [insertValues],
+                        (error, result) => {
+                            if (error) {
+                                console.log(error);
+                                response.status(401).send({
+                                    "status": 401,
+                                    "content": error,
+                                });
+                                return;
+                            }
+                            callback(null, result);
+                        }
+                    );
+                }
+                else
+                    callback(null, null);
+                
             }
-        );
+        ], function (error, result) {
+            if (error) {
+                console.log(error);
+                response.status(401).send({
+                    "status": 401,
+                    "content": error,
+                });
+                return;
+            }
+
+            response.status(201).send({
+                "status": 201,
+                "content": result,
+            })
+        })
     }
     catch (error) {
         response.status(404).send({
@@ -747,6 +783,25 @@ app.post('/api/owner/folders', authUser, (request, response) => {
         })
     }
 
+});
+
+app.post('/api/owner/username', authUser, (request, response) => { 
+    const requestUsername = request.user.username;
+    const ownerUsername = request.body.username;
+
+    if(requestUsername === ownerUsername) {
+        response.status(201).send({
+            "status": 201,
+            "content": ownerUsername,
+        })
+    }
+    else {
+        response.status(403).send({
+            "status": 403,
+            "content": ownerUsername,
+        })
+    }
+    
 });
 
 app.post('/api/token', (request, response) => {

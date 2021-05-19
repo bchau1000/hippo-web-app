@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import useViewport from "components/getViewport/getViewport.js";
 import SetGridItem from '../setGridItem/setGridItem.js';
 import ModalTemplate from 'components/modalTemplate/modalTemplate.js';
 import EditFolderModal from 'pages/SetsPageRework/editFolderModal/editFolderModal.js';
+import { OwnerContext } from 'pages/SetsPageRework/SetsPageRework.js';
 
 import "./folderCollapsible.css";
 
 export default function FolderCollapsible(props) {
     const width = useViewport();
+    const owner = useContext(OwnerContext);
     const [containerHeight, setContainerHeight] = useState('240px');
     const [calcHeight, setCalcHeight] = useState(240);
     const [showFolders, setShowFolders] = useState(props.showFolder);
@@ -16,7 +18,6 @@ export default function FolderCollapsible(props) {
 
     useEffect(() => {
         let setLen = folder.sets.length;
-
         if (props.isFolder)
             setLen += 1;
 
@@ -89,7 +90,7 @@ export default function FolderCollapsible(props) {
                         }
                     </span>
                 </button>
-                {props.isFolder &&
+                {props.isFolder && owner &&
                     <button
                         className="folder-collapsible-delete-button"
                         onClick={() => props.onDeleteFolder(props.folder.id)}
@@ -118,7 +119,7 @@ export default function FolderCollapsible(props) {
                         })
                     }
 
-                    { props.isFolder &&
+                    {props.isFolder && owner &&
                         <button
                             className="add-set-card"
                             onClick={() => setShowEditModal(true)}

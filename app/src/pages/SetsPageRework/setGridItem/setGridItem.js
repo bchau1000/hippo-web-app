@@ -1,5 +1,7 @@
 import "./setGridItem.css";
-import isOwner from 'components/isOwner/isOwner.js';
+import { useContext } from 'react';
+import { isOwnerSet } from 'components/isOwner/isOwner.js';
+import { OwnerContext } from 'pages/SetsPageRework/SetsPageRework.js';
 import ProfilePic from 'components/profilePic/profilePic.js';
 
 function redirect(set_id) {
@@ -9,17 +11,17 @@ function redirect(set_id) {
 async function onEdit(event, set_id) {
     event.stopPropagation(); // Stops parent onClick
 
-    if (await isOwner(set_id))
+    if (await isOwnerSet(set_id))
         window.location.href = "/sets/" + set_id + "/edit";
     else
         alert('You must be the owner of this set to edit/delete it.');
 }
 
-
-
 export default function SetGridItem(props) {
+    const owner = useContext(OwnerContext);
+
     function setOptions() {
-        if(props.isFolder) {
+        if (props.isFolder) {
             return (
                 <div className="options">
                     <button onClick={(event) => props.onRemove(event, props.id)}>
@@ -49,7 +51,7 @@ export default function SetGridItem(props) {
                     <span style={{ fontWeight: '500', color: 'rgb(24, 24, 24)' }}>admin</span>
                 </a>
 
-                {
+                {owner &&
                     setOptions()
                 }
 

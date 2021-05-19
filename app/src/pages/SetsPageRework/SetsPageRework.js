@@ -1,15 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, createContext } from 'react';
 import FolderCollapsible from './folderCollapsible/folderCollapsible.js';
-import isOwner from 'components/isOwner/isOwner.js';
-import isOwnerFolder from 'components/isOwner/isOwnerFolder.js';
+import { isOwner, isOwnerSet, isOwnerFolder } from 'components/isOwner/isOwner.js';
 import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
 import ModalTemplate from 'components/modalTemplate/modalTemplate.js';
 import AddFolderModal from './addFolderModal/addFolderModal.js';
 
 import "./SetsPageRework.css";
 
+export const OwnerContext = createContext(false);
+
 export default function SetsPageRework(props) {
     const username = props.match.params.username;
+    const [owner, setOwner] = useState(false);
     const [loading, setLoading] = useState(true);
     const [folders, setFolders] = useState([]);
     const [allSets, setAllSets] = useState([]);
@@ -41,19 +43,17 @@ export default function SetsPageRework(props) {
                 json = await response.json();
                 setFolders(json);
             }
+            if (await isOwner(username))
+                setOwner(true);
 
             setLoading(false);
         }
         getData();
     }, [username]);
 
-    useEffect(() => {
-        console.log(folders);
-    }, [folders])
-
     async function onDelete(event, set_id) {
         event.stopPropagation(); // Stops parent onClick
-        if (await isOwner(set_id)) {
+        if (await isOwnerSet(set_id)) {
             const confirm = window.confirm(
                 "Are you sure you want to delete this set? This action cannot be undone."
             );
@@ -98,7 +98,7 @@ export default function SetsPageRework(props) {
     async function onEdit(event, set_id) {
         event.stopPropagation(); // Stops parent onClick
 
-        if (await isOwner(set_id))
+        if (await isOwnerSet(set_id))
             window.location.href = "/sets/" + set_id + "/edit";
         else
             alert('You must be the owner of this set to edit/delete it.');
@@ -143,45 +143,50 @@ export default function SetsPageRework(props) {
         setShowFolderModal(false);
         bottomOfPage.current.scrollIntoView({ behavior: 'smooth' });
     }
-    
+
     const onEditFolder = async (event, folder, newSets) => {
-        if(event)
-            event.preventDefault();
+        if (await isOwnerFolder(folder.id)) {
+            if (event)
+                event.preventDefault();
 
-        newSets = newSets.filter((set) => set.id !== null);
+            newSets = newSets.filter((set) => set.id !== null);
 
-        const body = JSON.stringify({
-            "id" : folder.id,
-            "name": folder.name,
-            "sets": newSets
-        })
+            const body = JSON.stringify({
+                "id": folder.id,
+                "name": folder.name,
+                "sets": newSets
+            })
 
-        const settings = {
-            method: "PUT",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: body,
-        }
-        const response = await fetch("/api/folders/edit", settings);
-
-        if(response.status === 201) {
-            const updatedFolder = JSON.parse(body);
-            let newFolders = folders.slice();
-            let i = 0;
-            let found = false;
-            const length = newFolders.length;
-
-            while(i < length && !found) {
-                if(newFolders[i].id === updatedFolder.id) {
-                    newFolders[i] = updatedFolder;
-                    found = true;
-                }
-                i++;
+            const settings = {
+                method: "PUT",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: body,
             }
-            
-            setFolders(newFolders);
+            const response = await fetch("/api/folders/edit", settings);
+
+            if (response.status === 201) {
+                const updatedFolder = JSON.parse(body);
+                let newFolders = folders.slice();
+                let i = 0;
+                let found = false;
+                const length = newFolders.length;
+
+                while (i < length && !found) {
+                    if (newFolders[i].id === updatedFolder.id) {
+                        newFolders[i] = updatedFolder;
+                        found = true;
+                    }
+                    i++;
+                }
+
+                setFolders(newFolders);
+            }
+        }
+        else {
+            alert('You must be the owner of this folder to delete it.');
         }
     }
 
@@ -192,58 +197,63 @@ export default function SetsPageRework(props) {
     }
 
     return (
-        <section className="sets-page-container">
-            {showFolderModal &&
-                <ModalTemplate
-                    showModal={showFolderModal}
-                    closeModal={() => setShowFolderModal(false)}
-                >
-                    <AddFolderModal
-                        allSets={allSets}
-                        insertFolder={insertFolder}
-                    />
-                </ModalTemplate>
-            }
-
-            <div className="sets-buttons-container">
-                <button onClick={() => setShowFolderModal(true)}>
-                    <span className="material-icons">
-                        create_new_folder
-                    </span>
-                    <span>New Folder</span>
-                </button>
-            </div>
-            <div className="all-sets-container">
-                <FolderCollapsible
-                    isFolder={false}
-                    showFolder={true}
-                    folder={{ "name": "All", "sets": allSets }}
-                    onDeleteFolder={onDeleteFolder}
-                    onEditFolder={onEditFolder}
-                    onDelete={onDelete}
-                    onRemove={onRemove}
-                    onEdit={onEdit}
-                    allSets={allSets}
-                />
-            </div>
-            <div className="all-folders-container">
-                {
-                    folders.map((folder, idx) => {
-                        return <FolderCollapsible
-                            key={idx}
-                            isFolder={true}
-                            showFolder={false}
-                            folder={folder}
-                            onDeleteFolder={onDeleteFolder}
-                            onEditFolder={onEditFolder}
-                            onDelete={onDelete}
-                            onEdit={onEdit}
+        <OwnerContext.Provider value={owner}>
+            <section className="sets-page-container">
+                {showFolderModal &&
+                    <ModalTemplate
+                        showModal={showFolderModal}
+                        closeModal={() => setShowFolderModal(false)}
+                    >
+                        <AddFolderModal
                             allSets={allSets}
+                            insertFolder={insertFolder}
                         />
-                    })
+                    </ModalTemplate>
                 }
-            </div>
-            <div ref={bottomOfPage}></div>
-        </section>
+                {owner &&
+                    <div className="sets-buttons-container">
+                        <button onClick={() => setShowFolderModal(true)}>
+                            <span className="material-icons">
+                                create_new_folder
+                    </span>
+                            <span>New Folder</span>
+                        </button>
+                    </div>
+
+                }
+
+                <div className="all-sets-container">
+                    <FolderCollapsible
+                        isFolder={false}
+                        showFolder={true}
+                        folder={{ "name": "All", "sets": allSets }}
+                        onDeleteFolder={onDeleteFolder}
+                        onEditFolder={onEditFolder}
+                        onDelete={onDelete}
+                        onRemove={onRemove}
+                        onEdit={onEdit}
+                        allSets={allSets}
+                    />
+                </div>
+                <div className="all-folders-container">
+                    {
+                        folders.map((folder, idx) => {
+                            return <FolderCollapsible
+                                key={idx}
+                                isFolder={true}
+                                showFolder={false}
+                                folder={folder}
+                                onDeleteFolder={onDeleteFolder}
+                                onEditFolder={onEditFolder}
+                                onDelete={onDelete}
+                                onEdit={onEdit}
+                                allSets={allSets}
+                            />
+                        })
+                    }
+                </div>
+                <div ref={bottomOfPage}></div>
+            </section>
+        </OwnerContext.Provider>
     )
 }

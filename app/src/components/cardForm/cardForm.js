@@ -4,7 +4,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
 import "./cardForm.css";
 
-
 export default function CardForm(props) {
 
     return (

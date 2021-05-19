@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 //import CardForm from 'components/cardForm/cardForm.js';
 import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
-import isOwner from 'components/isOwner/isOwner.js';
+import { isOwnerSet } from 'components/isOwner/isOwner.js';
 import AddIcon from '@material-ui/icons/Add';
 import './EditSetPage.css';
 
@@ -15,8 +15,7 @@ export default function EditSetPage(props) {
     useEffect(() => {
         async function getCards() {
             setLoading(true);
-            //await sleep(500);
-            if (!(await isOwner(set_id)))
+            if (!(await isOwnerSet(set_id)))
                 window.history.back();
             else {
                 const settings = {
