@@ -1,0 +1,8 @@
+{
+    "scripts": {
+      "app": "cd app && npm start",
+      "server": "cd webserver && npm start",
+      "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run app\"",
+      "heroku-postbuild": "cd app && npm install && npm run build"
+    }
+}

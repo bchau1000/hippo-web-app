@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
@@ -9,9 +10,11 @@ const app = express();
 const port = 9000;
 
 // Master access tokens for JWT, MUST CHANGE DURING DEPLOYMENT
-const secretToken = process.env.JWT_SECRET;
-const refreshSecretToken = process.env.JWT_SECRET_REFRESH;
+const secretToken = "secret_token";
+const refreshSecretToken = "refresh_secret_token";
 let refreshTokens = [];
+
+app.use(express.static(path.join(__dirname, '../app/build')));
 
 app.use(
     express.urlencoded({
@@ -60,17 +63,24 @@ app.get("/api/test", (_, response) => {
         pool.query(
             "SHOW TABLES",
             (error, result) => {
-                if (error) response.status(400).send(error);
+                if (error) {
+                    console.log('400 Bad Request: "/api/test"');
+                    response.status(400).send(error);
+                } 
 
-                if (result.length)
-                    response.status(201).send(result);
+                if (result.length) {
+                    console.log('200 Ok: "/api/test"');
+                    response.status(200).send(result);
+                }
                 else {
-                    response.status(404).send("404 Not Found");
+                    console.log('404 Not Found: "/api/test"');
+                    response.status(404).send("400 Not Found");
                 }
             }
         );
     }
     catch (err) {
+        console.log('404 Not Found: "/api/test"');
         response.status(404).send(err);
     }
 })
@@ -681,7 +691,7 @@ app.post('/api/logout', (request, response) => {
             refreshTokens.splice(i, 1);
         }
     }
-
+    console.log('200 Ok: "/api/logout"');
     response.status(201).send({
         'status': 201,
         'message': 'User successfully logged out.'
@@ -689,6 +699,7 @@ app.post('/api/logout', (request, response) => {
 });
 
 app.post('/api/auth', authUser, (request, response) => {
+    console.log('200 Ok: "/api/auth"');
     response.status(201).send({
         'status': 201,
         'message': 'User is logged in.',
@@ -710,6 +721,7 @@ app.post('/api/owner/sets', authUser, (request, response) => {
             [set_id, user_id],
             (error, result) => {
                 if (error) {
+                    console.log('400 Bad Request: "/api/owner/sets"');
                     response.status(400).send({
                         'status': 400,
                         'message': error,
@@ -717,12 +729,14 @@ app.post('/api/owner/sets', authUser, (request, response) => {
                 }
 
                 if (result[0].count < 1) {
+                    console.log('403 Forbidden: "/api/owner/sets"');
                     response.status(401).send({
                         'status': 401,
                         'message': 'Must be the owner of a set to edit/delete it'
                     })
                 }
                 else {
+                    console.log('200 Ok: "/api/owner/sets"');
                     response.status(201).send({
                         'status': 201,
                         'message': username
@@ -733,6 +747,7 @@ app.post('/api/owner/sets', authUser, (request, response) => {
         );
     }
     catch (error) {
+        console.log('404 Not Found: "/api/owner/sets"');
         response.status(404).send({
             'status': 404,
             'message': error,
@@ -754,6 +769,7 @@ app.post('/api/owner/folders', authUser, (request, response) => {
             [folder_id, user_id],
             (error, result) => {
                 if (error) {
+                    console.log('400 Bad Request: "/api/owner/folders"');
                     response.status(400).send({
                         'status': 400,
                         'message': error,
@@ -761,12 +777,14 @@ app.post('/api/owner/folders', authUser, (request, response) => {
                 }
 
                 if (result[0].count < 1) {
+                    console.log('403 Forbidden: "/api/owner/folders"');
                     response.status(401).send({
                         'status': 401,
                         'message': 'Must be the owner of a folder to delete it'
                     })
                 }
                 else {
+                    console.log('200 Ok: "/api/owner/folders"');
                     response.status(201).send({
                         'status': 201,
                         'message': username
@@ -777,6 +795,7 @@ app.post('/api/owner/folders', authUser, (request, response) => {
         );
     }
     catch (error) {
+        console.log('404 Not Found: "/api/owner/folders"');
         response.status(404).send({
             'status': 404,
             'message': error,
@@ -790,12 +809,14 @@ app.post('/api/owner/username', authUser, (request, response) => {
     const ownerUsername = request.body.username;
 
     if(requestUsername === ownerUsername) {
+        console.log('200 Created: "/api/owner/username"');
         response.status(201).send({
             "status": 201,
             "content": ownerUsername,
         })
     }
     else {
+        console.log('403 Forbidden: "/api/owner/username"');
         response.status(403).send({
             "status": 403,
             "content": ownerUsername,
@@ -807,15 +828,21 @@ app.post('/api/owner/username', authUser, (request, response) => {
 app.post('/api/token', (request, response) => {
     const { token } = request.body;
 
-    if (!token)
+    if (!token) {
         response.status(401);
+    }
+        
 
-    if (!refreshTokens.includes(token))
+    if (!refreshTokens.includes(token)) {
         response.status(403);
+    }
+        
 
     jwt.verify(token, refreshSecretToken, (error, user) => {
-        if (error)
+        if (error) {
             response.status(403);
+        }
+            
         const accessToken = jwt.sign(
             {
                 id: user.id,
@@ -831,7 +858,7 @@ app.post('/api/token', (request, response) => {
 // END REGISTER/LOGIN FUNCTIONS
 
 app.get("*", (request, response) => {
-    response.status(404).send("404 Page Not Found");
+    response.sendFile(path.join(__dirname + '/../app/build/index.html'));
 });
 
 app.listen(port, () => {
