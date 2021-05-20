@@ -1,4 +1,6 @@
-import "./App.css";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
 import LoginRegisterModal from 'components/loginRegisterModal/loginRegisterModal.js';
 import BrowsePage from "pages/BrowsePage/BrowsePage.js";
 import CreateSetPage from "pages/CreateSetPage/CreateSetPage.js";
@@ -7,17 +9,12 @@ import StudyPage from "pages/StudyPage/StudyPage.js";
 import SetsPageRework from "pages/SetsPageRework/SetsPageRework.js";
 import Navbar from "components/navbar/navbar.js";
 import Sidebar from "components/sidebar/sidebar.js";
-import Login from "pages/Login/Login.js";
-import SignUp from "pages/Register/Register.js";
 import WelcomePage from "pages/WelcomePage/WelcomePage.js";
 import SandBox from "pages/SandBox/SandBox.js";
 import useViewport from "components/getViewport/getViewport.js";
 import jwt_decode from "jwt-decode";
 
-
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-
+import "./App.css";
 
 export default function App(props) {
     const [user, setUser] = useState(null);
@@ -58,8 +55,6 @@ export default function App(props) {
             setShowDropdown(false);
         else
             setShowDropdown(true);
-        
-        
     }, [width]);
 
     useEffect(() => {
@@ -69,11 +64,6 @@ export default function App(props) {
 
     return (
         <Router>
-            <Switch>
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/signup" component={SignUp} />
-            </Switch>
-
             <div className="main-container">
                 <LoginRegisterModal
                     showModal={showLoginModal}
@@ -98,7 +88,7 @@ export default function App(props) {
                 />
                 <Switch>
                     <Route exact path="/sandbox" render={(props) => <SandBox {...props}/>} />
-                    <Route exact path="/" render={(props) => <WelcomePage setShowLoginModal={setShowLoginModal} {...props}/>} />
+                    <Route exact path="/" render={(props) => <WelcomePage setShowLoginModal={setShowLoginModal} user={user} {...props}/>} />
                     <Route exact path="/:username/sets" render={(props) => <SetsPageRework width={width} {...props}/>} />
                     <Route exact path="/sets/:set_id/edit" render={(props) => <EditSetPage user={user} {...props}/>} />
                     <Route exact path="/sets/new" render={(props) => <CreateSetPage user={user} {...props}/>} />

@@ -66,6 +66,8 @@ export default function Navbar(props) {
         }
     }
 
+    
+
     return (
         <div className="navbar-container no-select">
             <div className="left">

@@ -28,6 +28,7 @@ export default function StudyPage(props) {
                 setTitle(json.title);
                 setDesc(json.description);
                 setFlashCards(json.flash_cards);
+                console.log(desc);
             }
             else {
                 console.log(response.status + " status received.");
@@ -35,7 +36,7 @@ export default function StudyPage(props) {
             setLoading(false);
         }
         getData();
-    }, [set_id])
+    }, [set_id, desc])
 
     if(loading) {
         return(

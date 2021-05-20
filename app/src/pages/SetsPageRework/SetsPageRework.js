@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, createContext } from 'react';
-import FolderCollapsible from './folderCollapsible/folderCollapsible.js';
 import { isOwner, isOwnerSet, isOwnerFolder } from 'components/isOwner/isOwner.js';
+
+import FolderCollapsible from './folderCollapsible/folderCollapsible.js';
 import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
 import ModalTemplate from 'components/modalTemplate/modalTemplate.js';
 import AddFolderModal from './addFolderModal/addFolderModal.js';
@@ -16,7 +17,7 @@ export default function SetsPageRework(props) {
     const [folders, setFolders] = useState([]);
     const [allSets, setAllSets] = useState([]);
     const [showFolderModal, setShowFolderModal] = useState(false);
-    const [showLoginModal, setShowLoginModal] = useState(false);
+    
     const bottomOfPage = useRef();
 
     useEffect(() => {

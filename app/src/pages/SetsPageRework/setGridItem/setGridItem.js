@@ -19,7 +19,6 @@ async function onEdit(event, set_id) {
 
 export default function SetGridItem(props) {
     const owner = useContext(OwnerContext);
-
     function setOptions() {
         if (props.isFolder) {
             return (

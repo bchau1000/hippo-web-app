@@ -4,7 +4,6 @@ import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
 import { isOwnerSet } from 'components/isOwner/isOwner.js';
 import AddIcon from '@material-ui/icons/Add';
 import './EditSetPage.css';
-import { Card } from '@material-ui/core';
 
 export default function EditSetPage(props) {
     const set_id = props.match.params.set_id;

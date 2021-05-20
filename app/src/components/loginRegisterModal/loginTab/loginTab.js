@@ -16,7 +16,7 @@ export default function LoginTab(props) {
     return (
         <div className="login-tab-container">
             <div className="login-tab-notification">{notification}</div>
-            <form className="login-tab-form-container">
+            <form method="post" className="login-tab-form-container">
                 <input type="text" placeholder="Username" onChange={(event) => setUsername(event.target.value)} />
                 <input type="password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
                 <div className="login-tab-button-container">
@@ -33,8 +33,6 @@ export default function LoginTab(props) {
                     <LoadingAnim text="Logging in..."/>
                 }
                 </div>
-                
-
             </form>
         </div>
     )

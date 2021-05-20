@@ -579,37 +579,42 @@ app.delete("/api/sets/delete", authUser, (request, response) => {
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 // TO DO: Register a new user
-app.post("/api/register", (request, response) => {
+app.put("/api/register", (request, response) => {
     const user = [request.body.username, request.body.email, request.body.password,
     request.body.firstName, request.body.lastName];
+    console.log("hello");
     try {
         pool.query(
             "INSERT INTO users(username, email, password, first_name, last_name) VALUES(?, ?, ?, ?, ?)",
             user,
             (error, result) => {
                 if (error) {
-                    console.log(error);
-                    response.status(400).send(error);
+                    if(error.code === 'ER_DUP_ENTRY') {
+                        response.status(401).send({
+                            'status': 401,
+                            'message': 'Username is already taken.'
+                        });
+            
+                    }
+                    else
+                        response.status(400).send(error);
                 }
                 else {
+                    console.log('201 Created: "/api/register"');
                     response.status(201).send({
                         'status': 201,
                         'message': 'User successfully registered.',
-                        'content': result,
+                        'content': {
+                            'username': request.body.username
+                        },
                     });
                 }
             });
     } catch (err) {
-        if (err.code === "ER_DUP_ENTRY")
-            response.status(400).send({
-                'status': 400,
-                'message': 'Username is already taken.'
-            });
-        else
-            response.status(404).send({
-                'status': 404,
-                'message': 'Error in query.'
-            });
+        response.status(404).send({
+            'status': 404,
+            'message': err
+        });
     }
 });
 

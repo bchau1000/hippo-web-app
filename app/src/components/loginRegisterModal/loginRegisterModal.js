@@ -2,15 +2,12 @@ import { useState, useEffect } from 'react';
 import ModalTemplate from 'components/modalTemplate/modalTemplate.js';
 import LoginTab from './loginTab/loginTab.js';
 import RegisterTab from './registerTab/registerTab.js';
-import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
 
 import "./loginRegisterModal.css";
 
 export default function LoginRegisterModal(props) {
-
     const [tab, setTab] = useState(true);
     
-
     useEffect(() => {
         
     }, []);
@@ -39,13 +36,41 @@ export default function LoginRegisterModal(props) {
             setNotification("Invalid username or password.");
     }
 
+    const handleRegister = async (username, password, setNotification) => {
+        const body = JSON.stringify({
+            "username": username,
+            "email": "temp@email.com",
+            "password": password,
+            "firstName": "firstName",
+            "lastName": "lastName",
+        });
+
+        const settings = {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: body
+        }
+
+        const response = await fetch("api/register", settings);
+        if(response.status === 201) {
+            //const json = await response.json();
+            setTab(true);
+            setNotification("");
+        }
+        else if(response.status === 401) {
+            setNotification("Username is already taken.");
+        }
+    }
+
     const setContent = () => {
 
             if(tab) 
                 return( <LoginTab handleLogin={handleLogin}/> );
             
             else 
-                return ( <RegisterTab /> );
+                return ( <RegisterTab handleRegister={handleRegister}/> );
         
     }
 

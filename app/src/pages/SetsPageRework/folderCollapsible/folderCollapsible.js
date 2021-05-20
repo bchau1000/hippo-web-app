@@ -17,9 +17,7 @@ export default function FolderCollapsible(props) {
     const folder = props.folder;
 
     useEffect(() => {
-        let setLen = folder.sets.length;
-        if (props.isFolder)
-            setLen += 1;
+        let setLen = folder.sets.length + 1;
 
         if (width > 1280)
             // 4 per row
@@ -47,6 +45,29 @@ export default function FolderCollapsible(props) {
         event.stopPropagation();
         const newSets = folder.sets.filter((set) => set.id !== setId);
         props.onEditFolder(null, folder, newSets);
+    }
+
+    const showAddCard = () => {
+        if (!props.isFolder)
+            return (
+                <button
+                    className="add-set-card"
+                    onClick={() => window.location.href = "/sets/new"}
+                >
+                    <span className="material-icons">add</span>
+                    <span>&nbsp;Create</span>
+                </button>
+            )
+        else
+            return (
+                <button
+                    className="add-set-card"
+                    onClick={() => setShowEditModal(true)}
+                >
+                    <span className="material-icons">edit</span>
+                    <span>&nbsp;Edit folder</span>
+                </button>
+            )
     }
 
     return (
@@ -119,14 +140,8 @@ export default function FolderCollapsible(props) {
                         })
                     }
 
-                    {props.isFolder && owner &&
-                        <button
-                            className="add-set-card"
-                            onClick={() => setShowEditModal(true)}
-                        >
-                            <span className="material-icons">edit</span>
-                            <span>&nbsp;Edit folder</span>
-                        </button>
+                    {owner && showAddCard()
+                        
                     }
 
                 </div>
