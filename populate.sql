@@ -9,10 +9,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-DROP DATABASE IF EXISTS study_buddy_db;
-CREATE DATABASE study_buddy_db;
-USE study_buddy_db;
-
 --
 -- Table structure for table `flash_cards`
 --

@@ -299,7 +299,9 @@ app.put("/api/folders/new", authUser, (request, response) => {
 
                             response.status(201).send({
                                 'status': 201,
-                                'content': "Added new folder with sets",
+                                'content': {
+                                    "folder_id": folder_id,
+                                },
                             });
                         }
                     )
@@ -458,7 +460,7 @@ app.put("/api/sets/new", authUser, (request, response) => {
                     for (let i = 0; i < numCards; i++) {
                         values.push(new Array(
                             flashCards[i].term,
-                            flashCards[i].def,
+                            flashCards[i].definition,
                             1,
                             result.insertId));
                     }
@@ -775,7 +777,8 @@ app.post('/api/owner/folders', authUser, (request, response) => {
                         'message': error,
                     });
                 }
-
+                console.log(folder_id + " " + user_id);
+                console.log(result);
                 if (result[0].count < 1) {
                     console.log('403 Forbidden: "/api/owner/folders"');
                     response.status(401).send({

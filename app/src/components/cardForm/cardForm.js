@@ -29,7 +29,7 @@ export default function CardForm(props) {
                 <TextareaAutosize
                     form="card-form"
                     placeholder="Enter definition"
-                    value={props.info.def}
+                    value={props.info.definition}
                     onChange={event => props.setDef(props.cardNum, event.target.value)}
                 />
                 <label htmlFor="card-def">DEFINITION</label>

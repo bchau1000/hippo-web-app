@@ -44,7 +44,9 @@ export default function AddFolderModal(props) {
 
             const response = await fetch("/api/folders/new", settings);
             if (response.status === 201) {
+                const json = await response.json();
                 const newFolder = {
+                    "id": json.content.folder_id,
                     "name": folderName,
                     "sets": selectedSets
                 }

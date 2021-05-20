@@ -3,8 +3,6 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    /*margin-left: -90%;*/
-    overflow: hidden;
 }
 
 .edit-set-show {

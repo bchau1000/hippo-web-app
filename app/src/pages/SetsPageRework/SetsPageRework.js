@@ -42,6 +42,7 @@ export default function SetsPageRework(props) {
             if (response.status === 201) {
                 json = await response.json();
                 setFolders(json);
+                
             }
             if (await isOwner(username))
                 setOwner(true);

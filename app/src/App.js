@@ -53,8 +53,12 @@ export default function App(props) {
     }, []);
 
     useEffect(() => {
-        if (width < 768)
+        if (width <= 1025)
             setShowDropdown(false);
+        else
+            setShowDropdown(true);
+        
+        
     }, [width]);
 
     useEffect(() => {
@@ -79,10 +83,10 @@ export default function App(props) {
                 </div>
                 <div className={`sidebar-margin ${showDropdown ? 'sidebar-transition-true' : ""}`}/>
 
-
                 <Navbar
                     onClick={() => setShowDropdown(current => !current)}
                     showDropdown={showDropdown}
+                    width={width}
                     user={user}
                 />
                 <Switch>

@@ -68,6 +68,11 @@ a {
     margin-right: 20px;
 }
 
+.navbar-container .left .placeholder-margin {
+
+    margin-right: 25px;
+}
+
 .navbar-container .left .dropdown .material-icons{
     font-size: 30px;
     color: rgb(238, 238, 238);

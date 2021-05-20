@@ -81,7 +81,6 @@ export default function EditFolderModal(props) {
                                 props.setShowEditModal(false);
                             }
                         }
-
                     >
                         Submit
                     </button>

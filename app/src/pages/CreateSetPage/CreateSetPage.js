@@ -14,11 +14,11 @@ class CreateSet extends React.Component {
             flash_cards: [
                 {
                     "term": "",
-                    "def": "",
+                    "definition": "",
                 },
                 {
                     "term": "",
-                    "def": "",
+                    "definition": "",
                 },
             ],
         }
@@ -44,13 +44,13 @@ class CreateSet extends React.Component {
         if (front) {
             new_flash_cards.unshift({
                 "term": "",
-                "def": "",
+                "definition": "",
             });
         }
         else {
             new_flash_cards.push({
                 "term": "",
-                "def": "",
+                "definition": "",
             });
         }
 
@@ -77,7 +77,7 @@ class CreateSet extends React.Component {
 
         new_flash_cards[index] = {
             "term": "",
-            "def": "",
+            "definition": "",
         }
 
         this.setState({
@@ -90,7 +90,7 @@ class CreateSet extends React.Component {
 
         new_flash_cards[index] = {
             "term": term,
-            "def": this.state.flash_cards[index].def,
+            "definition": this.state.flash_cards[index].definition,
         }
 
         this.setState({
@@ -98,11 +98,11 @@ class CreateSet extends React.Component {
         });
     }
 
-    setCardDef = (index, def) => {
+    setCardDef = (index, definition) => {
         let new_flash_cards = this.state.flash_cards.slice();
         new_flash_cards[index] = {
             "term": this.state.flash_cards[index].term,
-            "def": def,
+            "definition": definition,
         }
         this.setState({
             flash_cards: new_flash_cards,
@@ -117,7 +117,7 @@ class CreateSet extends React.Component {
             let new_flash_cards = [];
 
             for(let i = 0; i < flash_cards.length; i++) 
-                if(flash_cards[i].term.length || flash_cards[i].def.length)
+                if(flash_cards[i].term.length || flash_cards[i].definition.length)
                     new_flash_cards.push(flash_cards[i]);
             
             const newSet = JSON.stringify({
@@ -137,14 +137,11 @@ class CreateSet extends React.Component {
 
             const response = await fetch(API_URL, settings);
 
-            if(response.status === 201) {
-                const json = await response.json();
-                console.log(json);
-                
-            }
-            else {
+            if(response.status === 201) 
+                window.location.href = "/" + user.username + "/sets";
+            else 
                 console.log('Error inserting new set');
-            }
+
         }
     }
 

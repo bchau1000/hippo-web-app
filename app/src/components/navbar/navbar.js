@@ -1,10 +1,19 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import "./navbar.css";
 
 const API_URL = "/api/logout";
 
 export default function Navbar(props) {
     const [awaitResp, setAwaitResp] = useState(false);
+    const [showButton, setShowButton] = useState(true);
+    const width = props.width;
+
+    useEffect(() => {
+        if (width <= 1025)
+            setShowButton(true);
+        else
+            setShowButton(false);
+    }, [width]);
 
     const sendRequest = useCallback(async () => {
         if (awaitResp)
@@ -60,13 +69,17 @@ export default function Navbar(props) {
     return (
         <div className="navbar-container no-select">
             <div className="left">
-                <div className="dropdown" onClick={() => { props.onClick() }}>
-                    {
-                        props.showDropdown
-                            ? <span className="material-icons">close</span>
-                            : <span className="material-icons">reorder</span>
-                    }
-                </div>
+                {showButton
+                    ? <div className="dropdown" onClick={() => { props.onClick() }}>
+                        {
+                            props.showDropdown
+                                ? <span className="material-icons">close</span>
+                                : <span className="material-icons">reorder</span>
+                        }
+                        </div>
+                    : <div className="placeholder-margin"> </div>
+                }
+
                 <div className="title">
                     <a href="/">Hippo.</a>
                 </div>
@@ -76,9 +89,6 @@ export default function Navbar(props) {
                 {
                     loginOptions(props.user)
                 }
-                <a className="button" href="/" onClick={() => localStorage.clear()}>
-                    <span >Clear</span>
-                </a>
             </div>
         </div>
     )

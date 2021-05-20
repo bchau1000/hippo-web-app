@@ -39,11 +39,11 @@ html, body, #root, #root>div {
     grid-area: sidebar;
     width: 150px;
     margin-left: -250px;
-    transition: margin .5s;
+    transition: margin .26s;
 }
 
 .sidebar-transition {
-    transition: margin .5s;
+    transition: margin .26s;
     margin-left: -250px;
 }
 

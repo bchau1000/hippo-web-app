@@ -9,7 +9,7 @@ const API_URL = "/api/sets/";
 export default function StudyPage(props) {
     const set_id = props.match.params.set_id;
     const [title, setTitle] = useState("");
-    //const [desc, setDesc] = useState("");
+    const [desc, setDesc] = useState("");
     const [flashCards, setFlashCards] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -26,7 +26,7 @@ export default function StudyPage(props) {
             if (response.status === 201) {
                 const json = await response.json();
                 setTitle(json.title);
-                //setDesc(json.desc);
+                setDesc(json.description);
                 setFlashCards(json.flash_cards);
             }
             else {
