@@ -9,16 +9,14 @@ import "./loginRegisterModal.css";
 export default function LoginRegisterModal(props) {
 
     const [tab, setTab] = useState(true);
-    const [loading, setLoading] = useState(false);
+    
 
     useEffect(() => {
-
+        
     }, []);
 
     const handleLogin = async (event, username, password, setNotification) => {
         event.preventDefault();
-
-        setLoading(true);
         const body = JSON.stringify({
             "username": username,
             "password": password
@@ -39,31 +37,16 @@ export default function LoginRegisterModal(props) {
         }
         else
             setNotification("Invalid username or password.");
-        setLoading(false);
     }
 
     const setContent = () => {
-        if(loading) {
-            return(
-                <div className="lr-loading-container">
-                    <LoadingAnim />
-                </div>
-                
-            )
-        }
-        else {
-            if(tab) {
-                return(
-                    <LoginTab
-                        handleLogin={handleLogin}
-                    />
-                )
-            }
-            else {
-                <RegisterTab
-                />
-            }
-        }
+
+            if(tab) 
+                return( <LoginTab handleLogin={handleLogin}/> );
+            
+            else 
+                return ( <RegisterTab /> );
+        
     }
 
     return (

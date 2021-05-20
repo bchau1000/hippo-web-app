@@ -55,13 +55,18 @@
     margin-top: 15px;
     font-size: 19px;
     background-color: var(--color-accent);
-    width: 70%;
+    width: 100%;
 
     padding-top: 10px;
     padding-bottom: 10px;
     transition: background-color 0.26s;
     border-radius: 5px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.login-tab-button-container {
+    width: 70%;
+    max-height: 50px;
 }
 
 .login-tab-form-container button:hover{

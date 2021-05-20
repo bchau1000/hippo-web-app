@@ -13,22 +13,22 @@ export default function Sidebar(props) {
                     </a>
                 </li>
                 <li className="sidebar-item">
-                    <a
+                    <button
                         className="sidebar-link-wrapper"
-                        href={props.user === null ? "/login" : "/" + props.user.username + "/sets"}
+                        onClick={() =>props.user === null ? props.setShowLoginModal(true) : window.location.href = "/" + props.user.username + "/sets"}
                     >
                         <span className="material-icons">layers</span>
                         <span htmlFor="sets">Sets</span>
-                    </a>
+                    </button>
                 </li>
                 <li className="sidebar-item">
-                    <a
+                    <button
                         className="sidebar-link-wrapper"
-                        href={props.user === null ? "/login" : "/sets/new"}
+                        onClick={() =>props.user === null ? props.setShowLoginModal(true) : window.location.href = "/sets/new"}
                     >
                         <span className="material-icons">library_add</span>
-                        <span htmlFor="create">Create</span>
-                    </a>
+                        <span htmlFor="sets">Create</span>
+                    </button>
                 </li>
                 <li className="sidebar-item">
                     <a className="sidebar-link-wrapper" href="/sandbox">
