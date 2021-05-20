@@ -24,44 +24,12 @@ class WelcomePage extends React.Component {
                     <div className="banner-title-container">
                         <span className="banner-title">Hippo.</span>
                         <span className="banner-summary">Create, browse, and learn from study sets to help you improve your grades. </span>
-                        <a className="start-container" href="/">
+                        <button className="start-container" onClick={() => this.props.setShowLoginModal(true)}>
                             <span className="start-text">Get Started</span>
-                        </a>
+                        </button>
                     </div>
                 </div>
-                <div className="features-container">
-
-                        <div className="features-grid-item">
-                            <span className="features-header">
-                                Create
-                            </span>
-                            <p className="features-info">
-                                Insert some flavor text describing the parts of our app that support this header.
-                                Insert some flavor text describing the parts of our app that support this header.
-                                Insert some flavor text describing the parts of our app that support this header.
-                            </p>
-                        </div>
-                        <div className="features-grid-item">
-                            <span className="features-header">
-                                Browse
-                            </span>
-                            <p className="features-info">
-                                Insert some flavor text describing the parts of our app that support this header.
-                                Insert some flavor text describing the parts of our app that support this header.
-                                Insert some flavor text describing the parts of our app that support this header.
-                            </p>
-                        </div>
-                        <div className="features-grid-item">
-                            <span className="features-header">
-                                Learn
-                            </span>
-                            <p className="features-info">
-                                Insert some flavor text describing the parts of our app that support this header.
-                                Insert some flavor text describing the parts of our app that support this header.
-                                Insert some flavor text describing the parts of our app that support this header.
-                            </p>
-                        </div>
-                </div>
+                
             </section>
         );
     }

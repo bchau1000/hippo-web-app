@@ -669,9 +669,11 @@ app.post("/api/login", (request, response) => {
                     }
                     );
 
-                    response.status(201).send({
-                        'status': 201,
-                        'message': 'User successfully signed in.'
+                    response.status(200).send({
+                        'status': 200,
+                        'content': {
+                            'username': result[0].username,
+                        }
                     });
 
                 }

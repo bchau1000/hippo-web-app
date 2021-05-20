@@ -52,9 +52,9 @@ export default function Navbar(props) {
     function loginOptions(user) {
         if (user === null) {
             return (
-                <a href="/login" className="button">
+                <button className="button" onClick={() => {props.setShowLoginModal(true);}}>
                     <span>Login</span>
-                </a>
+                </button>
             );
         }
         else {

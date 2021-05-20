@@ -2,7 +2,14 @@ a {
     color: white;
     text-decoration: none;
 }
-
+.navbar-container button {
+    color: white;
+    border: none;
+    background-color: rgba(0, 0, 0,0 );
+}
+.navbar-container button:hover{
+    cursor: pointer;
+}
 .navbar-container {
     position: fixed;
     grid-area: header;

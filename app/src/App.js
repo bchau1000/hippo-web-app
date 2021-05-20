@@ -1,5 +1,5 @@
 import "./App.css";
-
+import LoginRegisterModal from 'components/loginRegisterModal/loginRegisterModal.js';
 import BrowsePage from "pages/BrowsePage/BrowsePage.js";
 import CreateSetPage from "pages/CreateSetPage/CreateSetPage.js";
 import EditSetPage from "pages/EditSetPage/EditSetPage.js";
@@ -23,6 +23,7 @@ export default function App(props) {
     const [user, setUser] = useState(null);
     const localSD = JSON.parse(localStorage.getItem('showDropdown'));
     const [showDropdown, setShowDropdown] = useState((localSD !== null) ? localSD : false);
+    const [showLoginModal, setShowLoginModal] = useState(false);
     const width = useViewport();
 
     useEffect(() => {
@@ -74,10 +75,15 @@ export default function App(props) {
             </Switch>
 
             <div className="main-container">
+                <LoginRegisterModal
+                    showModal={showLoginModal}
+                    closeModal={setShowLoginModal}
+                />
                 <div className={`sidebar-transition ${showDropdown ? 'sidebar-transition-true' : ""}`} >
                     <Sidebar
                         onFocus={() => setShowDropdown(false)}
                         showDropdown={showDropdown}
+                        setShowLoginModal={setShowLoginModal}
                         user={user}
                     />
                 </div>
@@ -86,12 +92,13 @@ export default function App(props) {
                 <Navbar
                     onClick={() => setShowDropdown(current => !current)}
                     showDropdown={showDropdown}
+                    setShowLoginModal={setShowLoginModal}
                     width={width}
                     user={user}
                 />
                 <Switch>
                     <Route exact path="/sandbox" render={(props) => <SandBox {...props}/>} />
-                    <Route exact path="/" component={WelcomePage} />
+                    <Route exact path="/" render={(props) => <WelcomePage setShowLoginModal={setShowLoginModal} {...props}/>} />
                     <Route exact path="/:username/sets" render={(props) => <SetsPageRework width={width} {...props}/>} />
                     <Route exact path="/sets/:set_id/edit" render={(props) => <EditSetPage user={user} {...props}/>} />
                     <Route exact path="/sets/new" render={(props) => <CreateSetPage user={user} {...props}/>} />

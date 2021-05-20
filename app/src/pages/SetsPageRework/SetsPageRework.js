@@ -16,6 +16,7 @@ export default function SetsPageRework(props) {
     const [folders, setFolders] = useState([]);
     const [allSets, setAllSets] = useState([]);
     const [showFolderModal, setShowFolderModal] = useState(false);
+    const [showLoginModal, setShowLoginModal] = useState(false);
     const bottomOfPage = useRef();
 
     useEffect(() => {

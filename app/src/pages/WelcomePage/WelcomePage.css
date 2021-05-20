@@ -4,25 +4,19 @@
 }
 
 .welcome-container {
-    /*
-        Set grid area coverage welcome page should cover whole screen
-    */
     grid-area: content;
-    
-    display: grid;
-    grid-template-rows: 60% auto;
-    grid-template-areas:
-    "banner"
-    "features";
+    display: flex;
+    justify-content: center;
+    margin-top: 4%;
+
 }
 
 .banner-container {
-    grid-area: banner;
     background-color: var(--color-bg);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+
 }
 
 .banner-title-container{
@@ -47,6 +41,9 @@
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s;
+    border-radius: 5px;
+    border: none;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .start-text {
@@ -56,56 +53,20 @@
 
 .start-container:hover {
     background-color: rgba(22, 206, 120, 0.8);
+    cursor: pointer;
+    
 }
 
 .banner-summary {
     font-size: 1.5em;
 }
-
-.features-container {
-    grid-area: features;
-    height: auto;
-    width: 100%;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-
-.features-grid-item {
-    max-width: 300px;
-    height: 80%;
-    display: flex;
-    flex-direction: column;
-    margin-top: 15px;
-    margin-left: 15px;
-    margin-right: 15px;
-}
-
-.features-header {
-    width: 100%;
-    height: 15px;
-
-    font-weight: bold;
-    font-size: 24px;
-    color: var(--color-text);
-}
-
-.features-info {
-    font-size: 17px;
-    width: 100%;
-    height: fit-content;
-    color: var(--color-text);
-}
-
 @media (max-width: 600px) {
-    .features-container {
-        flex-direction: column;
-    }
-
+    .welcome-container {
+        grid-area: content;
+        display: flex;
+        justify-content: center;
+        margin-top: 25%;
+    }    
     .banner-title{
         margin-left: 15px;
         font-size: 6em;

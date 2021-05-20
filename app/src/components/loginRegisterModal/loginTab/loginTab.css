@@ -1,0 +1,77 @@
+.login-tab-container ::placeholder {
+    opacity: 1;
+}
+
+.login-tab-container button{
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.login-tab-container {
+    grid-area: lr-modal-content;
+
+    height: 100%;
+    width: 100%;
+    background-color: var(--color-fg);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.login-tab-notification {
+    font-size: 16px;
+    min-height: 20px;
+}
+
+.login-tab-form-container {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10%;
+}
+
+.login-tab-form-container input{
+    border: none;
+    font-size: 16px;
+    width: 70%;
+    border-bottom: 2px solid rgba(24, 24, 24, 0.1);
+    padding-bottom: 9px;
+    transition: border-bottom 0.26s;
+}
+
+.login-tab-form-container input:focus{
+    outline: none;
+    border-bottom: 2px solid var(--color-accent);
+}
+
+.login-tab-form-container button{
+    margin-top: 15px;
+    font-size: 19px;
+    background-color: var(--color-accent);
+    width: 70%;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+    transition: background-color 0.26s;
+    border-radius: 5px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.login-tab-form-container button:hover{
+    cursor: pointer;
+    background-color: rgba(22, 206, 120, 0.7);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}

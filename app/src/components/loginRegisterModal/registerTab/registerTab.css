@@ -1,0 +1,12 @@
+.register-tab-container {
+    grid-area: lr-modal-content;
+    
+    height: 100%;
+    width: 100%;
+    background-color: var(--color-fg);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
