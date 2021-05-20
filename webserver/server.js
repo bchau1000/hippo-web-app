@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 const async = require("async");
 const pool = require("./config");
 const app = express();
-const port = 9000;
+const port = process.env.PORT || 9000;
 
 // Master access tokens for JWT, MUST CHANGE DURING DEPLOYMENT
 const secretToken = "secret_token";
