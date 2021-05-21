@@ -7,15 +7,18 @@ export default function Sidebar(props) {
 
             <ul className="sidebar-items-container">
                 <li className="sidebar-item">
-                    <a className="sidebar-link-wrapper" href="/browse">
+                    <button
+                        className="sidebar-link-wrapper"
+                        onClick={() => {window.location.href="/browse"}}
+                    >
                         <span className="material-icons">search</span>
-                        <span htmlFor="home">Browse</span>
-                    </a>
+                        <span htmlFor="sets">Browse</span>
+                    </button>
                 </li>
                 <li className="sidebar-item">
                     <button
                         className="sidebar-link-wrapper"
-                        onClick={() =>props.user === null ? props.setShowLoginModal(true) : window.location.href = "/" + props.user.username + "/sets"}
+                        onClick={() => props.user === null ? props.setShowLoginModal(true) : window.location.href = "/" + props.user.username + "/sets"}
                     >
                         <span className="material-icons">layers</span>
                         <span htmlFor="sets">Sets</span>
@@ -24,17 +27,20 @@ export default function Sidebar(props) {
                 <li className="sidebar-item">
                     <button
                         className="sidebar-link-wrapper"
-                        onClick={() =>props.user === null ? props.setShowLoginModal(true) : window.location.href = "/sets/new"}
+                        onClick={() => props.user === null ? props.setShowLoginModal(true) : window.location.href = "/sets/new"}
                     >
                         <span className="material-icons">library_add</span>
                         <span htmlFor="sets">Create</span>
                     </button>
                 </li>
                 <li className="sidebar-item">
-                    <a className="sidebar-link-wrapper" href="/sandbox">
+                    <button
+                        className="sidebar-link-wrapper"
+                        onClick={() => {window.location.href="/sandbox"}}
+                    >
                         <span className="material-icons">settings</span>
-                        <span htmlFor="settings">Sandbox</span>
-                    </a>
+                        <span htmlFor="sets">Sandbox</span>
+                    </button>
                 </li>
             </ul>
         </div>

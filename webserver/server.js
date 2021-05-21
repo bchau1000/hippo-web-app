@@ -101,14 +101,13 @@ app.get("/api/:username/sets", (request, response) => {
             ,
             username,
             (error, result) => {
-                if (error) response.status(400).send(error);
+                if (error) 
+                    response.status(400).send(error);
+
                 if (result)
                     response.status(201).send(result);
-                else {
+                else
                     response.status(404).send("404 Not Found");
-                }
-
-
             }
         );
     }
