@@ -11,7 +11,7 @@ export default function LoginTab(props) {
 
     useEffect(() => {
     }, []);
-
+    
 
     return (
         <div className="login-tab-container">
@@ -24,8 +24,7 @@ export default function LoginTab(props) {
                     <button
                         onClick={async (event) => {
                             setLoading(true);
-                            await props.handleLogin(event, username, password, setNotification)
-                            setLoading(false);
+                            await props.handleLogin(event, username, password, setNotification, setLoading);
                             setUsername("");
                             setPassword("");
                         }}

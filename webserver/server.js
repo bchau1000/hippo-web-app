@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const async = require("async");
 const pool = require("./config");
+const { request } = require('http');
 const app = express();
 const port = process.env.PORT || 9000;
 
@@ -66,7 +67,7 @@ app.get("/api/test", (_, response) => {
                 if (error) {
                     console.log('400 Bad Request: "/api/test"');
                     response.status(400).send(error);
-                } 
+                }
 
                 if (result.length) {
                     console.log('200 Ok: "/api/test"');
@@ -101,7 +102,7 @@ app.get("/api/:username/sets", (request, response) => {
             ,
             username,
             (error, result) => {
-                if (error) 
+                if (error)
                     response.status(400).send(error);
 
                 if (result)
@@ -353,7 +354,7 @@ app.put("/api/folders/edit", authUser, (request, response) => {
                 );
             },
             function (callback) {
-                if(length > 0) {
+                if (length > 0) {
                     pool.query(
                         "INSERT INTO folders_and_sets(folder_id, set_id) VALUES ?;",
                         [insertValues],
@@ -372,7 +373,7 @@ app.put("/api/folders/edit", authUser, (request, response) => {
                 }
                 else
                     callback(null, null);
-                
+
             }
         ], function (error, result) {
             if (error) {
@@ -579,21 +580,21 @@ app.delete("/api/sets/delete", authUser, (request, response) => {
 
 // TO DO: Register a new user
 app.put("/api/register", (request, response) => {
-    const user = [request.body.username, request.body.email, request.body.password,
+    const user = [request.body.username, request.body.password,
     request.body.firstName, request.body.lastName];
-    console.log("hello");
+
     try {
         pool.query(
-            "INSERT INTO users(username, email, password, first_name, last_name) VALUES(?, ?, ?, ?, ?)",
+            "INSERT INTO users(username, password, first_name, last_name) VALUES(?, ?, ?, ?)",
             user,
             (error, result) => {
                 if (error) {
-                    if(error.code === 'ER_DUP_ENTRY') {
+                    if (error.code === 'ER_DUP_ENTRY') {
                         response.status(401).send({
                             'status': 401,
                             'message': 'Username is already taken.'
                         });
-            
+
                     }
                     else
                         response.status(400).send(error);
@@ -813,11 +814,11 @@ app.post('/api/owner/folders', authUser, (request, response) => {
 
 });
 
-app.post('/api/owner/username', authUser, (request, response) => { 
+app.post('/api/owner/username', authUser, (request, response) => {
     const requestUsername = request.user.username;
     const ownerUsername = request.body.username;
 
-    if(requestUsername === ownerUsername) {
+    if (requestUsername === ownerUsername) {
         console.log('200 Created: "/api/owner/username"');
         response.status(201).send({
             "status": 201,
@@ -831,7 +832,7 @@ app.post('/api/owner/username', authUser, (request, response) => {
             "content": ownerUsername,
         })
     }
-    
+
 });
 
 app.post('/api/token', (request, response) => {
@@ -840,18 +841,18 @@ app.post('/api/token', (request, response) => {
     if (!token) {
         response.status(401);
     }
-        
+
 
     if (!refreshTokens.includes(token)) {
         response.status(403);
     }
-        
+
 
     jwt.verify(token, refreshSecretToken, (error, user) => {
         if (error) {
             response.status(403);
         }
-            
+
         const accessToken = jwt.sign(
             {
                 id: user.id,
@@ -866,8 +867,158 @@ app.post('/api/token', (request, response) => {
 
 // END REGISTER/LOGIN FUNCTIONS
 
+const generateBrowseQuery = (request, _, next) => {
+    let sqlQuery =
+        "FROM (sets as s LEFT JOIN (sets_and_tags as st JOIN tags as t ON st.tag_id = t.id) ON s.id = st.set_id), users as u\n" +
+        "WHERE u.id = s.user_id";
+
+    let sqlValues = new Array();
+    let tagsLength = 0;
+    let url = request.path + "?";
+
+    const query = request.query;
+    const page = Number.parseInt(query.page && query.page > 0 ? query.page : 1);
+    const limit = Number.parseInt(query.limit && query.limit > 0 ? query.limit : 30);
+    const offset = (page - 1) * limit;
+
+    if (query.username) {
+        sqlQuery += " AND u.username LIKE ?";
+        sqlValues.push("%" + query.username + "%");
+        url += "username=" + query.username + "&";
+    }
+
+    if (query.title) {
+        sqlQuery += " AND s.title LIKE ?";
+        sqlValues.push("%" + query.title + "%");
+        url += "title=" + query.title + "&";
+    }
+
+    if (query.tags) {
+        tagsLength = 1;
+        sqlQuery += " AND t.name IN(?";
+
+        if (Array.isArray(query.tags)) {
+            tagsLength = query.tags.length;
+            sqlValues.push(query.tags[0]);
+
+            for (let i = 1; i < tagsLength; i++) {
+                sqlQuery += ", ?";
+                sqlValues.push(query.tags[i]);
+                url += "tags=" + query.tags[i] + "&";
+            }
+        }
+        else {
+            sqlValues.push(query.tags);
+            url += "tags=" + query.tags + "&";
+        }
+            
+
+        sqlQuery += ")";
+        sqlValues.push(tagsLength);
+    }
+    sqlQuery += "\nGROUP BY s.id";
+
+    if (tagsLength)
+        sqlQuery += "\nHAVING COUNT(*) >= ?";
+
+    request.countQuery = "SELECT DISTINCT COUNT(*) OVER () as count\n" + sqlQuery + ";";
+    request.countValues = sqlValues.slice();
+
+    sqlQuery += "\nLIMIT ?, ?;";
+    sqlValues.push(offset);
+    sqlValues.push(limit);
+
+    request.page = page;
+    request.limit = limit;
+    request.newUrl = url;
+
+    request.sqlQuery = "SELECT DISTINCT s.id, s.title, u.username\n" + sqlQuery;
+    request.sqlValues = sqlValues;
+    next();
+}
+
+app.get("/api/browse", generateBrowseQuery, (request, response) => {
+    const { 
+        newUrl,
+        page,
+        limit,
+        sqlQuery, 
+        sqlValues, 
+        countQuery, 
+        countValues 
+    } = request;
+
+    try {
+        async.series(
+            [
+                function (callback) {
+                    pool.query(
+                        countQuery,
+                        countValues,
+                        (error, result) => {
+                            if (error) {
+                                response.status(400).send({
+                                    "status": 400,
+                                    "content": error,
+                                });
+                            }
+
+                            if (result[0])
+                                callback(null, result[0].count);
+                            else
+                                callback(null, 0);
+                        }
+                    )
+                },
+                function (callback) {
+                    pool.query(
+                        sqlQuery,
+                        sqlValues,
+                        (error, result) => {
+                            if(error) {
+                                response.status(400).send({
+                                    "status": 400,
+                                    "content": error,
+                                });
+                            }
+                            callback(null, result);
+                        }
+                    )
+                }
+            ],
+            function (error, result) {
+                if (error) {
+                    response.status(400).send({
+                        "status": 400,
+                        "content": error,
+                    })
+                }
+
+                const offset = (page - 1) * limit;
+                const count = result[0];
+                
+
+                response.status(200).send({
+                    next: (offset + limit < count && count > 0 ? newUrl + "page=" + (page + 1) + "&limit=" + limit : null),
+                    prev: (page > 1  && count > 0 ? newUrl + "page=" + (page - 1) + "&limit=" + limit : null),
+                    page: page,
+                    limit: limit,
+                    count: count,
+                    sets: result[1]
+                })
+            }
+        )
+    }
+    catch (error) {
+        response.status(404).send({
+            "status": 404,
+            "content": error,
+        });
+    }
+})
+
 app.get("*", (request, response) => {
-    response.sendFile(path.join(__dirname + '/../app/build/index.html'));
+    //response.sendFile(path.join(__dirname + '/../app/build/index.html'));
 });
 
 app.listen(port, () => {

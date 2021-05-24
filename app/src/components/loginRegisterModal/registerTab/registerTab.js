@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-
+import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
 import "./registerTab.css";
 
 export default function RegisterTab(props) {
@@ -7,6 +7,7 @@ export default function RegisterTab(props) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
 
@@ -14,7 +15,7 @@ export default function RegisterTab(props) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        setLoading(true);
         if(password.length < 8) {
             setNotification("Password should be at least 8 characters.");
         }
@@ -24,6 +25,7 @@ export default function RegisterTab(props) {
         else {
             await props.handleRegister(username, password, setNotification);
         }
+        setLoading(false);
     }
 
     return (
@@ -34,9 +36,16 @@ export default function RegisterTab(props) {
                 <input type="password" placeholder="Password" onChange={(event) => {setPassword(event.target.value)}}/>
                 <input type="password" placeholder="Confirm Password" onChange={(event) => {setConfirmPassword(event.target.value)}}/>
                 <div className="register-tab-button-container">
-                    <button onClick={(event) => handleSubmit(event)}>
-                        Register
-                    </button>
+                    {!loading ?
+                        <button onClick={(event) => handleSubmit(event)}>
+                            Register
+                        </button>
+                        : 
+                        <button disabled>
+                            Register
+                        </button>
+                    }
+                    
                 </div>
             </form>
         </div>

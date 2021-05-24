@@ -43,6 +43,18 @@ CREATE TABLE flash_cards(
   set_id int REFERENCES study_sets(id)
 );
 
+DROP TABLE IF EXISTS tags;
+CREATE TABLE tags(
+	id int PRIMARY KEY auto_increment,
+    name VARCHAR(40) NOT NULL UNIQUE
+);
+
+DROP TABLE IF EXISTS sets_and_tags;
+CREATE TABLE sets_and_tags(
+	set_id int REFERENCES sets(id),
+    tag_id int REFERENCES tags(id)
+);
+
 DROP TABLE IF EXISTS folders_and_sets;
 CREATE TABLE folders_and_sets(
 	folder_id int REFERENCES folders(id),

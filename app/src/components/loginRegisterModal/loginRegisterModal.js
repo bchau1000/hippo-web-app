@@ -12,7 +12,7 @@ export default function LoginRegisterModal(props) {
         
     }, []);
 
-    const handleLogin = async (event, username, password, setNotification) => {
+    const handleLogin = async (event, username, password, setNotification, setLoading) => {
         event.preventDefault();
         const body = JSON.stringify({
             "username": username,
@@ -32,8 +32,10 @@ export default function LoginRegisterModal(props) {
             const json = await response.json();
             window.location.href = "/" + json.content.username + "/sets";
         }
-        else
+        else {
             setNotification("Invalid username or password.");
+            setLoading(false);
+        }
     }
 
     const handleRegister = async (username, password, setNotification) => {
