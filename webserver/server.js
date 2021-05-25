@@ -783,9 +783,8 @@ app.post('/api/owner/folders', authUser, (request, response) => {
                         'message': error,
                     });
                 }
-                console.log(folder_id + " " + user_id);
-                console.log(result);
-                if (result[0].count < 1) {
+                if (result.length < 1) {
+                    
                     console.log('403 Forbidden: "/api/owner/folders"');
                     response.status(401).send({
                         'status': 401,
@@ -793,6 +792,7 @@ app.post('/api/owner/folders', authUser, (request, response) => {
                     })
                 }
                 else {
+                    console.log(result);
                     console.log('200 Ok: "/api/owner/folders"');
                     response.status(201).send({
                         'status': 201,
@@ -962,7 +962,7 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
                                 });
                             }
 
-                            if (result[0])
+                            if (result.length)
                                 callback(null, result[0].count);
                             else
                                 callback(null, 0);
@@ -995,10 +995,8 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
                     })
                 }
 
+                let count = result[0];
                 const offset = (page - 1) * limit;
-                const count = result[0];
-                
-
                 response.status(200).send({
                     next: (offset + limit < count && count > 0 ? newUrl + "page=" + (page + 1) + "&limit=" + limit : null),
                     prev: (page > 1  && count > 0 ? newUrl + "page=" + (page - 1) + "&limit=" + limit : null),
@@ -1019,7 +1017,7 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
 })
 
 app.get("*", (request, response) => {
-    response.sendFile(path.join(__dirname + '/../app/build/index.html'));
+    //response.sendFile(path.join(__dirname + '/../app/build/index.html'));
 });
 
 app.listen(port, () => {
