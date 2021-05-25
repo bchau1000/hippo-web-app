@@ -66,23 +66,23 @@ app.get("/api/test", (_, response) => {
             (error, result) => {
                 if (error) {
                     console.log('400 Bad Request: "/api/test"');
-                    response.status(400).send(error);
+                    return response.status(400).send(error);
                 }
 
                 if (result.length) {
                     console.log('200 Ok: "/api/test"');
-                    response.status(200).send(result);
+                    return response.status(200).send(result);
                 }
                 else {
                     console.log('404 Not Found: "/api/test"');
-                    response.status(404).send("400 Not Found");
+                    return response.status(404).send("400 Not Found");
                 }
             }
         );
     }
     catch (err) {
         console.log('404 Not Found: "/api/test"');
-        response.status(404).send(err);
+        return response.status(404).send(err);
     }
 })
 
@@ -103,17 +103,17 @@ app.get("/api/:username/sets", (request, response) => {
             username,
             (error, result) => {
                 if (error)
-                    response.status(400).send(error);
+                    return response.status(400).send(error);
 
                 if (result)
-                    response.status(201).send(result);
+                    return response.status(201).send(result);
                 else
-                    response.status(404).send("404 Not Found");
+                    return response.status(404).send("404 Not Found");
             }
         );
     }
     catch (err) {
-        response.status(404).send(err);
+        return response.status(404).send(err);
     }
 });
 
@@ -132,7 +132,7 @@ app.get("/api/sets/:set_id/cards", (request, response) => {
             "WHERE s.id = f.set_id AND s.id = ?",
             set_id,
             (error, result) => {
-                if (error) response.status(400).send(error);
+                if (error) return response.status(400).send(error);
                 else {
 
                     const length = result.length;
@@ -153,10 +153,10 @@ app.get("/api/sets/:set_id/cards", (request, response) => {
                                 "definition": result[i].definition,
                             });
                         }
-                        response.status(201).send(send)
+                        return response.status(201).send(send)
                     }
                     else {
-                        response.status(404).send("404 Not Found");
+                        return response.status(404).send("404 Not Found");
                     }
 
 
@@ -164,7 +164,7 @@ app.get("/api/sets/:set_id/cards", (request, response) => {
             }
         );
     } catch (err) {
-        response.status(404).send(err);
+        return response.status(404).send(err);
     }
 });
 
@@ -176,14 +176,14 @@ app.get('/api/:username/folders', (request, response) => {
             username,
             (error, result) => {
                 if (error) {
-                    response.status(401).send({
+                    return response.status(401).send({
                         'status': 401,
                         'content': error
                     });
                 }
 
                 if (result.length < 1) {
-                    response.status(401).send({
+                    return response.status(401).send({
                         'status': 401,
                         'content': 'Username does not exist.'
                     })
@@ -198,7 +198,7 @@ app.get('/api/:username/folders', (request, response) => {
                         user_id,
                         (error, result) => {
                             if (error) {
-                                response.status(401).send({
+                                return response.status(401).send({
                                     'status': 401,
                                     'content': error
                                 });
@@ -232,7 +232,7 @@ app.get('/api/:username/folders', (request, response) => {
                                 })
                             });
 
-                            response.status(201).send(send);
+                            return response.status(201).send(send);
                         }
                     )
                 }
@@ -240,7 +240,7 @@ app.get('/api/:username/folders', (request, response) => {
         )
     }
     catch (error) {
-        response.status(404).send({
+        return response.status(404).send({
             'status': 404,
             'content': error
         });
@@ -259,18 +259,18 @@ app.put("/api/folders/new", authUser, (request, response) => {
             [folder_name, user_id],
             (error, result) => {
                 if (error) {
-                    response.status(401).send({
+                    return response.status(401).send({
                         'status': 401,
                         'content': error,
                     });
-                    return;
+                    
                 }
 
                 const folder_id = result.insertId;
                 const len = sets.length;
 
                 if (len == 0) {
-                    response.status(201).send({
+                    return response.status(201).send({
                         'status': 201,
                         'content': "Added new folder",
                     });
@@ -289,15 +289,13 @@ app.put("/api/folders/new", authUser, (request, response) => {
                         [insert_sets],
                         (error, result) => {
                             if (error) {
-                                response.status(401).send({
+                                return response.status(401).send({
                                     'status': 401,
                                     'content': error,
                                 });
-                                console.log(error);
-                                return;
                             }
                             else
-                                response.status(201).send({
+                                return response.status(201).send({
                                     'status': 201,
                                     'content': {
                                         "folder_id": folder_id,
@@ -342,11 +340,10 @@ app.put("/api/folders/edit", authUser, (request, response) => {
                     (error, result) => {
                         if (error) {
                             console.log(error);
-                            response.status(401).send({
+                            return response.status(401).send({
                                 "status": 401,
                                 "content": error,
                             });
-                            return;
                         }
                         else
                             callback(null, result);
@@ -361,11 +358,10 @@ app.put("/api/folders/edit", authUser, (request, response) => {
                         (error, result) => {
                             if (error) {
                                 console.log(error);
-                                response.status(401).send({
+                                return response.status(401).send({
                                     "status": 401,
                                     "content": error,
                                 });
-                                return;
                             }
                             else
                                 callback(null, result);
@@ -379,27 +375,25 @@ app.put("/api/folders/edit", authUser, (request, response) => {
         ], function (error, result) {
             if (error) {
                 console.log(error);
-                response.status(401).send({
+                return response.status(401).send({
                     "status": 401,
                     "content": error,
                 });
-                return;
             }
             else {
-                response.status(201).send({
+                return response.status(201).send({
                     "status": 201,
                     "content": result,
-                })
+                });
             }
 
         })
     }
     catch (error) {
-        response.status(404).send({
+        return response.status(404).send({
             "status": 404,
             "content": error,
         });
-        return;
     }
 });
 
@@ -412,23 +406,23 @@ app.delete("/api/folders/delete", authUser, (request, response) => {
             [folder_id, folder_id],
             (error, result) => {
                 if (error) {
-                    response.status(401).send({
+                    return response.status(401).send({
                         "status": 401,
                         "content": error,
-                    })
+                    });
                 }
                 else {
-                    response.status(201).send({
+                    return response.status(201).send({
                         "status": 201,
                         "content": result
-                    })
+                    });
                 }
 
             }
         )
     }
     catch (error) {
-        response.status(404).send({
+        return response.status(404).send({
             "status": 404,
             "content": error,
         });
@@ -455,8 +449,7 @@ app.put("/api/sets/new", authUser, (request, response) => {
             [studySet.title, studySet.description, id],
             (error, result) => {
                 if (error) {
-                    console.log(error);
-                    response.status(400).send(error);
+                    return response.status(400).send(error);
                 } else {
                     const flashCards = studySet.flash_cards;
                     const numCards = flashCards.length;
@@ -476,10 +469,10 @@ app.put("/api/sets/new", authUser, (request, response) => {
                         (error, result) => {
                             if (error) {
                                 console.log(error);
-                                response.status(400).send(error);
+                                return response.status(400).send(error);
                             }
                             else {
-                                response.status(201).send({
+                                return response.status(201).send({
                                     'status': 201,
                                     'user': request.user.username,
                                     'content': result
@@ -517,19 +510,17 @@ app.delete("/api/sets/delete", authUser, (request, response) => {
                     [set_id, user_id],
                     (error, result) => {
                         if (error) {
-                            response.status(400).send({
+                            return response.status(400).send({
                                 'status': 400,
                                 'message': error,
                             });
-                            return;
                         }
 
                         if (result[0].count < 1) {
-                            response.status(401).send({
+                            return response.status(401).send({
                                 'status': 401,
                                 'message': 'Must be the owner of a set to edit/delete it'
-                            })
-                            return;
+                            });
                         }
                         else
                             callback(null, result); // continue
@@ -545,11 +536,10 @@ app.delete("/api/sets/delete", authUser, (request, response) => {
                     [set_id, set_id, set_id, set_id],
                     (error, result) => {
                         if (error) {
-                            response.status(400).send({
+                            return response.status(400).send({
                                 'status': 400,
                                 'message': error,
                             });
-                            return;
                         }
                         else {
                             callback(null, result);
@@ -560,13 +550,13 @@ app.delete("/api/sets/delete", authUser, (request, response) => {
             },
         ], function (error, result) {
             if (error) {
-                response.status(400).send({
+                return response.status(400).send({
                     'status': 400,
                     'message': error,
                 });
             }
             else {
-                response.status(201).send({
+                return response.status(201).send({
                     'status': 201,
                     'message': 'Deleted study set: ' + set_id,
                     'content': result,
@@ -576,7 +566,7 @@ app.delete("/api/sets/delete", authUser, (request, response) => {
 
     }
     catch (err) {
-        response.status(404).send({
+        return response.status(404).send({
             'status': 404,
             'message': err,
         });
@@ -601,18 +591,18 @@ app.put("/api/register", (request, response) => {
             (error, result) => {
                 if (error) {
                     if (error.code === 'ER_DUP_ENTRY') {
-                        response.status(401).send({
+                        return response.status(401).send({
                             'status': 401,
                             'message': 'Username is already taken.'
                         });
 
                     }
                     else
-                        response.status(400).send(error);
+                        return response.status(400).send(error);
                 }
                 else {
                     console.log('201 Created: "/api/register"');
-                    response.status(201).send({
+                    return response.status(201).send({
                         'status': 201,
                         'message': 'User successfully registered.',
                         'content': {
@@ -622,7 +612,7 @@ app.put("/api/register", (request, response) => {
                 }
             });
     } catch (err) {
-        response.status(404).send({
+        return response.status(404).send({
             'status': 404,
             'message': err
         });
@@ -643,13 +633,13 @@ app.post("/api/login", (request, response) => {
             "WHERE username = ? AND password = ?",
             [username, password],
             (error, result) => {
-                if (error) response.status(400).send(error);
+                if (error) return response.status(400).send(error);
 
                 if (result[0] === undefined) {
-                    response.status(400).send({
+                    return response.status(400).send({
                         'status': 400,
                         'message': 'Invalid username or password.'
-                    })
+                    });
                 }
                 else {
                     const accessToken = jwt.sign({
@@ -685,7 +675,7 @@ app.post("/api/login", (request, response) => {
                     }
                     );
 
-                    response.status(200).send({
+                    return response.status(200).send({
                         'status': 200,
                         'content': {
                             'username': result[0].username,
@@ -696,7 +686,7 @@ app.post("/api/login", (request, response) => {
             }
         );
     } catch (err) {
-        response.status(404).send({
+        return response.status(404).send({
             'status': 404,
             'message': err,
         });
@@ -712,14 +702,14 @@ app.post('/api/logout', (request, response) => {
         }
     }
     console.log('200 Ok: "/api/logout"');
-    response.status(201).send({
+    return response.status(201).send({
         'status': 201,
         'message': 'User successfully logged out.'
     });
 });
 
 app.post('/api/auth', authUser, (request, response) => {
-    response.status(201).send({
+    return response.status(201).send({
         'status': 201,
         'message': 'User is logged in.',
         'content': request.token
@@ -741,7 +731,7 @@ app.post('/api/owner/sets', authUser, (request, response) => {
             (error, result) => {
                 if (error) {
                     console.log('400 Bad Request: "/api/owner/sets"');
-                    response.status(400).send({
+                    return response.status(400).send({
                         'status': 400,
                         'message': error,
                     });
@@ -749,14 +739,14 @@ app.post('/api/owner/sets', authUser, (request, response) => {
 
                 if (result[0].count < 1) {
                     console.log('403 Forbidden: "/api/owner/sets"');
-                    response.status(401).send({
+                    return response.status(401).send({
                         'status': 401,
                         'message': 'Must be the owner of a set to edit/delete it'
                     })
                 }
                 else {
                     console.log('200 Ok: "/api/owner/sets"');
-                    response.status(201).send({
+                    return response.status(201).send({
                         'status': 201,
                         'message': username
                     });
@@ -767,10 +757,10 @@ app.post('/api/owner/sets', authUser, (request, response) => {
     }
     catch (error) {
         console.log('404 Not Found: "/api/owner/sets"');
-        response.status(404).send({
+        return response.status(404).send({
             'status': 404,
             'message': error,
-        })
+        });
     }
 
 });
@@ -789,7 +779,7 @@ app.post('/api/owner/folders', authUser, (request, response) => {
             (error, result) => {
                 if (error) {
                     console.log('400 Bad Request: "/api/owner/folders"');
-                    response.status(400).send({
+                    return response.status(400).send({
                         'status': 400,
                         'message': error,
                     });
@@ -797,14 +787,14 @@ app.post('/api/owner/folders', authUser, (request, response) => {
                 if (result.length < 1) {
 
                     console.log('403 Forbidden: "/api/owner/folders"');
-                    response.status(401).send({
+                    return response.status(401).send({
                         'status': 401,
                         'message': 'Must be the owner of a folder to delete it'
                     })
                 }
                 else {
                     console.log('200 Ok: "/api/owner/folders"');
-                    response.status(201).send({
+                    return response.status(201).send({
                         'status': 201,
                         'message': username
                     });
@@ -815,10 +805,10 @@ app.post('/api/owner/folders', authUser, (request, response) => {
     }
     catch (error) {
         console.log('404 Not Found: "/api/owner/folders"');
-        response.status(404).send({
+        return response.status(404).send({
             'status': 404,
             'message': error,
-        })
+        });
     }
 
 });
@@ -829,17 +819,17 @@ app.post('/api/owner/username', authUser, (request, response) => {
 
     if (requestUsername === ownerUsername) {
         console.log('200 Created: "/api/owner/username"');
-        response.status(201).send({
+        return response.status(201).send({
             "status": 201,
             "content": ownerUsername,
-        })
+        });
     }
     else {
         console.log('403 Forbidden: "/api/owner/username"');
-        response.status(403).send({
+        return response.status(403).send({
             "status": 403,
             "content": ownerUsername,
-        })
+        });
     }
 
 });
@@ -848,18 +838,18 @@ app.post('/api/token', (request, response) => {
     const { token } = request.body;
 
     if (!token) {
-        response.status(401);
+        return response.status(401);
     }
 
 
     if (!refreshTokens.includes(token)) {
-        response.status(403);
+        return response.status(403);
     }
 
 
     jwt.verify(token, refreshSecretToken, (error, user) => {
         if (error) {
-            response.status(403);
+            return response.status(403);
         }
 
         const accessToken = jwt.sign(
@@ -966,7 +956,7 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
                         countValues,
                         (error, result) => {
                             if (error) {
-                                response.status(400).send({
+                                return response.status(400).send({
                                     "status": 400,
                                     "content": error,
                                 });
@@ -987,7 +977,7 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
                         sqlValues,
                         (error, result) => {
                             if (error) {
-                                response.status(400).send({
+                                return response.status(400).send({
                                     "status": 400,
                                     "content": error,
                                 });
@@ -999,7 +989,7 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
             ],
             function (error, result) {
                 if (error) {
-                    response.status(400).send({
+                    return response.status(400).send({
                         "status": 400,
                         "content": error,
                     })
@@ -1007,19 +997,19 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
 
                 let count = result[0];
                 const offset = (page - 1) * limit;
-                response.status(200).send({
+                return response.status(200).send({
                     next: (offset + limit < count && count > 0 ? newUrl + "page=" + (page + 1) + "&limit=" + limit : null),
                     prev: (page > 1 && count > 0 ? newUrl + "page=" + (page - 1) + "&limit=" + limit : null),
                     page: page,
                     limit: limit,
                     count: count,
                     sets: result[1]
-                })
+                });
             }
         )
     }
     catch (error) {
-        response.status(404).send({
+        return response.status(404).send({
             "status": 404,
             "content": error,
         });
@@ -1027,7 +1017,7 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
 })
 
 app.get("*", (request, response) => {
-    response.sendFile(path.join(__dirname + '/../app/build/index.html'));
+    return response.sendFile(path.join(__dirname + '/../app/build/index.html'));
 });
 
 app.listen(port, () => {
