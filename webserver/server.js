@@ -920,7 +920,7 @@ const generateBrowseQuery = (request, _, next) => {
     if (tagsLength)
         sqlQuery += "\nHAVING COUNT(*) >= ?";
 
-    request.countQuery = "SELECT DISTINCT COUNT(*) OVER () as 'count'\n" + sqlQuery + ";";
+    request.countQuery = "SELECT COUNT(*) as 'count'\nFROM (SELECT s.id\n" + sqlQuery + ") as s;";
     request.countValues = sqlValues.slice();
 
     sqlQuery += "\nLIMIT ?, ?";
