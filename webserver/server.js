@@ -296,13 +296,13 @@ app.put("/api/folders/new", authUser, (request, response) => {
                                 console.log(error);
                                 return;
                             }
-
-                            response.status(201).send({
-                                'status': 201,
-                                'content': {
-                                    "folder_id": folder_id,
-                                },
-                            });
+                            else
+                                response.status(201).send({
+                                    'status': 201,
+                                    'content': {
+                                        "folder_id": folder_id,
+                                    },
+                                });
                         }
                     )
                 }
@@ -348,8 +348,8 @@ app.put("/api/folders/edit", authUser, (request, response) => {
                             });
                             return;
                         }
-
-                        callback(null, result);
+                        else
+                            callback(null, result);
                     }
                 );
             },
@@ -367,7 +367,8 @@ app.put("/api/folders/edit", authUser, (request, response) => {
                                 });
                                 return;
                             }
-                            callback(null, result);
+                            else
+                                callback(null, result);
                         }
                     );
                 }
@@ -384,11 +385,13 @@ app.put("/api/folders/edit", authUser, (request, response) => {
                 });
                 return;
             }
+            else {
+                response.status(201).send({
+                    "status": 201,
+                    "content": result,
+                })
+            }
 
-            response.status(201).send({
-                "status": 201,
-                "content": result,
-            })
         })
     }
     catch (error) {
@@ -414,11 +417,13 @@ app.delete("/api/folders/delete", authUser, (request, response) => {
                         "content": error,
                     })
                 }
+                else {
+                    response.status(201).send({
+                        "status": 201,
+                        "content": result
+                    })
+                }
 
-                response.status(201).send({
-                    "status": 201,
-                    "content": result
-                })
             }
         )
     }
@@ -473,11 +478,14 @@ app.put("/api/sets/new", authUser, (request, response) => {
                                 console.log(error);
                                 response.status(400).send(error);
                             }
-                            response.status(201).send({
-                                'status': 201,
-                                'user': request.user.username,
-                                'content': result
-                            });
+                            else {
+                                response.status(201).send({
+                                    'status': 201,
+                                    'user': request.user.username,
+                                    'content': result
+                                });
+                            }
+
                         }
                     );
                 }
@@ -543,8 +551,10 @@ app.delete("/api/sets/delete", authUser, (request, response) => {
                             });
                             return;
                         }
+                        else {
+                            callback(null, result);
+                        }
 
-                        callback(null, result);
                     }
                 );
             },
@@ -555,12 +565,13 @@ app.delete("/api/sets/delete", authUser, (request, response) => {
                     'message': error,
                 });
             }
-
-            response.status(201).send({
-                'status': 201,
-                'message': 'Deleted study set: ' + set_id,
-                'content': result,
-            });
+            else {
+                response.status(201).send({
+                    'status': 201,
+                    'message': 'Deleted study set: ' + set_id,
+                    'content': result,
+                });
+            }
         })
 
     }
@@ -784,7 +795,7 @@ app.post('/api/owner/folders', authUser, (request, response) => {
                     });
                 }
                 if (result.length < 1) {
-                    
+
                     console.log('403 Forbidden: "/api/owner/folders"');
                     response.status(401).send({
                         'status': 401,
@@ -792,7 +803,6 @@ app.post('/api/owner/folders', authUser, (request, response) => {
                     })
                 }
                 else {
-                    console.log(result);
                     console.log('200 Ok: "/api/owner/folders"');
                     response.status(201).send({
                         'status': 201,
@@ -910,7 +920,7 @@ const generateBrowseQuery = (request, _, next) => {
             sqlValues.push(query.tags);
             url += "tags=" + query.tags + "&";
         }
-            
+
 
         sqlQuery += ")";
         sqlValues.push(tagsLength);
@@ -937,14 +947,14 @@ const generateBrowseQuery = (request, _, next) => {
 }
 
 app.get("/api/browse", generateBrowseQuery, (request, response) => {
-    const { 
+    const {
         newUrl,
         page,
         limit,
-        sqlQuery, 
-        sqlValues, 
-        countQuery, 
-        countValues 
+        sqlQuery,
+        sqlValues,
+        countQuery,
+        countValues
     } = request;
 
     try {
@@ -976,7 +986,7 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
                         "GROUP BY s.id;",
                         sqlValues,
                         (error, result) => {
-                            if(error) {
+                            if (error) {
                                 response.status(400).send({
                                     "status": 400,
                                     "content": error,
@@ -999,7 +1009,7 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
                 const offset = (page - 1) * limit;
                 response.status(200).send({
                     next: (offset + limit < count && count > 0 ? newUrl + "page=" + (page + 1) + "&limit=" + limit : null),
-                    prev: (page > 1  && count > 0 ? newUrl + "page=" + (page - 1) + "&limit=" + limit : null),
+                    prev: (page > 1 && count > 0 ? newUrl + "page=" + (page - 1) + "&limit=" + limit : null),
                     page: page,
                     limit: limit,
                     count: count,
