@@ -962,7 +962,7 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
                                 });
                             }
 
-                            if (result.length)
+                            if (result)
                                 callback(null, result[0].count);
                             else
                                 callback(null, 0);
