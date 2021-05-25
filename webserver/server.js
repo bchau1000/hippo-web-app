@@ -982,7 +982,6 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
                                     "content": error,
                                 });
                             }
-                            console.log(result[0]);
                             callback(null, result);
                         }
                     )
