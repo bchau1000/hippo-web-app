@@ -1020,7 +1020,7 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
 })
 
 app.get("*", (request, response) => {
-    //response.sendFile(path.join(__dirname + '/../app/build/index.html'));
+    response.sendFile(path.join(__dirname + '/../app/build/index.html'));
 });
 
 app.listen(port, () => {

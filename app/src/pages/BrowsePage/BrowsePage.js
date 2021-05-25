@@ -30,7 +30,7 @@ export default function BrowsePage(props) {
     const [username, setUsername] = useState(query.get("username"));
     const [tags, setTags] = useState(query.getAll("tags"));
     const [page, setPage] = useState(query.get("page") ? query.get("page") : 1);
-    const [limit, setLimit] = useState(query.get("limit") ? query.get("limit") : 30);
+    const [limit, setLimit] = useState(query.get("limit") ? query.get("limit") : 5);
     const [sets, setSets] = useState([]);
 
     useEffect(() => {
@@ -47,7 +47,9 @@ export default function BrowsePage(props) {
 
             if (response.status === 200) {
                 const json = await response.json();
+                console.log(json);
                 setSets(json.sets);
+                setPage(json.page);
             }
             window.history.replaceState(null, null, API_URL);
             setLoading(false);
