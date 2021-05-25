@@ -12,11 +12,11 @@ html, body, #root, #root>div {
 
     height: 100%;
     background: var(--color-bg);
-    font-family: 'Fira Sans', sans-serif;
+    font-family: 'Fira Sans', sans-serif !important;
 }
 
 button {
-    font-family: 'Fira Sans', sans-serif;
+    font-family: 'Fira Sans', sans-serif !important;
 }
 
 .no-select {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import BrowseItem from "./browseItem/browseItem.js";
 import LoadingAnim from 'components/loadingAnim/loadingAnim';
+import Paginator from "./paginator/paginator.js";
 import "./BrowsePage.css";
 
 
@@ -31,35 +32,48 @@ export default function BrowsePage(props) {
     const [tags, setTags] = useState(query.getAll("tags"));
     const [page, setPage] = useState(query.get("page") ? query.get("page") : 1);
     const [limit, setLimit] = useState(query.get("limit") ? query.get("limit") : 5);
+    const [count, setCount] = useState(0);
+    const [totalPages, setTotalPages] = useState(Math.ceil(count / limit));
     const [sets, setSets] = useState([]);
+    const [url, setUrl] = useState(createAPIUrl(title, username, tags, page, limit));
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            const API_URL = createAPIUrl(title, username, tags, page, limit);
+
             const settings = {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 }
             }
-            const response = await fetch("api/" + API_URL, settings);
+            const response = await fetch("api/" + url, settings);
 
             if (response.status === 200) {
                 const json = await response.json();
-                console.log(json);
+
                 setSets(json.sets);
                 setPage(json.page);
+                setCount(json.count);
+                setLimit(json.limit);
             }
-            window.history.replaceState(null, null, API_URL);
+            window.history.replaceState(null, null, url);
             setLoading(false);
         }
         fetchData();
-    }, [title, username, tags, page]);
+    }, [url]);
 
     useEffect(() => {
-        console.log(sets);
-    }, [sets]);
+        setUrl(createAPIUrl(title, username, tags, page, limit));
+    }, [title, username, tags, page, limit]);
+
+    useEffect(() => {
+        setTotalPages(Math.ceil(count / limit));
+    }, [count, limit]);
+
+    const onPage = (newPage) => {
+        setPage(newPage);
+    }
 
     const onSubmit = async (event) => {
         event.preventDefault();
@@ -69,28 +83,40 @@ export default function BrowsePage(props) {
 
     return (
         <section className="browse-page-wrapper">
-            <div className="browse-page-container"> 
+            <div className="browse-page-container">
                 <form className="browse-query-container" onSubmit={(event) => onSubmit(event)}>
                     <div className="search-container">
                         <input type="text" placeholder="Search by title..."></input>
                     </div>
                 </form>
-                <ul className="browse-results-container">
-                    {!loading ?
-                        sets.map((set, idx) => {
-                            return (
-                                <BrowseItem
-                                    key={idx}
-                                    set={set}
-                                />
-                            )
-                        })
-                        : <LoadingAnim/>
-                    }
-                </ul>
-                <ol className="browse-pagination-container">
-                </ol>
-
+                {sets.length ?
+                    <div>
+                        <ul className="browse-results-container">
+                            {!loading ?
+                                sets.map((set, idx) => {
+                                    return (
+                                        <BrowseItem
+                                            key={idx}
+                                            set={set}
+                                        />
+                                    )
+                                })
+                                : <LoadingAnim />
+                            }
+                        </ul>
+                        <ol className="browse-pagination-container">
+                        </ol>
+                        <Paginator
+                            totalPages={totalPages}
+                            page={page}
+                            onPage={onPage}
+                        />
+                    </div>
+                    :
+                    <div className="browse-results-container" style={{"fontSize": "25px", "margin-top":"5%"}}>
+                        There's Nothing Here!
+                    </div>
+                }
             </div>
         </section>
     )

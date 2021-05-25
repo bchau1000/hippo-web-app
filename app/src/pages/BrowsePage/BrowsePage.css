@@ -16,6 +16,7 @@
 }
 
 .browse-page-container {
+    margin: auto;
     width: 750px;
 }
 
@@ -73,7 +74,7 @@
 @media (max-width: 1025px) {
     .browse-page-container {
         min-width: 0px;
-        width: 90vw;
+        width: 90%;
     }
 }
 
