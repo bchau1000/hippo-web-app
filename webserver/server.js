@@ -923,7 +923,7 @@ const generateBrowseQuery = (request, _, next) => {
     request.countQuery = "SELECT DISTINCT COUNT(*) OVER () as count\n" + sqlQuery + ";";
     request.countValues = sqlValues.slice();
 
-    sqlQuery += "\nLIMIT ?, ?;";
+    sqlQuery += "\nLIMIT ?, ?";
     sqlValues.push(offset);
     sqlValues.push(limit);
 
@@ -931,7 +931,7 @@ const generateBrowseQuery = (request, _, next) => {
     request.limit = limit;
     request.newUrl = url;
 
-    request.sqlQuery = "SELECT DISTINCT s.id, s.title, s.description, GROUP_CONCAT(t.name SEPARATOR ',') as tags, u.username\n" + sqlQuery;
+    request.sqlQuery = "SELECT DISTINCT s.id, s.title, s.description, u.username\n" + sqlQuery;
     request.sqlValues = sqlValues;
     next();
 }
@@ -971,7 +971,9 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
                 },
                 function (callback) {
                     pool.query(
-                        sqlQuery,
+                        "SELECT s.id, s.title, s.description, username, GROUP_CONCAT(t.name SEPARATOR ',') as tags\n" +
+                        "FROM (" + sqlQuery + ") as s LEFT JOIN (sets_and_tags as st JOIN tags as t ON st.tag_id = t.id) ON s.id = st.set_id\n" +
+                        "GROUP BY s.id;",
                         sqlValues,
                         (error, result) => {
                             if(error) {
@@ -980,6 +982,7 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
                                     "content": error,
                                 });
                             }
+                            console.log(result[0]);
                             callback(null, result);
                         }
                     )
@@ -1017,7 +1020,7 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
 })
 
 app.get("*", (request, response) => {
-    response.sendFile(path.join(__dirname + '/../app/build/index.html'));
+    //response.sendFile(path.join(__dirname + '/../app/build/index.html'));
 });
 
 app.listen(port, () => {
