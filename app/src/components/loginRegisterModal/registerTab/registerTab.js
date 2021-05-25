@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
+//import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
 import "./registerTab.css";
 
 export default function RegisterTab(props) {

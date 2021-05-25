@@ -20,23 +20,19 @@ export default function LoginTab(props) {
                 <input type="text" placeholder="Username" onChange={(event) => setUsername(event.target.value)} />
                 <input type="password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
                 <div className="login-tab-button-container">
-                {!loading ?
-                    <button
-                        onClick={async (event) => {
-                            setLoading(true);
-                            await props.handleLogin(event, username, password, setNotification, setLoading);
-                            setUsername("");
-                            setPassword("");
-                        }}
-                    >Log In</button> :
-                    <LoadingAnim text="Logging in..."/>
-                }
+                    {!loading ?
+                        <button
+                            onClick={async (event) => {
+                                setLoading(true);
+                                await props.handleLogin(event, username, password, setNotification, setLoading);
+                                setUsername("");
+                                setPassword("");
+                            }}
+                        >Log In</button> :
+                        <LoadingAnim text="Logging in..."/>
+                    }
                 </div>
             </form>
         </div>
     )
 }
-/*
-<input type="text" />
-                <input type="password" />
-*/

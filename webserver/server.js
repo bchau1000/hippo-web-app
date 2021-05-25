@@ -708,7 +708,6 @@ app.post('/api/logout', (request, response) => {
 });
 
 app.post('/api/auth', authUser, (request, response) => {
-    console.log('200 Ok: "/api/auth"');
     response.status(201).send({
         'status': 201,
         'message': 'User is logged in.',
@@ -932,7 +931,7 @@ const generateBrowseQuery = (request, _, next) => {
     request.limit = limit;
     request.newUrl = url;
 
-    request.sqlQuery = "SELECT DISTINCT s.id, s.title, u.username\n" + sqlQuery;
+    request.sqlQuery = "SELECT DISTINCT s.id, s.title, s.description, GROUP_CONCAT(t.name SEPARATOR ',') as tags, u.username\n" + sqlQuery;
     request.sqlValues = sqlValues;
     next();
 }

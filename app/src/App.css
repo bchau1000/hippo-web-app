@@ -15,6 +15,10 @@ html, body, #root, #root>div {
     font-family: 'Fira Sans', sans-serif;
 }
 
+button {
+    font-family: 'Fira Sans', sans-serif;
+}
+
 .no-select {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
