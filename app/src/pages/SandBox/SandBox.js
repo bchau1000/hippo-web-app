@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
-import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
+import { useEffect, useContext } from 'react';
 import "./SandBox.css";
 
 export default function SandBox(props) {
-
     useEffect(() => {
 
     }, []);
@@ -11,7 +9,7 @@ export default function SandBox(props) {
     return (
         <div className="sandbox-container">
             <div className="loading-container">
-                <LoadingAnim text="Registering..."/>
+
             </div>
         </div>
 

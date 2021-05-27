@@ -109,6 +109,16 @@ export default function AddFolderModal(props) {
                     >
                         Submit
                     </button>
+
+                    <button
+                        className="folder-modal-cancel"
+                        onClick={(event) => {
+                            event.preventDefault();
+                            props.showModal(false);
+                        }}
+                    >
+                        Cancel
+                    </button>
                 </div>
             </form>
         </div>

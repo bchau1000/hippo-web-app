@@ -1,5 +1,8 @@
+.edit-folder-modal-container button {
+    cursor: pointer;
+}
+
 .edit-folder-modal-container {
-    
     width: 300px;
     height: 395px;
     background: white;
@@ -96,10 +99,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    
+    gap: 10px;
 }
 
-.edit-folder-modal-search-submit button{
+.edit-folder-modal-submit{
     background-color: var(--color-accent);
     border: none;
     padding: 5px;
@@ -110,7 +113,21 @@
     border-radius: 2px;
 }
 
-.edit-folder-modal-search-submit button:hover{
-    cursor: pointer;
+.edit-folder-modal-submit:hover{
     background-color: rgba(22, 206, 120, 0.7);
+}
+
+.edit-folder-modal-cancel{
+    background-color: rgba(24, 24, 24, 0.3);
+    border: none;
+    padding: 5px;
+    font-size: 16px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    font-weight: bold;
+    transition: background-color 0.26s ease;
+    border-radius: 2px;
+}
+
+.edit-folder-modal-cancel:hover{
+    background-color: rgba(24, 24, 24, 0.2);
 }

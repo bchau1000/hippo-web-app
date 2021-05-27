@@ -210,6 +210,7 @@ export default function SetsPageRework(props) {
                         <AddFolderModal
                             allSets={allSets}
                             insertFolder={insertFolder}
+                            showModal={setShowFolderModal}
                         />
                     </ModalTemplate>
                 }

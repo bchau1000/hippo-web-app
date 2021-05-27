@@ -27,7 +27,7 @@ export default function LoginRegisterModal(props) {
             body: body,
         }
 
-        const response = await fetch("api/login", settings);
+        const response = await fetch("/api/login", settings);
         if(response.status === 200) {
             const json = await response.json();
             window.location.href = "/" + json.content.username + "/sets";
@@ -55,7 +55,7 @@ export default function LoginRegisterModal(props) {
             body: body
         }
 
-        const response = await fetch("api/register", settings);
+        const response = await fetch("/api/register", settings);
         if(response.status === 201) {
             //const json = await response.json();
             setTab(true);

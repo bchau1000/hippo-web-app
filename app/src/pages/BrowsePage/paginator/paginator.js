@@ -43,9 +43,7 @@ export default function Paginator(props) {
     }
     else {
         return (
-            <div className="paginator-wrapper" style={{fontSize: "25px"}}>
-                
-            </div>
+            <div className="paginator-wrapper" style={{fontSize: "25px"}}/>
         )
     }
 }

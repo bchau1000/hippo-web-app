@@ -84,6 +84,18 @@ export default function EditFolderModal(props) {
                     >
                         Submit
                     </button>
+
+                    <button
+                        className="edit-folder-modal-cancel"
+                        onClick={
+                            async (event) => {
+                                event.preventDefault();
+                                props.setShowEditModal(false);
+                            }
+                        }
+                    >
+                        Cancel
+                    </button>
                 </div>
             </form>
         </div>

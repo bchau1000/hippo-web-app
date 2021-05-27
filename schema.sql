@@ -37,8 +37,8 @@ CREATE TABLE subjects(
 DROP TABLE IF EXISTS flash_cards;  
 CREATE TABLE flash_cards(
   id int PRIMARY KEY auto_increment,
-  term VARCHAR(255),
-  definition VARCHAR(1000),
+  term blob DEFAULT NULL,
+  definition blob DEFAULT NULL,
   q_type int,
   set_id int REFERENCES study_sets(id)
 );

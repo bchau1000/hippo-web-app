@@ -17,19 +17,21 @@ export default function FolderCollapsible(props) {
     const folder = props.folder;
 
     useEffect(() => {
-        let setLen = folder.sets.length + 1;
+        let setLen = folder.sets.length;
+        if(owner)
+            setLen += 1;
 
         if (width > 1280)
             // 4 per row
-            setCalcHeight(245 * Math.ceil((setLen) / 4));
+            setCalcHeight(240 * Math.ceil((setLen) / 4));
         else if (width >= 1025 && width <= 1280)
             // 3 per row
-            setCalcHeight(245 * Math.ceil((setLen) / 3));
+            setCalcHeight(240 * Math.ceil((setLen) / 3));
         else if (width >= 550 && width <= 1024)
             // 2 per row
-            setCalcHeight(245 * Math.ceil((setLen) / 2));
+            setCalcHeight(240 * Math.ceil((setLen) / 2));
         else if (width < 550)
-            setCalcHeight(245 * setLen);
+            setCalcHeight(240 * setLen);
 
     }, [props.isFolder, folder, width])
 

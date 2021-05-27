@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import BrowseItem from "./browseItem/browseItem.js";
 import LoadingAnim from 'components/loadingAnim/loadingAnim';
 import Paginator from "./paginator/paginator.js";
+
 import "./BrowsePage.css";
 
 
@@ -31,7 +32,7 @@ export default function BrowsePage(props) {
     const [username, setUsername] = useState(query.get("username"));
     const [tags, setTags] = useState(query.getAll("tags"));
     const [page, setPage] = useState(query.get("page") ? query.get("page") : 1);
-    const [limit, setLimit] = useState(query.get("limit") ? query.get("limit") : 5);
+    const [limit, setLimit] = useState(query.get("limit") ? query.get("limit") : 20);
     const [count, setCount] = useState(0);
     const [totalPages, setTotalPages] = useState(Math.ceil(count / limit));
     const [sets, setSets] = useState([]);

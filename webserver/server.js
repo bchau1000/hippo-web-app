@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const async = require("async");
 const pool = require("./config");
-const { request } = require('http');
 const app = express();
 const port = process.env.PORT || 9000;
 
@@ -105,8 +104,11 @@ app.get("/api/:username/sets", (request, response) => {
                 if (error)
                     return response.status(400).send(error);
 
-                if (result)
+                if (result) {
+                    
                     return response.status(201).send(result);
+                }
+                    
                 else
                     return response.status(404).send("404 Not Found");
             }
@@ -147,10 +149,11 @@ app.get("/api/sets/:set_id/cards", (request, response) => {
                         send.flash_cards = [];
 
                         for (let i = 0; i < length; i++) {
+
                             send.flash_cards.push({
                                 "id": result[i].id,
-                                "term": result[i].term,
-                                "definition": result[i].definition,
+                                "term": result[i].term.toString('utf-8'),
+                                "definition": result[i].definition.toString('utf-8'),
                             });
                         }
                         return response.status(201).send(send)
