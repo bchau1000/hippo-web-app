@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const async = require("async");
 const pool = require("./config");
+const { response } = require('express');
 const app = express();
 const port = process.env.PORT || 9000;
 
@@ -1022,6 +1023,63 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
 app.get("*", (request, response) => {
     return response.sendFile(path.join(__dirname + '/../app/build/index.html'));
 });
+
+app.post("/api/richtext", (request, response) => {
+    
+    try {
+        //console.log(request.body);
+        pool.query(
+            'INSERT INTO temp(term) VALUES (?);',
+            request.body.term,
+            (error, result) => {
+                if(error) {
+                    return response.status(400).send({
+                        'status': 400,
+                        'content': error,
+                    })
+                }
+
+                console.log(result);
+
+                pool.query(
+                    'SELECT * FROM temp;',
+                    (error, result) => {
+                        if(error) {
+                            return response.status(400).send({
+                                'status': 400,
+                                'content': error,
+                            });
+                        }
+
+                        const length = result.length;
+                        let send = [];
+
+                        for(let i = 0; i < length; i++) {
+                            send.push({
+                                'id': result[i].id,
+                                'term': result[i].term.toString('utf-8')
+                            })
+                        }
+
+                        response.status(200).send(send);
+                    }
+                )
+            }
+        );
+
+        
+    }
+    catch(error) {
+        return response.status(404).send({
+            'status': 404,
+            'content': error,
+        })
+    }
+
+    
+});
+
+
 
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);

@@ -1,0 +1,78 @@
+.card-form-container button{
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 15px;
+    color: rgba(24 , 24, 24, 0.8);
+}
+
+.card-form-container {
+    display: grid;
+    max-width: 900px;
+
+    background-color: var(--color-fg);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 40px auto;
+    grid-template-areas: 
+    "card-header card-header"
+    "card-term card-definition";
+    background-color: white;
+}
+
+.card-term-editor-options{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.card-term-editor-options button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-term-editor-options .not-selected:hover{
+    background-color: rgba(24, 24, 24, 0.1);
+}
+
+.card-term-editor-options .selected{
+    background-color: rgba(24, 24, 24, 0.3);
+}
+
+.card-header-container {
+    grid-area: card-header;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-weight: bold;
+    font-size: 20px;
+    color: rgba(24, 24, 24, 0.3);
+    border-bottom: 1px solid rgba(24, 24, 24, 0.05);
+    
+}
+
+.card-term-container {
+    grid-area: card-term;
+    padding: 10px;
+    border-right: 1px solid rgba(24, 24, 24, 0.05);
+}
+
+.card-term-editor {
+    border-bottom: 2px solid rgba(24, 24, 24, 1);
+    padding-bottom: 10px;
+    margin: 6px;
+    font-size: 18px;
+    max-height: 500px;
+    overflow-y: auto;
+
+    transition: border-bottom 0.26s ease;
+}
+
+.card-focus {
+    border-bottom: 2px solid var(--color-accent);
+}
