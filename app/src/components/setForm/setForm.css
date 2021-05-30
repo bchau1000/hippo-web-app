@@ -1,50 +1,35 @@
-.create-set-page-wrapper button {
-    border: none;
-    cursor: pointer;
-}
-
-.create-set-page-wrapper {
-    grid-area: content;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0);
-    width: 100%;
-    padding-bottom: 20px;
-}
-
-.create-set-page-container {
+.set-form-container {
     display: grid;
     background-color: rgba(0, 0, 0, 0);
     grid-template-areas: 
-    "cs-header"
-    "cs-meta"
-    "cs-tags"
-    "cs-cards";
+    "sf-header"
+    "sf-meta"
+    "sf-tags"
+    "sf-cards";
     width: 60%;
     gap: 15px;
 }
 
-.cs-header-container {
-    grid-area: cs-header;
+.sf-header-container {
+    grid-area: sf-header;
     font-size: 22px;
     font-weight: bold;
     height: auto;
     margin-bottom: 25px;
 }
 
-.cs-meta-container {
-    grid-area: cs-meta;
+.sf-meta-container {
+    grid-area: sf-meta;
 }
 
-.cs-cards-container {
-    grid-area: cs-cards;
+.sf-cards-container {
+    grid-area: sf-cards;
     display: flex;
     flex-direction: column;
     gap: 30px;
 }
 
-.cs-cards-container .add-card{
+.sf-cards-container .add-card{
     background-color: var(--color-fg);
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
@@ -61,12 +46,12 @@
     transition: box-shadow 0.2s ease, color 0.2s ease;
 }
 
-.cs-cards-container .add-card:hover{
+.sf-cards-container .add-card:hover{
     box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
     color: var(--color-accent);
 }
 
-.cs-submit-button {
+.sf-submit-button {
     margin: auto;
     margin-top: 10px;
     font-size: 18px;
@@ -78,24 +63,24 @@
     font-weight: bold;
 }
 
-.cs-submit-button:hover{
+.sf-submit-button:hover{
     background-color: rgba(22, 206, 120, 0.7);
 }
 
 @media (min-width: 1281px) {
-    .create-set-page-container {
+    .set-form-page-container {
         width: 70%;
     } 
 }
 
 @media (min-width: 1025px) and (max-width: 1280px) {
-    .create-set-page-container {
+    .set-form-page-container {
         width: 80%;
     } 
 }
 
 @media (max-width: 1024px) {
-    .create-set-page-container {
+    .set-form-page-container {
         width: 90%;
     } 
 }

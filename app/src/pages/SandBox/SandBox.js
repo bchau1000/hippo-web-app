@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import CardForm from './cardForm/cardForm.js';
 import "./SandBox.css";
 
 export default function SandBox(props) {
@@ -10,7 +9,7 @@ export default function SandBox(props) {
 
     return (
         <div className="sandbox-container">
-            <CardForm/>
+
         </div>
 
     )

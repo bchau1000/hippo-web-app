@@ -1,0 +1,71 @@
+.card-form-container button{
+    border: none;
+    cursor: pointer;
+}
+
+.card-form-container {
+    display: grid;
+    width: 100%;
+
+    background-color: var(--color-fg);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    grid-template-columns: 45% 55%;
+    grid-template-rows: 40px auto;
+    grid-template-areas: 
+    "card-header card-header"
+    "card-term card-definition";
+    background-color: white;
+}
+
+.card-header-container {
+    grid-area: card-header;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-weight: bold;
+    font-size: 20px;
+    color: rgba(24, 24, 24, 0.3);
+    border-bottom: 1px solid rgba(24, 24, 24, 0.05);
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.remove-card-button {
+    color: rgba(24, 24, 24, 0.2);
+    background-color: rgba(0, 0, 0, 0);
+    transition: color 0.2s;
+}
+
+.remove-card-button:hover{
+    color: rgba(245, 66, 66, 0.973);
+}
+
+.card-term-container {
+    grid-area: card-term;
+    padding: 30px;
+    border-right: 1px solid rgba(24, 24, 24, 0.05);
+}
+
+.card-definition-container {
+    grid-area: card-definition;
+    padding: 30px;
+    border-right: 1px solid rgba(24, 24, 24, 0.05);
+}
+
+@media (max-width: 1024px) {
+    .card-form-container {
+        grid-template-columns: auto;
+        grid-template-rows: 50px auto 50px;
+        grid-template-areas: 
+        "card-header"
+        "card-term"
+        "card-definition";
+        background-color: white;
+    }
+
+    .card-term-container {
+        border-bottom: 1px solid rgba(24, 24, 24, 0.05);
+    }
+}

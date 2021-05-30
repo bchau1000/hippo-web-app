@@ -19,11 +19,12 @@ async function onEdit(event, set_id) {
 
 export default function SetGridItem(props) {
     const owner = useContext(OwnerContext);
+
     function setOptions() {
         if (props.isFolder) {
             return (
                 <div className="options">
-                    <button onClick={(event) => props.onRemove(event, props.id)}>
+                    <button title="edit" onClick={(event) => props.onRemove(event, props.id)}>
                         <span className="material-icons edit">close</span>
                     </button>
                 </div>
@@ -31,16 +32,15 @@ export default function SetGridItem(props) {
         }
         return (
             <div className="options">
-                <button onClick={(event) => props.onDelete(event, props.id)}>
+                <button title="delete" onClick={(event) => props.onDelete(event, props.id)}>
                     <span className="material-icons delete">delete</span>
                 </button>
-                <button onClick={(event) => onEdit(event, props.id)}>
+                <button title="edit" onClick={(event) => onEdit(event, props.id)}>
                     <span className="material-icons edit">edit</span>
                 </button>
             </div>
         )
     }
-
 
     return (
         <div className="grid-item" onClick={() => redirect(props.id)}>

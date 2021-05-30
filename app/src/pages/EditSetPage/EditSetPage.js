@@ -1,51 +1,75 @@
 import { useState, useEffect } from 'react';
-import CardForm from 'components/cardForm/cardForm.js';
 import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
-import { isOwnerSet } from 'components/isOwner/isOwner.js';
-import AddIcon from '@material-ui/icons/Add';
+import SetForm from 'components/setForm/setForm.js';
+
 import './EditSetPage.css';
 
 export default function EditSetPage(props) {
     const set_id = props.match.params.set_id;
+    const [flashCards, setFlashCards] = useState(new Array(2).fill({
+        'term': '<p></p>',
+        'definition': '<p></p>',
+        'plainText': '',
+    }));
     const [title, setTitle] = useState("");
-    const [desc, setDesc] = useState("");
-    const [flashCards, setFlashCards] = useState([]);
+    const [description, setDescription] = useState("");
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        async function getCards() {
+        const getData = async () => {
             setLoading(true);
-            if (!(await isOwnerSet(set_id)))
-                window.history.back();
-            else {
-                const settings = {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
 
-                const response = await fetch('/api/sets/' + set_id + '/cards', settings);
-                const json = await response.json();
-                if (response.status === 201) {
-                    setTitle(json.title);
-                    setDesc(json.description);
-                    setFlashCards(json.flash_cards);
+            const settings = {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
                 }
-                else {
-                    console.log(json);
-                }
-                setLoading(false);
             }
+            const response = await fetch('/api/sets/' + set_id + '/cards', settings);
+
+            if(response.status === 201) {
+                const json = await response.json();
+                setFlashCards(json.flash_cards);
+                setTitle(json.title);
+                setDescription(json.description);
+            }
+
+            setLoading(false);
         }
-        getCards();
 
-    }, [set_id]);
+        getData();
+    }, []);
 
-    useEffect(() => {
-        console.log(flashCards);
-    }, [flashCards]);
+    const editSet = async () => {
+        // implement this
+        console.log('working');
+
+    }
+
+    const updateCards = (idx, flashCard) => {
+        let newFlashCards = flashCards.slice();
+        newFlashCards[idx] = flashCard;
+        setFlashCards(newFlashCards);
+    }
+
+    const addCard = () => {
+        let newFlashCards = flashCards.slice();
+        newFlashCards.push({
+            'term': '<p></p>',
+            'definition': '<p></p>'
+        });
+
+        setFlashCards(newFlashCards);
+    }
+
+    const removeCard = (idx) => {
+        if (flashCards.length > 2) {
+            let newFlashCards = flashCards.slice();
+            newFlashCards.splice(idx, 1);
+            setFlashCards(newFlashCards);
+        }
+    }
 
     if (loading) {
         return (
@@ -54,68 +78,19 @@ export default function EditSetPage(props) {
     }
 
     return (
-        <section className="edit-set-container">
-            <div className="create-container">
-                <form className="meta-form">
-
-                    <div className="header">
-                        Edit Set: "{title}"
-                    </div>
-
-                    <div className="field-container">
-                        <input
-                            id="set-title"
-                            placeholder="Enter a title..."
-                            value={title}
-                            onChange={event => { setTitle(event.target.value) }}
-                        />
-                        <div className="field-label">TITLE</div>
-                    </div>
-
-                    <div className="field-container">
-                        <input
-                            id="set-desc"
-                            placeholder="Add a description..."
-                            value={desc}
-                            onChange={event => { setDesc(event.target.value) }}
-                        />
-                        <div className="field-label">DESCRIPTION</div>
-                    </div>
-
-                </form>
-
-                <div className="add-card-container" onClick={() => {/*this.addCard(true)*/ }}>
-                    <div className="add-card">
-                        <AddIcon className="add-card-icon"></AddIcon>
-                        <div className="add-card-text">Add a card</div>
-                    </div>
-                </div>
-
-                <div className="center-container">
-                    {flashCards.map((flashCard, idx) => {
-                        return (
-                            <CardForm
-                                info={flashCard}
-                            />
-                        );
-                    })}
-                </div>
-
-                <div className="add-card-container" onClick={() => {/*this.addCard(false)*/ }}>
-                    <div className="add-card">
-                        <AddIcon className="add-card-icon"></AddIcon>
-                        <div className="add-card-text">Add a card</div>
-                    </div>
-                </div>
-
-                <div className="submit-container">
-                    <div
-                        className="submit-button"
-                        onClick={() => {/*this.createSet()*/ }}
-                    >Save</div>
-                </div>
-                <div></div>
-            </div>
+        <section className="edit-set-page-wrapper">
+            <SetForm
+                header={"Editing '" + title + "'"}
+                title={title}
+                setTitle={setTitle}
+                description={description}
+                setDescription={setDescription}
+                flashCards={flashCards}
+                updateCards={updateCards}
+                addCard={addCard}
+                removeCard={removeCard}
+                submit={editSet}
+            />
         </section>
-    );
+    )
 }

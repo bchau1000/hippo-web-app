@@ -1,223 +1,90 @@
-import React from 'react';
-import AddIcon from '@material-ui/icons/Add';
-import CardForm from "components/cardForm/cardForm.js";
-import "./CreateSetPage.css";
+import { useState, useEffect, useRef } from 'react';
+import SetForm from 'components/setForm/setForm.js';
+import './CreateSetPage.css';
 
-const API_URL = "/api/sets/new";
+export default function CreateSetPage(props) {
+    const [flashCards, setFlashCards] = useState(new Array(2).fill({ 
+        'term': '<p></p>', 
+        'definition': '<p></p>',
+        'plainText': '',
+    }));
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [loading, setLoading] = useState(false);
+    const bottom = useRef(null);
 
-class CreateSet extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            title: "",
-            desc: "",
-            flash_cards: [
-                {
-                    "term": "",
-                    "definition": "",
-                },
-                {
-                    "term": "",
-                    "definition": "",
-                },
-            ],
-        }
-    }
+    useEffect(() => {
+        
+    }, []);
 
-    setTitle = (new_title) => {
-        this.setState({
-            title: new_title,
-        });
-    }
-
-    setDesc = (new_desc) => {
-        this.setState({
-            desc: new_desc,
-        });
-    }
-
-    // front is a bool, true inserts a card to the front of the list, false appends a card to the back of the list
-    addCard = (front) => {
-        let new_flash_cards = this.state.flash_cards.slice();
-        let new_id_counter = this.state.id_counter + 1;
-
-        if (front) {
-            new_flash_cards.unshift({
-                "term": "",
-                "definition": "",
-            });
-        }
-        else {
-            new_flash_cards.push({
-                "term": "",
-                "definition": "",
-            });
-        }
-
-        this.setState({
-            flash_cards: new_flash_cards,
-            id_counter: new_id_counter,
-        });
-    }
-
-    deleteCard = (index) => {
-        if (this.state.flash_cards.length > 2) {
-            let new_flash_cards = this.state.flash_cards.slice();
-
-            new_flash_cards.splice(index, 1);
-            console.log(new_flash_cards);
-            this.setState({
-                flash_cards: new_flash_cards,
-            });
-        }
-    }
-
-    clearCard = (index) => {
-        let new_flash_cards = this.state.flash_cards.slice();
-
-        new_flash_cards[index] = {
-            "term": "",
-            "definition": "",
-        }
-
-        this.setState({
-            flash_cards: new_flash_cards,
-        });
-    }
-
-    setCardTerm = (index, term) => {
-        let new_flash_cards = this.state.flash_cards.slice();
-
-        new_flash_cards[index] = {
-            "term": term,
-            "definition": this.state.flash_cards[index].definition,
-        }
-
-        this.setState({
-            flash_cards: new_flash_cards,
-        });
-    }
-
-    setCardDef = (index, definition) => {
-        let new_flash_cards = this.state.flash_cards.slice();
-        new_flash_cards[index] = {
-            "term": this.state.flash_cards[index].term,
-            "definition": definition,
-        }
-        this.setState({
-            flash_cards: new_flash_cards,
-        });
-    }
-
-    async createSet() {
-        const user = this.props.user;
-
-        if (user) {
-            let flash_cards = this.state.flash_cards;
-            let new_flash_cards = [];
-
-            for(let i = 0; i < flash_cards.length; i++) 
-                if(flash_cards[i].term.length || flash_cards[i].definition.length)
-                    new_flash_cards.push(flash_cards[i]);
-            
-            const newSet = JSON.stringify({
-                title: this.state.title,
-                description: this.state.desc,
-                flash_cards: new_flash_cards,
+    const createSet = async () => {
+        if (title.length) {
+            const body = JSON.stringify({
+                'title': title,
+                'description': description,
+                'flash_cards': flashCards.filter((flashCard) => flashCard.plainText.length),
             });
 
             const settings = {
                 method: 'PUT',
                 credentials: 'include',
-                headers: { 
-                    'Content-Type': 'application/json',
+                headers: {
+                    'Content-Type': 'application/json'
                 },
-                body: newSet,
-            };
+                body: body,
+            }
 
-            const response = await fetch(API_URL, settings);
+            const response = await fetch('/api/sets/new', settings);
+            
+            if (response.status == 201) {
+                const json = await response.json();
+                window.location.href = "/" + json.user + "/sets";
+            }
+        }
+        else {
+            
+        }
 
-            if(response.status === 201) 
-                window.location.href = "/" + user.username + "/sets";
-            else 
-                console.log('Error inserting new set');
+    }
 
+    const updateCards = (idx, flashCard) => {
+        let newFlashCards = flashCards.slice();
+        newFlashCards[idx] = flashCard;
+        setFlashCards(newFlashCards);
+    }
+
+    const addCard = () => {
+        let newFlashCards = flashCards.slice();
+        newFlashCards.push({
+            'term': '<p></p>',
+            'definition': '<p></p>'
+        });
+
+        setFlashCards(newFlashCards);
+    }
+
+    const removeCard = (idx) => {
+        if (flashCards.length > 2) {
+            let newFlashCards = flashCards.slice();
+            newFlashCards.splice(idx, 1);
+            setFlashCards(newFlashCards);
         }
     }
 
-    render() {
-        return (
-            <section className="create-set-container">
-                <div className="create-container">
-                    <form className="meta-form">
-
-                        <div className="header">
-                            Create a new study set
-                        </div>
-
-                        <div className="field-container">
-                            <input
-                                id="set-title"
-                                placeholder="Enter a title..."
-                                value={this.state.title}
-                                onChange={event => this.setTitle(event.target.value)}
-                            />
-                            <div className="field-label">TITLE</div>
-                        </div>
-                        
-                        <div className="field-container">
-                            <input
-                                id="set-desc"
-                                placeholder="Add a description..."
-                                value={this.state.desc}
-                                onChange={event => this.setDesc(event.target.value)}
-                            />
-                            <div className="field-label">DESCRIPTION</div>
-                        </div>
-
-                    </form>
-
-                    <div className="add-card-container" onClick={() => this.addCard(true)}>
-                        <div className="add-card">
-                            <AddIcon className="add-card-icon"></AddIcon>
-                            <div className="add-card-text">Add a card</div>
-                        </div>
-                    </div>
-
-                    <div className="center-container">
-                        {this.state.flash_cards.map((_, index) => {
-                            return (
-                                <CardForm
-                                    key={index}
-                                    delete={this.deleteCard}
-                                    clear={this.clearCard}
-                                    setTerm={this.setCardTerm}
-                                    setDef={this.setCardDef}
-                                    info={this.state.flash_cards[index]}
-                                    cardNum={index}
-                                />
-                            );
-                        })}
-                    </div>
-
-                    <div className="add-card-container" onClick={() => this.addCard(false)}>
-                        <div className="add-card">
-                            <AddIcon className="add-card-icon"></AddIcon>
-                            <div className="add-card-text">Add a card</div>
-                        </div>
-                    </div>
-
-                    <div className="submit-container">
-                        <div
-                            className="submit-button"
-                            onClick={() => this.createSet()}
-                        >Create</div>
-                    </div>
-                    <div></div>
-                </div>
-            </section>
-        )
-    }
+    return (
+        <section className="create-set-page-wrapper">
+            <SetForm
+                header={"Create a new set"}
+                title={title}
+                setTitle={setTitle}
+                description={description}
+                setDescription={setDescription}
+                flashCards={flashCards}
+                updateCards={updateCards}
+                addCard={addCard}
+                removeCard={removeCard}
+                submit={createSet}
+            />
+        </section>
+    )
 }
-
-export default CreateSet;

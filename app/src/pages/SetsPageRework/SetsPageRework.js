@@ -202,6 +202,13 @@ export default function SetsPageRework(props) {
     return (
         <OwnerContext.Provider value={owner}>
             <section className="sets-page-container">
+                <div style={{fontSize: '30px', fontWeight: 'bold', marginBottom:'15px'}}>
+                {owner 
+                    ? <span>My Sets</span>
+                    : <span>{username[0].toUpperCase() + username.substring(1)}'s Sets</span>
+                }
+                </div>
+                
                 {showFolderModal &&
                     <ModalTemplate
                         showModal={showFolderModal}

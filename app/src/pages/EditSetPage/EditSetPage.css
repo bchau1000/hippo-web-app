@@ -1,145 +1,17 @@
-.edit-set-container {
+.edit-set-page-wrapper button {
+    border: none;
+    cursor: pointer;
+}
+
+.edit-set-page-wrapper {
     grid-area: content;
     display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
-.edit-set-show {
-    transition: margin-left 0.3s ease;
-    margin-left: 0;
-}
-
-.create-container {
-    display: grid;
-    grid-template-rows: 200px 100px auto 100px 50px;
-    width: 60%;
-    grid-gap: 30px;
-}
-
-.meta-form {
-    min-width: 100%;
-    display: grid;
-    grid-template-rows: 40px, 60px, 60px;
-    grid-gap: 15px;
-}
-
-.meta-form .header {
-    font-size: 22px;
-    font-weight: bold;
-    color: var(--color-text);
-}
-
-.meta-form .field-container {
-    display: flex;
     flex-direction: column;
-    font-size: 22px;
+    align-items: center;
+    padding-bottom: 20px;
 }
 
-.meta-form .field-container .field-label{
-    padding-top: 7px;
-    font-size: 14px;
-    font-weight: bold;
-    color: rgba(0, 0, 0, 0.3);
-}
-
-.meta-form .field-container input{
-    background: var(--color-bg);
-    font-size: 18px;
-    width: 100%;
-    height: 50%;
-    border: none;
-    border-bottom: 2.5px solid black;
-    transition: border-bottom .3s;
-    padding-bottom: 5px;
-}
-
-.meta-form input:focus {
-    outline:none;
-    border-bottom: 2.5px solid var(--color-accent);
-}
-
-::-webkit-input-placeholder { /* WebKit browsers */
-     opacity: 0.3 !important;
-}
-
-.center-container {
+.edit-set-page-container {
     display: grid;
-    width: 100%;
-    grid-template-rows: repeat(auto-fill);
-    grid-template-columns: auto;
-    grid-gap: 20px;
-}
-
-.add-card-container {
-    background: white;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    width: 100%;
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-    
-    transition: box-shadow 0.2s;
-}
-
-.add-card {
-    height: fit-content;
-    width: fit-content;
-    transition: color 0.2s;
-    display: flex;
-    flex-direction: row;
-}
-
-.add-card-text{
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.add-card .icon {
-    color: red;
-    
-}
-
-.add-card-container:hover {
-    cursor:pointer;
-    color: var(--color-accent);
-    box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
-}
-
-.submit-container {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.submit-button {
-    height: 100%;
-    width: 200px;
-    background-color: var(--color-accent);
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    transition: background-color 0.1s;
-}
-
-.submit-button:hover {
-    background-color: rgba(22, 206, 120, 0.7);
-    cursor:pointer;
-}
-
-
-@media (min-width: 1025px) and (max-width: 1280px) {
-    .create-container {
-        width: 80%;
-    } 
-}
-
-@media (max-width: 1024px) {
-    .create-container {
-        width: 90%;
-    } 
+    width: 60%;
 }

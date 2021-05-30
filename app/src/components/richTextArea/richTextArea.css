@@ -1,0 +1,42 @@
+.richtext-editor {
+    border-bottom: 2px solid rgba(24, 24, 24, 1);
+    padding-bottom: 10px;
+    margin: 6px;
+    font-size: 18px;
+    max-height: 500px;
+    overflow-y: auto;
+
+    transition: border-bottom 0.26s ease;
+}
+
+.richtext-editor-options{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.richtext-editor-options button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 15px;
+}
+
+.richtext-editor-options .not-selected:hover{
+    background-color: rgba(24, 24, 24, 0.1);
+}
+
+.richtext-editor-options .selected{
+    background-color: rgba(24, 24, 24, 0.3);
+}
+
+.card-focus {
+    border-bottom: 2px solid var(--color-accent);
+}
+

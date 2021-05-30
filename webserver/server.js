@@ -447,7 +447,6 @@ app.put("/api/sets/new", authUser, (request, response) => {
     const studySet = request.body;
 
     try {
-        console.log(studySet);
         pool.query(
             "INSERT INTO sets(title, description, user_id) VALUES(?, ?, ?)",
             [studySet.title, studySet.description, id],
