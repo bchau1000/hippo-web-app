@@ -33,7 +33,7 @@ export default function FolderCollapsible(props) {
         else if (width < 550)
             setCalcHeight(240 * setLen);
 
-    }, [props.isFolder, folder, width])
+    }, [props.isFolder, folder, width, owner])
 
     useEffect(() => {
         if (showFolders)
@@ -123,7 +123,7 @@ export default function FolderCollapsible(props) {
                 }
             </div>
             <div
-                className={`folder-collapsible-container ${showFolders ? "" : "collapsible-hide"}`}
+                className={`folder-collapsible-container ${showFolders ? "collapsible-show" : "collapsible-hide"}`}
                 style={{ height: containerHeight }}
             >
                 <div className="folder-collapsible-position">

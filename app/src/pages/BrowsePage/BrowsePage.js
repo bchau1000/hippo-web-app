@@ -22,7 +22,7 @@ const createAPIUrl = (title, username, tags, page, limit) => {
         for (let i = 0; i < tagsLength; i++)
             url += "tags=" + tags[i] + "&";
 
-    return url + "page=" + page + "&" + "limit=" + limit;
+    return `${url}page=${page}&limit=${limit}`;
 }
 
 export default function BrowsePage(props) {
@@ -114,7 +114,7 @@ export default function BrowsePage(props) {
                         />
                     </div>
                     :
-                    <div className="browse-results-container" style={{"fontSize": "25px", "margin-top":"5%"}}>
+                    <div className="browse-results-container" style={{"fontSize": "25px", "marginTop":"5%"}}>
                         There's Nothing Here!
                     </div>
                 }

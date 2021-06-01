@@ -39,7 +39,7 @@ export default function EditSetPage(props) {
         }
 
         getData();
-    }, []);
+    }, [set_id]);
 
     const editSet = async () => {
         // implement this

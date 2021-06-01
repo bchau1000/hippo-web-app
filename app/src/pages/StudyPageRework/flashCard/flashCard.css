@@ -1,0 +1,48 @@
+.flash-card-container {
+    min-height: 150px;
+    
+    width: 850px;
+    display: grid;
+    grid-template-columns: 45% 55%;
+    grid-template-areas:
+    "fc-term fc-definition";
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background-color: var(--color-fg);
+}
+
+.fc-term-container {
+    max-height: 800px;
+    overflow-y: auto;
+    padding: 20px;
+    border-right: 1px solid rgba(24, 24, 24, 0.1);
+}
+
+.fc-definition-container {
+    max-height: 800px;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .flash-card-container { 
+        width: 90%;
+    }
+}
+
+@media (max-width: 800px) { 
+    .flash-card-container { 
+        width: 90%;
+        grid-template-columns: auto;
+        grid-template-rows: 50% 50%;
+        grid-template-areas:
+        "fc-term"
+        "fc-definition";
+    }
+    .fc-term-container { 
+        border-right: none;
+    }
+
+    .fc-definition-container {
+        border-top: 1px solid rgba(24, 24, 24, 0.1);
+    }
+}

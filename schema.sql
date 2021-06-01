@@ -1,3 +1,5 @@
+
+
 DROP DATABASE IF EXISTS study_buddy_db;
 CREATE DATABASE study_buddy_db;
 USE study_buddy_db;
@@ -27,18 +29,11 @@ CREATE TABLE sets(
   user_id int REFERENCES user(id)
 );
 
-DROP TABLE IF EXISTS subjects;
-CREATE TABLE subjects(
-	id int PRIMARY KEY auto_increment,
-    name VARCHAR(40) NOT NULL UNIQUE,
-    set_id int REFERENCES study_sets(id)
-);
-
 DROP TABLE IF EXISTS flash_cards;  
 CREATE TABLE flash_cards(
   id int PRIMARY KEY auto_increment,
-  term blob DEFAULT NULL,
-  definition blob DEFAULT NULL,
+  term VARCHAR(8000) CHARACTER SET UTF8MB4,
+  definition VARCHAR(8000) CHARACTER SET UTF8MB4,
   q_type int,
   set_id int REFERENCES study_sets(id)
 );

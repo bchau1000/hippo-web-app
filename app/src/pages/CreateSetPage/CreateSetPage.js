@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import SetForm from 'components/setForm/setForm.js';
 import './CreateSetPage.css';
 
@@ -10,8 +10,6 @@ export default function CreateSetPage(props) {
     }));
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [loading, setLoading] = useState(false);
-    const bottom = useRef(null);
 
     useEffect(() => {
         
@@ -36,7 +34,7 @@ export default function CreateSetPage(props) {
 
             const response = await fetch('/api/sets/new', settings);
             
-            if (response.status == 201) {
+            if (response.status === 201) {
                 const json = await response.json();
                 window.location.href = "/" + json.user + "/sets";
             }

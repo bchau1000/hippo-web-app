@@ -8,7 +8,7 @@ import 'draft-js/dist/Draft.css';
 
 export default function CardForm(props) {
     const idx = props.idx;
-
+    const {updateCards} = props;
     const termState = getContentState(props.flashCard.term);
     const [termEditor, setTermEditor] = useState(() => EditorState.createWithContent(termState));
     const [termStyles, setTermStyles] = useState(new Array(5).fill(false));
@@ -24,8 +24,9 @@ export default function CardForm(props) {
             'plainText': termEditor.getCurrentContent().getPlainText() + definitionEditor.getCurrentContent().getPlainText()
         }
 
-        props.updateCards(idx, flashCard);
-    }, [termEditor, definitionEditor]);
+        updateCards(idx, flashCard);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [termEditor, definitionEditor, idx]);
 
     const toggleTermStyle = (event, idx, value) => {
         event.preventDefault();

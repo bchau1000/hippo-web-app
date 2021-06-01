@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import "./paginator.css";
 
 function range(start, end) {

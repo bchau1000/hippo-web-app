@@ -5,7 +5,7 @@ import LoginRegisterModal from 'components/loginRegisterModal/loginRegisterModal
 import BrowsePage from "pages/BrowsePage/BrowsePage.js";
 import CreateSetPage from "pages/CreateSetPage/CreateSetPage.js";
 import EditSetPage from "pages/EditSetPage/EditSetPage.js";
-import StudyPage from "pages/StudyPage/StudyPage.js";
+import StudyPage from "pages/StudyPageRework/StudyPage.js";
 import SetsPageRework from "pages/SetsPageRework/SetsPageRework.js";
 import Navbar from "components/navbar/navbar.js";
 import Sidebar from "components/sidebar/sidebar.js";

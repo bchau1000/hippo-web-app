@@ -1,5 +1,5 @@
 import {stateToHTML} from 'draft-js-export-html';
-import { ContentState, convertToRaw, convertFromHTML } from 'draft-js';
+import { ContentState, convertFromHTML } from 'draft-js';
 
 export function getContentState(html) {
     const blocks = convertFromHTML(html);

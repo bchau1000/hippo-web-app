@@ -4,6 +4,7 @@
 }
 
 .create-set-page-wrapper {
+    margin-top: 20px;
     grid-area: content;
     display: flex;
     flex-direction: column;
