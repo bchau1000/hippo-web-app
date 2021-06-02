@@ -2,18 +2,20 @@ require('dotenv').config();
 const path = require('path');
 const express = require("express");
 const cors = require("cors");
-const jwt = require("jsonwebtoken");
+
+
 const cookieParser = require("cookie-parser");
 const async = require("async");
-const pool = require("./config");
+const pool = require("./Config/config");
 const { response } = require('express');
+const {authUser,createToken,removeToken} = require("./Middlewares/Auth/auth");
 const app = express();
 const port = process.env.PORT || 9000;
 
+
 // Master access tokens for JWT, MUST CHANGE DURING DEPLOYMENT
-const secretToken = "secret_token";
-const refreshSecretToken = "refresh_secret_token";
-let refreshTokens = [];
+
+
 
 app.use(express.static(path.join(__dirname, '../app/build')));
 
@@ -32,59 +34,6 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 app.set("json spaces", 2);
-
-// User Auth Middleware:
-//  Remove authJWT in app.get() functions to test
-//  URLs WITHOUT user authentication
-
-const authUser = (request, response, next) => {
-    const token = request.cookies.token;
-    const refreshToken = request.cookies.refreshToken;
-
-    if (refreshTokens.includes(refreshToken)) {
-        jwt.verify(token, secretToken, (err, user) => {
-            if (err)
-                return response.sendStatus(403);
-
-            request.token = token;
-            request.user = user;
-            next();
-        });
-    }
-    else {
-        response.status(404).send({
-            'status': 404,
-            'message': 'Refresh token already expired.'
-        });
-    }
-}
-
-app.get("/api/test", (_, response) => {
-    try {
-        pool.query(
-            "SHOW TABLES",
-            (error, result) => {
-                if (error) {
-                    console.log('400 Bad Request: "/api/test"');
-                    return response.status(400).send(error);
-                }
-
-                if (result.length) {
-                    console.log('200 Ok: "/api/test"');
-                    return response.status(200).send(result);
-                }
-                else {
-                    console.log('404 Not Found: "/api/test"');
-                    return response.status(404).send("400 Not Found");
-                }
-            }
-        );
-    }
-    catch (err) {
-        console.log('404 Not Found: "/api/test"');
-        return response.status(404).send(err);
-    }
-})
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////USER REQUEST FUNCTIONS//////////////////////////////////////////
@@ -130,7 +79,7 @@ app.get("/api/sets/:set_id/cards", (request, response) => {
     try {
         pool.query(
             "SELECT s.title as 'title', s.description as 'description',\n" +
-            "       f.id as 'id', f.term as 'term', f.definition as 'definition'\n" +
+            "f.id as 'id', f.term as 'term', f.definition as 'definition'\n" +
             "FROM sets as s JOIN flash_cards as f\n" +
             "WHERE s.id = f.set_id AND s.id = ?",
             set_id,
@@ -636,34 +585,16 @@ app.post("/api/login", (request, response) => {
             "WHERE username = ? AND password = ?",
             [username, password],
             (error, result) => {
-                if (error) return response.status(400).send(error);
+                if (error) return next(error);
 
-                if (result[0] === undefined) {
+                if (!result.length) {
                     return response.status(400).send({
                         'status': 400,
                         'message': 'Invalid username or password.'
-                    });
+                    });  
                 }
                 else {
-                    const accessToken = jwt.sign({
-                        id: result[0].id,
-                        username: result[0].username,
-                        email: result[0].email,
-                    },
-                        secretToken,
-                        { expiresIn: '20m' }
-                    );
-
-                    const refreshToken = jwt.sign({
-                        id: result[0].id,
-                        username: result[0].username,
-                        email: result[0].email,
-                    },
-                        refreshSecretToken
-                    );
-
-                    refreshTokens.push(refreshToken);
-
+                    [accessToken,refreshToken] = createToken(result);
                     response.cookie(
                         'token', accessToken, {
                         httpOnly: true,
@@ -697,18 +628,18 @@ app.post("/api/login", (request, response) => {
 });
 
 app.post('/api/logout', (request, response) => {
-    const token = request.cookies.refreshToken;
-
-    for (let i = 0; i < refreshTokens.length; i++) {
-        if (refreshTokens[i] == token) {
-            refreshTokens.splice(i, 1);
-        }
+    
+    if(removeToken(request.cookies.refreshToken))
+    {
+        console.log('200 Ok: "/api/logout"');
+        return response.status(201).send({
+            'status': 201,
+            'message': 'User successfully logged out.'
+        });
     }
-    console.log('200 Ok: "/api/logout"');
-    return response.status(201).send({
-        'status': 201,
-        'message': 'User successfully logged out.'
-    });
+   else{
+       console.error('Could not logout succesfully');
+   }
 });
 
 app.post('/api/auth', authUser, (request, response) => {
@@ -837,35 +768,35 @@ app.post('/api/owner/username', authUser, (request, response) => {
 
 });
 
-app.post('/api/token', (request, response) => {
-    const { token } = request.body;
+// app.post('/api/token', (request, response) => {
+//     const { token } = request.body;
 
-    if (!token) {
-        return response.status(401);
-    }
-
-
-    if (!refreshTokens.includes(token)) {
-        return response.status(403);
-    }
+//     if (!token) {
+//         return response.status(401);
+//     }
 
 
-    jwt.verify(token, refreshSecretToken, (error, user) => {
-        if (error) {
-            return response.status(403);
-        }
+//     if (!refreshTokens.includes(token)) {
+//         return response.status(403);
+//     }
 
-        const accessToken = jwt.sign(
-            {
-                id: user.id,
-                username: user.username,
-                email: user.email,
-            },
-            secretToken,
-            { expiresIn: '20m' }
-        );
-    });
-});
+
+//     jwt.verify(token, refreshSecretToken, (error, user) => {
+//         if (error) {
+//             return response.status(403);
+//         }
+
+//         const accessToken = jwt.sign(
+//             {
+//                 id: user.id,
+//                 username: user.username,
+//                 email: user.email,
+//             },
+//             secretToken,
+//             { expiresIn: '20m' }
+//         );
+//     });
+// });
 
 // END REGISTER/LOGIN FUNCTIONS
 
