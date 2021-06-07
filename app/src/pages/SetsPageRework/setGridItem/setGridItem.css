@@ -1,7 +1,7 @@
 .grid-item {
     background: var(--color-fg);
     
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
     display: grid;
     grid-template-rows: 26px auto 24px 4fr;
     grid-template-areas:
@@ -11,6 +11,7 @@
     "description";
     padding: 10px;
     transition: box-shadow .3s;
+    border-radius: 2px;
 }
 
 .grid-item .info-options {
@@ -89,7 +90,7 @@
     margin-right: 5px;
     padding-left: 10px;
     padding-right: 10px;
-    border-radius: 10px;
+    border-radius: 2px;
 }
 
 .grid-item .desc {
@@ -102,6 +103,6 @@
 }
 
 .grid-item:hover {
-    box-shadow: rgba(99, 99, 99, 0.5) 0px 2px 8px 0px;
+    box-shadow: rgba(99, 99, 99, 0.8) 0px 2px 8px 0px;
     cursor: pointer;
 }

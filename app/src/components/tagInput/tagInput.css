@@ -1,0 +1,21 @@
+.tag-input-container {
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: transparent;
+    gap: 10px;
+    padding-bottom: 5px;
+
+    border: none;
+    border-bottom: 2px solid rgba(24, 24, 24, 1);
+    transition: border-bottom 0.15s ease;
+    width: 95%;
+}
+
+
+.tag-search-container {
+    min-width: 200px;
+    height: 30px;
+    flex-grow: 1;
+}

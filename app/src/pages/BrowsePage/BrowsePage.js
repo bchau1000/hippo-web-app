@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
+import TagInput from 'components/tagInput/tagInput.js';
 import BrowseItem from "./browseItem/browseItem.js";
 import LoadingAnim from 'components/loadingAnim/loadingAnim';
 import Paginator from "./paginator/paginator.js";
@@ -27,6 +28,7 @@ const createAPIUrl = (title, username, tags, page, limit) => {
 
 export default function BrowsePage(props) {
     const query = useQuery();
+    const [allTags, setAllTags] = useState([]);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState(query.get("title"));
     const [username, setUsername] = useState(query.get("username"));
@@ -39,9 +41,33 @@ export default function BrowsePage(props) {
     const [url, setUrl] = useState(createAPIUrl(title, username, tags, page, limit));
 
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
 
+    }, []);
+
+    useEffect(() => {
+        const fetchTags = async () => {
+            const settings = {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            }
+            const response = await fetch("api/tags", settings);
+
+            if (response.status === 200) {
+                const json = await response.json();
+                const length = json.tags.length;
+                let newAllTags = []
+
+                for (let i = 0; i < length; i++)
+                    newAllTags.push(json.tags[i].name);
+
+                setAllTags(newAllTags);
+            }
+
+            setLoading(true);
+        }
+        const fetchData = async () => {
             const settings = {
                 method: "GET",
                 headers: {
@@ -61,7 +87,10 @@ export default function BrowsePage(props) {
             window.history.replaceState(null, null, url);
             setLoading(false);
         }
+
+        fetchTags();
         fetchData();
+
     }, [url]);
 
     useEffect(() => {
@@ -77,47 +106,62 @@ export default function BrowsePage(props) {
     }
 
     const onSubmit = async (event) => {
-        event.preventDefault();
-        setTitle(event.target[0].value);
-        setPage(1);
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            console.log(event.target);
+        }
+
+    }
+
+    const showResult = () => {
+        if (sets.length > 0) {
+            return (
+                sets.map((set, idx) => {
+                    return (
+                        <BrowseItem
+                            key={idx}
+                            set={set}
+                        />
+                    )
+                })
+            )
+        }
+        else {
+            return (
+                <div className="empty-results-container">
+                    <span>There's Nothing Here!</span>
+                    <a href="/browse">Back to Browse</a>
+                </div>
+            )
+        }
     }
 
     return (
         <section className="browse-page-wrapper">
             <div className="browse-page-container">
-                <form className="browse-query-container" onSubmit={(event) => onSubmit(event)}>
+                <form id="search-form" className="browse-query-container" onKeyDown={(event) => onSubmit(event)}>
                     <div className="search-container">
-                        <input type="text" placeholder="Search by title..."></input>
+                        <input form="search-form" className="by-title" type="text" placeholder="Search by title" />
                     </div>
+                    <TagInput
+                        allTags={allTags}
+                    />
                 </form>
-                {sets.length ?
-                    <div>
-                        <ul className="browse-results-container">
-                            {!loading ?
-                                sets.map((set, idx) => {
-                                    return (
-                                        <BrowseItem
-                                            key={idx}
-                                            set={set}
-                                        />
-                                    )
-                                })
-                                : <LoadingAnim />
-                            }
-                        </ul>
-                        <ol className="browse-pagination-container">
-                        </ol>
-                        <Paginator
-                            totalPages={totalPages}
-                            page={page}
-                            onPage={onPage}
-                        />
-                    </div>
-                    :
-                    <div className="browse-results-container" style={{"fontSize": "25px", "marginTop":"5%"}}>
-                        There's Nothing Here!
-                    </div>
-                }
+                <div>
+                    <ul className="browse-results-container">
+                        {!loading
+                            ? showResult()
+                            : <LoadingAnim />
+                        }
+                    </ul>
+                    <ol className="browse-pagination-container">
+                    </ol>
+                    <Paginator
+                        totalPages={totalPages}
+                        page={page}
+                        onPage={onPage}
+                    />
+                </div>
             </div>
         </section>
     )

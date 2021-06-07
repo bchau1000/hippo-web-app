@@ -3,8 +3,8 @@
     grid-area: content;
     display: flex;
     flex-direction: column;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 80px;
+    margin-right: 80px;
     margin-bottom: 30px;
 }
 

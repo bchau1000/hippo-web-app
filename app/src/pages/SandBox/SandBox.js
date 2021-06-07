@@ -1,21 +1,24 @@
 import { useEffect } from 'react';
+import TagInput from 'components/tagInput/tagInput.js';
 import "./SandBox.css";
 
 export default function SandBox(props) {
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1
-    };
+    const allTags = ['math', 'science', 'english'];
+
     useEffect(() => {
 
     }, []);
 
+    const onSubmit = (tags) => {
+        console.log(tags);
+    }
+
     return (
         <div className="sandbox-container">
-
+            <TagInput
+                onSubmit={onSubmit}
+                allTags={allTags}
+            />
         </div>
 
     )

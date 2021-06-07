@@ -4,7 +4,6 @@
 }
 
 .study-page-container {
-    
     display: grid;
     width: 100%;
     grid-template-rows: auto 500px auto;
@@ -20,7 +19,7 @@
     padding-top: 20px;
     grid-area: sp-header;
     
-    background-color: var(--color-fg);
+    background-color: var(--color-bg);
     display: flex;
     justify-content: center;
 }
@@ -33,12 +32,13 @@
 
 .sp-center-container {
     grid-area: sp-center;
-    background-color: var(--color-fg);
+    background-color: var(--color-bg);
     display: flex;
     justify-content: center;
-    
+    padding-top: 30px;
     width: 100%;
 }
+
 
 .sp-cards-container {
     grid-area: sp-body;

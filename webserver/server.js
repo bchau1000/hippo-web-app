@@ -106,10 +106,10 @@ app.get("/api/:username/sets", (request, response) => {
                     return response.status(400).send(error);
 
                 if (result) {
-                    
+
                     return response.status(201).send(result);
                 }
-                    
+
                 else
                     return response.status(404).send("404 Not Found");
             }
@@ -267,7 +267,7 @@ app.put("/api/folders/new", authUser, (request, response) => {
                         'status': 401,
                         'content': error,
                     });
-                    
+
                 }
 
                 const folder_id = result.insertId;
@@ -871,7 +871,7 @@ app.post('/api/token', (request, response) => {
 
 const generateBrowseQuery = (request, _, next) => {
     let sqlQuery =
-        "FROM (sets as s LEFT JOIN (sets_and_tags as st JOIN tags as t ON st.tag_id = t.id) ON s.id = st.set_id), users as u\n" +
+        "FROM (sets as s LEFT JOIN sets_and_tags as st ON s.id = st.set_id) LEFT JOIN tags as t ON  t.id = tag_id, users as u\n" +
         "WHERE u.id = s.user_id";
 
     let sqlValues = new Array();
@@ -964,7 +964,6 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
                                     "content": error,
                                 });
                             }
-
                             if (result)
                                 callback(null, result[0].count);
                             else
@@ -973,6 +972,7 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
                     )
                 },
                 function (callback) {
+
                     pool.query(
                         "SELECT s.id, s.title, s.description, username, GROUP_CONCAT(t.name SEPARATOR ',') as tags\n" +
                         "FROM (" + sqlQuery + ") as s LEFT JOIN (sets_and_tags as st JOIN tags as t ON st.tag_id = t.id) ON s.id = st.set_id\n" +
@@ -985,6 +985,7 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
                                     "content": error,
                                 });
                             }
+
                             callback(null, result);
                         }
                     )
@@ -1019,19 +1020,48 @@ app.get("/api/browse", generateBrowseQuery, (request, response) => {
     }
 })
 
+app.get('/api/tags', (request, response) => {
+    try {
+        pool.query(
+            'SELECT * FROM tags;',
+            (error, result) => {
+                if (error) {
+                    return response.status(400).send({
+                        'status': 400,
+                        'content': error,
+                    })
+                }
+                else {
+                    return response.status(200).send({
+                        'status': 200,
+                        'tags': result,
+                    })
+                }
+                    
+            }
+        )
+    }
+    catch (error) {
+        return response.status(404).send({
+            'status': 404,
+            'content': error,
+        })
+    }
+})
+
 app.get("*", (request, response) => {
     return response.sendFile(path.join(__dirname + '/../app/build/index.html'));
 });
 
 app.post("/api/richtext", (request, response) => {
-    
+
     try {
         //console.log(request.body);
         pool.query(
             'INSERT INTO temp(term) VALUES (?);',
             request.body.term,
             (error, result) => {
-                if(error) {
+                if (error) {
                     return response.status(400).send({
                         'status': 400,
                         'content': error,
@@ -1043,7 +1073,7 @@ app.post("/api/richtext", (request, response) => {
                 pool.query(
                     'SELECT * FROM temp;',
                     (error, result) => {
-                        if(error) {
+                        if (error) {
                             return response.status(400).send({
                                 'status': 400,
                                 'content': error,
@@ -1053,7 +1083,7 @@ app.post("/api/richtext", (request, response) => {
                         const length = result.length;
                         let send = [];
 
-                        for(let i = 0; i < length; i++) {
+                        for (let i = 0; i < length; i++) {
                             send.push({
                                 'id': result[i].id,
                                 'term': result[i].term.toString('utf-8')
@@ -1066,16 +1096,16 @@ app.post("/api/richtext", (request, response) => {
             }
         );
 
-        
+
     }
-    catch(error) {
+    catch (error) {
         return response.status(404).send({
             'status': 404,
             'content': error,
         })
     }
 
-    
+
 });
 
 

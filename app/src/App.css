@@ -12,10 +12,15 @@ html, body, #root, #root>div {
     --color-fg: white;
     --color-primary: rgb(48, 48, 48);
     --color-accent: rgb(22, 206, 120);
+    --box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
     height: 100%;
     background: var(--color-bg);
     font-family: 'Fira Sans', sans-serif !important;
+}
+
+input::-webkit-calendar-picker-indicator {
+    display: none;
 }
 
 button {
