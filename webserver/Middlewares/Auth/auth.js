@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 
+// Master access tokens for JWT, MUST CHANGE DURING DEPLOYMENT
 const secretToken = "secret_token";
 const refreshSecretToken = "refresh_secret_token";
 const refreshTokens = [];
@@ -54,7 +55,7 @@ exports.createToken = (result) => {
 };
 
 
-exports.removeToken = () => {
+exports.removeToken = (token) => {
     for (let i = 0; i < refreshTokens.length; i++) {
         if (refreshTokens[i] == token) {
             refreshTokens.splice(i, 1);
