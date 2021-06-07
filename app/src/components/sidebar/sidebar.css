@@ -10,13 +10,14 @@
     font-size: 16px;
     font-family: 'Fira Sans', sans-serif;
     background-color: rgba(0, 0, 0 ,0);
+    color: white;
     cursor: pointer;
-    
+    transition: color 0.36s ease;
 }
 
 
 .sidebar-container button:hover{
-    
+    color: black;
 }
 .sidebar-container li {
     list-style-type: none;
@@ -24,15 +25,30 @@
     margin: 0;
 }
 
+.sidebar-header {
+    margin: auto;
+    padding: 30px;
+    font-size: 30px;
+}
+
+.sidebar-header a{
+    color: white;
+    font-weight: bold;
+    transition: color .26s ease;
+}
+
+.sidebar-header:hover a{
+    color: var(--color-accent);
+}
+
 .sidebar-container {
-    margin: -1px;
     min-height: 100vh;
     height: 100%;
     width: 150px;
     position: fixed;
-    z-index: 2;
+    z-index: 3;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    background-color: var(--color-fg);
+    background-color: var(--color-primary);
     display: flex;
     flex-direction: column;
 }
@@ -50,23 +66,21 @@
     height: stretch;
     display: flex;
     flex-direction: column;
-    
 }
 
 .sidebar-item {
     height: 90px;
     width: 100%;
 
-    background: linear-gradient(to left, var(--color-fg) 50%, rgba(0, 0, 0, 0.1) 50%);
+    background: linear-gradient(to left, var(--color-primary) 50%, var(--color-accent) 50%);
     background-size: 200% 100%;
     background-position: right bottom;
     transition: background 0.26s ease;
-    
 }
 
 .sidebar-item:hover {
     background-position:left bottom;
-    
+    color: black;
 }
 
 .sidebar-link-wrapper {
@@ -80,4 +94,30 @@
 }
 .sidebar-link-wrapper .material-icons {
     font-size: 35px;
+}
+
+.sidebar-profile-item {
+    margin-top: auto;
+    margin-bottom: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+}
+
+.sidebar-profile-username {
+    font-size: 18px;
+    color: white;
+    margin-top: 3px;
+}
+
+.profile-pic-border {
+    position: relative;
+    width: 75px;
+    height: 75px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

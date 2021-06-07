@@ -1,9 +1,9 @@
 a {
-    color: white;
+    color: rgba(24, 24, 24, 0.9);
     text-decoration: none;
 }
 .navbar-container button {
-    color: white;
+    color: rgba(24, 24, 24, 0.9);
     border: none;
     background-color: rgba(0, 0, 0,0 );
 }
@@ -15,13 +15,23 @@ a {
     grid-area: header;
     width: 100%;
     height: 60px;
-    background: var(--color-primary);
+    background: var(--color-bg);
+    border-bottom: 1px solid rgba(24, 24, 24, 0.05);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     z-index: 2;
-    
+    transition: margin-left 0.26s ease;
+}
+
+.add-margin {
+    margin-left: 150px;
+    width: calc(100% - 150px);
+}
+
+.rem-margin {
+    margin-left: 0px;
 }
 
 .navbar-container .left{
@@ -76,13 +86,12 @@ a {
 }
 
 .navbar-container .left .placeholder-margin {
-
     margin-right: 25px;
 }
 
 .navbar-container .left .dropdown .material-icons{
     font-size: 30px;
-    color: rgb(238, 238, 238);
+    color: rgba(24, 24, 24, 0.9);
 }
 
 .navbar-list-icon {

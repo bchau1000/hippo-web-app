@@ -6,16 +6,16 @@
     "sf-meta"
     "sf-tags"
     "sf-cards";
-    width: 60%;
+    width: 1300px;
     gap: 15px;
 }
 
 .sf-header-container {
     grid-area: sf-header;
-    font-size: 22px;
+    font-size: 26px;
     font-weight: bold;
     height: auto;
-    margin-bottom: 25px;
+    margin-bottom: 5px;
 }
 
 .sf-meta-container {
@@ -67,20 +67,10 @@
     background-color: rgba(22, 206, 120, 0.7);
 }
 
-@media (min-width: 1281px) {
-    .set-form-container {
-        width: 70%;
-    } 
-}
 
-@media (min-width: 1025px) and (max-width: 1280px) {
-    .set-form-container {
-        width: 80%;
-    } 
-}
-
-@media (max-width: 1024px) {
+@media (max-width: 1600px) {
     .set-form-container {
         width: 90%;
     } 
 }
+

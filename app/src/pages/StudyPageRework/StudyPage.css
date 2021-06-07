@@ -1,11 +1,13 @@
 .study-page-wrapper {
     grid-area: content;
+    display: flex;
+    justify-content: center;
     width: 100%;
 }
 
 .study-page-container {
     display: grid;
-    width: 100%;
+    width: 1300px;
     grid-template-rows: auto 500px auto;
     grid-template-areas: 
     "sp-header"

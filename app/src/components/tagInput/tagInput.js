@@ -5,7 +5,9 @@ import AutoComplete from './autoComplete/autoComplete.js';
 import './tagInput.css';
 
 export default function TagInput(props) {
-    const [selectedTags, setSelectedTags] = useState([]);
+    const selectedTags = props.selectedTags;
+    const setSelectedTags = (value) => props.setSelectedTags(value);
+    
 
     const addTag = (tag) => {
         const newSelectedTags = selectedTags.slice();

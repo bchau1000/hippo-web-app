@@ -30,22 +30,21 @@ export default function BrowsePage(props) {
     const query = useQuery();
     const [allTags, setAllTags] = useState([]);
     const [loading, setLoading] = useState(false);
+
     const [title, setTitle] = useState(query.get("title"));
     const [username, setUsername] = useState(query.get("username"));
     const [tags, setTags] = useState(query.getAll("tags"));
     const [page, setPage] = useState(query.get("page") ? query.get("page") : 1);
     const [limit, setLimit] = useState(query.get("limit") ? query.get("limit") : 20);
+
     const [count, setCount] = useState(0);
     const [totalPages, setTotalPages] = useState(Math.ceil(count / limit));
     const [sets, setSets] = useState([]);
     const [url, setUrl] = useState(createAPIUrl(title, username, tags, page, limit));
 
     useEffect(() => {
-
-    }, []);
-
-    useEffect(() => {
         const fetchTags = async () => {
+            setLoading(true);
             const settings = {
                 method: "GET",
                 headers: {
@@ -65,7 +64,7 @@ export default function BrowsePage(props) {
                 setAllTags(newAllTags);
             }
 
-            setLoading(true);
+            
         }
         const fetchData = async () => {
             const settings = {
@@ -94,10 +93,6 @@ export default function BrowsePage(props) {
     }, [url]);
 
     useEffect(() => {
-        setUrl(createAPIUrl(title, username, tags, page, limit));
-    }, [title, username, tags, page, limit]);
-
-    useEffect(() => {
         setTotalPages(Math.ceil(count / limit));
     }, [count, limit]);
 
@@ -108,9 +103,8 @@ export default function BrowsePage(props) {
     const onSubmit = async (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            console.log(event.target);
+            setUrl(createAPIUrl(title, username, tags, page, limit));
         }
-
     }
 
     const showResult = () => {
@@ -139,12 +133,33 @@ export default function BrowsePage(props) {
     return (
         <section className="browse-page-wrapper">
             <div className="browse-page-container">
+                
                 <form id="search-form" className="browse-query-container" onKeyDown={(event) => onSubmit(event)}>
+                <span className="browse-page-header">
+                    Browse
+                </span>
                     <div className="search-container">
-                        <input form="search-form" className="by-title" type="text" placeholder="Search by title" />
+                        <input 
+                            form="search-form" 
+                            className="by-title" 
+                            type="text" 
+                            placeholder="Search by title" 
+                            defaultValue={title} 
+                            onChange={(event) => setTitle(event.target.value)}
+                        />
+                        <input 
+                            className="by-title"
+                            type="text" 
+                            placeholder="Search by user"
+                            defaultValue={username}
+                            onChange={(event) => setUsername(event.target.value)}
+                        >
+                        </input>
                     </div>
                     <TagInput
                         allTags={allTags}
+                        selectedTags={tags}
+                        setSelectedTags={setTags}
                     />
                 </form>
                 <div>

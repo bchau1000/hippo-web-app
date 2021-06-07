@@ -765,7 +765,6 @@ app.post('/api/owner/sets', authUser, (request, response) => {
             'message': error,
         });
     }
-
 });
 
 app.post('/api/owner/folders', authUser, (request, response) => {

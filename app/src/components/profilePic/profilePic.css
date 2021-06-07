@@ -2,7 +2,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgb(69, 90, 100);
+    background-color: rgb(24, 24, 24, 0.8);
+    
     color: rgb(240, 240, 240);
     border-radius: 100%;
     
