@@ -7,11 +7,13 @@ const cookieParser = require("cookie-parser")
 
 const {generateBrowseQuery} = require('./Helpers/helper')
 const {authUser} = require("./Middlewares/Auth/auth");
+
 const set_controller = require("./Controller/sets")
 const folder_controller = require('./Controller/folder')
 const user_controller = require('./Controller/user')
 const owner_controller = require('./Controller/owner')
 const browse_controller = require('./Controller/browse')
+
 const app = express();
 const port = process.env.PORT || 9000;
 
@@ -72,7 +74,6 @@ app.post('/api/auth', authUser, user_controller.userIsLoggedIn)
 app.post('/api/owner/sets', authUser, owner_controller.setOwner)
 app.post('/api/owner/folders', authUser, owner_controller.folderOwner)
 app.post('/api/owner/username', authUser, owner_controller.usernameOwner)
-
 app.get("/api/browse", generateBrowseQuery, browse_controller.defaultBrowse)
 
 app.get("*", (request, response) => {

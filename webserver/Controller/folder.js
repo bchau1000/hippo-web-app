@@ -1,7 +1,8 @@
 /*All FOLDER RELATED FUNCTIONS
  INCLUDING CREATE,READ,UPDATE AND DELETE*/ 
  const pool = require("../Config/config");
-    exports.getFoldersByUsername = (request, response) => {
+const async = require("async")
+exports.getFoldersByUsername = (request, response) => {
         const username = request.params.username;
         try {
             pool.query(
@@ -78,10 +79,10 @@
                 'content': error
             });
         }
-    }
+}
 
 
-    exports.insertNewFolder = (request, response) => {
+exports.insertNewFolder = (request, response) => {
         const user_id = request.user.id;
         const folder_name = request.body.name;
         const sets = request.body.sets;
@@ -148,7 +149,7 @@
                 'content': error,
             })
         }
-    }
+}
 
     exports.editFolder =  (request, response) => {
         const folder_id = request.body.id;

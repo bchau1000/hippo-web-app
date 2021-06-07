@@ -2,11 +2,15 @@
 AKA dealing with the data retrieved by the connector*/ 
 const {createToken,removeToken} = require("../Middlewares/Auth/auth")
 const pool = require("../Config/config");
-  
-exports.registerUser = (request, response) => {
-    const user = [request.body.username, request.body.password,
-    request.body.firstName, request.body.lastName];
+const bcrypt = require('bcrypt');
+const saltRounds = 10; // adjust how strong the hashing fucntions is, n hashes per second
 
+
+exports.registerUser = (request, response) => {
+    const user = [request.body.username, 
+                bcrypt.hashSync(request.body.password, saltRounds),//hashed password
+                request.body.firstName, 
+                request.body.lastName];
     try {
         pool.query(
             "INSERT INTO users(username, password, first_name, last_name) VALUES(?, ?, ?, ?)",
@@ -20,8 +24,12 @@ exports.registerUser = (request, response) => {
                         });
 
                     }
-                    else
+                    else{
+                        console.log(error)
                         return response.status(400).send(error);
+                        
+                    }
+                        
                 }
                 else {
                     console.log('201 Created: "/api/register"');
@@ -47,13 +55,14 @@ exports.loginUser = (request, response) => {
         username,
         password
     } = request.body;
-
+    
     try {
+        pool
         pool.query(
-            "SELECT id, username, email\n" +
+            "SELECT id, username, email,password\n" +
             "FROM users\n" +
-            "WHERE username = ? AND password = ?",
-            [username, password],
+            "WHERE username = ? ",
+            [username,password],
             (error, result) => {
                 if (error) return next(error);
 
@@ -64,6 +73,7 @@ exports.loginUser = (request, response) => {
                     });  
                 }
                 else {
+                if(bcrypt.compareSync(password, result[0].password)){
                     [accessToken,refreshToken] = createToken(result);
                     response.cookie(
                         'token', accessToken, {
@@ -85,7 +95,12 @@ exports.loginUser = (request, response) => {
                             'username': result[0].username,
                         }
                     });
-
+                }else{
+                    return response.status(400).send({
+                        'status': 400,
+                        'message': 'Invalid username or password.'
+                    });  
+                }
                 }
             }
         );
