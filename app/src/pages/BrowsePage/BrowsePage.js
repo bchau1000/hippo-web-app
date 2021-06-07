@@ -35,7 +35,7 @@ export default function BrowsePage(props) {
     const [username, setUsername] = useState(query.get("username"));
     const [tags, setTags] = useState(query.getAll("tags"));
     const [page, setPage] = useState(query.get("page") ? query.get("page") : 1);
-    const [limit, setLimit] = useState(query.get("limit") ? query.get("limit") : 20);
+    const [limit, setLimit] = useState(query.get("limit") ? query.get("limit") : 25);
 
     const [count, setCount] = useState(0);
     const [totalPages, setTotalPages] = useState(Math.ceil(count / limit));
@@ -64,7 +64,7 @@ export default function BrowsePage(props) {
                 setAllTags(newAllTags);
             }
 
-            
+
         }
         const fetchData = async () => {
             const settings = {
@@ -98,13 +98,21 @@ export default function BrowsePage(props) {
 
     const onPage = (newPage) => {
         setPage(newPage);
+        setUrl(createAPIUrl(title, username, tags, newPage, limit));
     }
 
-    const onSubmit = async (event) => {
+    const onSubmit = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            setUrl(createAPIUrl(title, username, tags, page, limit));
+            setUrl(createAPIUrl(title, username, tags, 1, limit));
         }
+    }
+
+    const resetForm = (event) => {
+        event.preventDefault();
+        setTitle("");
+        setUsername("");
+        setTags([]);
     }
 
     const showResult = () => {
@@ -133,25 +141,25 @@ export default function BrowsePage(props) {
     return (
         <section className="browse-page-wrapper">
             <div className="browse-page-container">
-                
+
                 <form id="search-form" className="browse-query-container" onKeyDown={(event) => onSubmit(event)}>
-                <span className="browse-page-header">
-                    Browse
-                </span>
+                    <span className="browse-page-header">
+                        Browse
+                    </span>
                     <div className="search-container">
-                        <input 
-                            form="search-form" 
-                            className="by-title" 
-                            type="text" 
-                            placeholder="Search by title" 
-                            defaultValue={title} 
+                        <input
+                            form="search-form"
+                            className="by-title"
+                            type="text"
+                            placeholder="Search by title"
+                            value={title}
                             onChange={(event) => setTitle(event.target.value)}
                         />
-                        <input 
+                        <input
                             className="by-title"
-                            type="text" 
+                            type="text"
                             placeholder="Search by user"
-                            defaultValue={username}
+                            value={username}
                             onChange={(event) => setUsername(event.target.value)}
                         >
                         </input>
@@ -161,22 +169,63 @@ export default function BrowsePage(props) {
                         selectedTags={tags}
                         setSelectedTags={setTags}
                     />
+                    <div className="search-buttons-container">
+                        <button
+                            onClick={() => onSubmit()}
+                        >
+                            Search
+                        </button>
+                        <button
+                            style={{ 'backgroundColor': 'rgba(24, 24, 24, 0.4)' }}
+                            onClick={(event) => resetForm(event)}
+                        >
+                            Reset
+                        </button>
+                    </div>
+                    <div className="search-format-container">
+                        <label
+                            htmlFor="limit-dropdown"
+                            className="format-dropdown"
+                        >
+                            <span>{"Items/Page:"}</span>
+                            <select id="limit-dropdown" onChange={(event) => setLimit(event.target.value)}>
+                                <option value="10" selected={`${limit === 10 ? "selected" : ""}`}>10</option>
+                                <option value="25" selected={`${limit === 25 ? "selected" : ""}`}>25</option>
+                                <option value="50" selected={`${limit === 50 ? "selected" : ""}`}>50</option>
+                                <option value="100" selected={`${limit === 100 ? "selected" : ""}`}>100</option>
+                            </select>
+
+                        </label>
+                    </div>
+
                 </form>
-                <div>
-                    <ul className="browse-results-container">
-                        {!loading
-                            ? showResult()
-                            : <LoadingAnim />
-                        }
-                    </ul>
-                    <ol className="browse-pagination-container">
-                    </ol>
-                    <Paginator
-                        totalPages={totalPages}
-                        page={page}
-                        onPage={onPage}
-                    />
-                </div>
+                {!loading
+                    ? <div>
+                        <div className="browse-num-results">
+                            <span>Found {count} results</span>
+                        </div>
+
+
+                        <Paginator
+                            totalPages={totalPages}
+                            page={page}
+                            onPage={onPage}
+                        />
+
+                        <ul className="browse-results-container">
+                            {showResult()
+
+                            }
+                        </ul>
+                        <Paginator
+                            totalPages={totalPages}
+                            page={page}
+                            onPage={onPage}
+                        />
+                    </div>
+
+                    : <LoadingAnim />
+                }
             </div>
         </section>
     )

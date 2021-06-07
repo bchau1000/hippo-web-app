@@ -19,7 +19,7 @@ export default function Paginator(props) {
     if (start < end) {
         const pages = range(start, end);
         return (
-            <div className="paginator-wrapper">
+            <div className="paginator-wrapper no-select">
                 <ol className="paginator-container">
                     <li className={`${page > 1 ? "not-current-page" : "hide-button"}`} onClick={() => props.onPage(page - 1)}>{"<"}</li>
                     {

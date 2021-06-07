@@ -49,38 +49,18 @@ export default function Navbar(props) {
         }
     }, [awaitResp, props.user]);
 
-    function loginOptions(user) {
-        if (user === null) {
-            return (
-                <button className="button" onClick={() => {props.setShowLoginModal(true);}}>
-                    <span>Login</span>
-                </button>
-            );
-        }
-        else {
-            return (
-                <a className="button" disabled={awaitResp} href="/" onClick={sendRequest}>
-                    <span>Logout</span>
-                </a>
-            );
-        }
-    }
-
-    
-
     return (
-        <div className={`navbar-container no-select ${props.showDropdown && width > 1025 ? "add-margin" : "rem-margin"}`}>
+        <div 
+            className={`navbar-container no-select ${props.showDropdown && width > 1025 ? "add-margin" : "rem-margin"}`}
+        >
             <div className="left">
-                 <div className="dropdown" onClick={() => { props.onClick() }}>
-                        {
-                            props.showDropdown
-                                ? <span className="material-icons">close</span>
-                                : <span className="material-icons">reorder</span>
-                        }
-                        </div>
-                
-                
-
+                <div className="dropdown" onClick={() => { props.onClick() }}>
+                    {
+                        props.showDropdown
+                            ? <span className="material-icons">close</span>
+                            : <span className="material-icons">reorder</span>
+                    }
+                </div>
             </div>
             <div className="right">
             </div>

@@ -41,7 +41,7 @@
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s;
-    border-radius: 5px;
+    border-radius: 3px;
     border: none;
     box-shadow: var(--box-shadow);
 }
@@ -54,7 +54,7 @@
 
 .start-container:hover {
     cursor: pointer;
-    
+    background-color: rgba(252, 186, 3, 0.7);
 }
 
 .banner-summary {

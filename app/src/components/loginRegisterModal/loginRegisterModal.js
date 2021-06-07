@@ -88,13 +88,21 @@ export default function LoginRegisterModal(props) {
                     </button>
                 </div>
                 <div className="lr-modal-tabs">
-                    <button className={`${tab ? "lr-tab-selected" : ""}`} onClick={() => { setTab(true) }}>
+                    <button 
+                        className={`${tab ? "lr-tab-selected" : ""}`} 
+                        onClick={() => { setTab(true) }}
+                        style={{'borderTopLeftRadius': '2px'}}
+                    >
                         <span className="material-icons">
                             login
                         </span>
                         <span>Login</span>
                     </button>
-                    <button className={`${tab ? "" : "lr-tab-selected"}`} onClick={() => { setTab(false) }}>
+                    <button 
+                        className={`${tab ? "" : "lr-tab-selected"}`} 
+                        onClick={() => { setTab(false) }}
+                        style={{'borderTopRightRadius': '2px'}}
+                    >
                         <span className="material-icons">
                             create
                         </span>

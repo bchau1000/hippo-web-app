@@ -9,6 +9,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    
 }
 
 .folder-collapsible-delete-button {
@@ -16,6 +17,7 @@
     background-color: var(--color-fg);
     border: none;
     border-bottom: 1px solid rgba(24, 24, 24 ,0.1);
+    height: 100%;
 }
 
 .folder-collapsible-delete-button:hover {
@@ -34,6 +36,8 @@
     border-bottom: 1px solid rgba(24, 24, 24, 0.1);
     background: white;
     font-size: 20px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 .folder-collapsible-button:hover{
@@ -50,6 +54,7 @@
 
 .folder-collapsible-container {
     background-color: white;
+    
     transition: height 0.35s ease;
     overflow: hidden;
 }
@@ -57,9 +62,10 @@
 .folder-collapsible-position {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 220px;
+    
+    grid-auto-rows: 150px;
     grid-gap: 20px;
-    margin: 10px;
+    margin: 20px;
 }
 
 .collapsible-hide {
@@ -85,6 +91,7 @@
     color: var(--color-accent);
     cursor: pointer;
 }
+
 
 @media (min-width: 1025px) and (max-width: 1280px) {
     .folder-collapsible-container {
@@ -114,6 +121,6 @@
     }
 
     .folder-collapsible-button { 
-        height: 65px;
+        height: 45px;
     }
 }

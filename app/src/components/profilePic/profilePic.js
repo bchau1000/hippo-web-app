@@ -5,7 +5,6 @@ export default function ProfilePic(props) {
         height: props.dimensions,
         width: props.dimensions,
         fontSize: props.fontSize,
-        border: props.border ? "2px solid var(--color-accent)" : ""
     }
     return(
         <div 

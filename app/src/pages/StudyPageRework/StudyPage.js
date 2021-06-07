@@ -10,12 +10,7 @@ export default function StudyPage(props) {
     const [description, setDescription] = useState("");
     const [flashCards, setFlashCards] = useState([]);
     const [loading, setLoading] = useState(false);
-    const slider = {
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1
-    };
+    
     useEffect(() => {
         async function getData() {
             setLoading(true);

@@ -19,6 +19,7 @@ async function onEdit(event, set_id) {
 
 export default function SetGridItem(props) {
     const owner = useContext(OwnerContext);
+    const tags = props.tags ? props.tags.split(',').slice(0, 3) : [];
 
     function setOptions() {
         if (props.isFolder) {
@@ -59,12 +60,18 @@ export default function SetGridItem(props) {
                 {props.title}
             </div>
             <div className="tags-container">
-                <div className="tag">Math</div>
-                <div className="tag">Science</div>
-                <div className="tag">English</div>
-            </div>
-            <div className="desc">
-                {props.desc}
+            {
+                tags.map((tag, idx) => {
+                    return(
+                        <span 
+                            key={idx}
+                            className="tag"
+                        > 
+                            {tag}
+                        </span>
+                    )
+                })
+            }
             </div>
         </div>
     )

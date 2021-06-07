@@ -38,19 +38,18 @@
     margin-bottom: 10px;
     gap: 10px;
     height: 35px;
-    border-radius: 5px;
+    border-radius: 2px;
     padding: 10px;
     border: none;
     cursor: pointer;
     
-    background-color: var(--color-fg);
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background-color: var(--color-accent);
     
-    transition: box-shadow 0.26s;
+    transition: background-color 0.26s;
 }
 
 .sets-buttons-container button:hover{
-    box-shadow: rgba(99, 99, 99, 0.5) 0px 2px 8px 0px;
+    background-color: rgba(252, 186, 3, 0.7);
 }
 
 

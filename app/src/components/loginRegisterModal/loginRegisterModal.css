@@ -1,7 +1,7 @@
 .lr-modal-container {
     height: 425px;
     width: 500px;
-
+    
     display: grid;
     grid-template-rows: 40px 50px auto;
     grid-template-areas: 
@@ -45,6 +45,7 @@
 
     display: flex;
     flex-direction: row;
+    
 }
 
 .lr-modal-tabs button{
@@ -56,10 +57,7 @@
     justify-content: center;
     align-items: center;
     gap: 5px;
-}
-
-
-.lr-modal-tabs span{
+    
 }
 
 .lr-modal-tabs button:hover{
@@ -72,7 +70,7 @@
 
 @media (max-width: 510px) { 
     .lr-modal-container {
-        width: 300px;
+        width: 90vw;
     }
 }
 

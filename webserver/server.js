@@ -96,9 +96,10 @@ app.get("/api/:username/sets", (request, response) => {
 
     try {
         pool.query(
-            "SELECT s.id as 'id', s.title as 'title', s.description as 'description'\n" +
-            "FROM sets as s JOIN (SELECT id FROM users WHERE username=?) as u\n" +
-            "WHERE s.user_id = u.id;\n"
+            "SELECT s.id, s.title, s.description, u.username, GROUP_CONCAT(t.name SEPARATOR ',') as tags\n" +
+            "FROM (SELECT id, username FROM users WHERE username = ?) as u, sets as s, sets_and_tags as st, tags as t\n" +
+            "WHERE u.id = s.user_id AND s.id = st.set_id AND t.id = st.tag_id\n" +
+            "GROUP BY s.id;"
             ,
             username,
             (error, result) => {
@@ -1035,8 +1036,7 @@ app.get('/api/tags', (request, response) => {
                         'status': 200,
                         'tags': result,
                     })
-                }
-                    
+                }   
             }
         )
     }
@@ -1051,63 +1051,6 @@ app.get('/api/tags', (request, response) => {
 app.get("*", (request, response) => {
     return response.sendFile(path.join(__dirname + '/../app/build/index.html'));
 });
-
-app.post("/api/richtext", (request, response) => {
-
-    try {
-        //console.log(request.body);
-        pool.query(
-            'INSERT INTO temp(term) VALUES (?);',
-            request.body.term,
-            (error, result) => {
-                if (error) {
-                    return response.status(400).send({
-                        'status': 400,
-                        'content': error,
-                    })
-                }
-
-                console.log(result);
-
-                pool.query(
-                    'SELECT * FROM temp;',
-                    (error, result) => {
-                        if (error) {
-                            return response.status(400).send({
-                                'status': 400,
-                                'content': error,
-                            });
-                        }
-
-                        const length = result.length;
-                        let send = [];
-
-                        for (let i = 0; i < length; i++) {
-                            send.push({
-                                'id': result[i].id,
-                                'term': result[i].term.toString('utf-8')
-                            })
-                        }
-
-                        response.status(200).send(send);
-                    }
-                )
-            }
-        );
-
-
-    }
-    catch (error) {
-        return response.status(404).send({
-            'status': 404,
-            'content': error,
-        })
-    }
-
-
-});
-
-
 
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);

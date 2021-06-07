@@ -26,12 +26,27 @@
 }
 
 .sidebar-header {
-    margin: auto;
-    padding: 30px;
+    border-bottom: 1px solid rgba(100, 100, 100, 0.1);
+    height: 65px;
     font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-pic-border .profile-pic-container {
+    cursor: pointer;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    transition: border .26s ease;
+}
+
+.profile-pic-border:hover .profile-pic-container {
+    cursor: pointer;
+    border: 3px solid var(--color-accent);
 }
 
 .sidebar-header a{
+    
     color: white;
     font-weight: bold;
     transition: color .26s ease;
@@ -97,19 +112,19 @@
 }
 
 .sidebar-profile-item {
-    margin-top: auto;
-    margin-bottom: 20px;
-
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items:center;
+    border-bottom: 1px solid rgba(100, 100, 100, 0.1);
 }
 
 .sidebar-profile-username {
     font-size: 18px;
     color: white;
     margin-top: 3px;
+    text-align: center;
 }
 
 .profile-pic-border {
@@ -120,4 +135,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.sidebar-profile-item button {
+    height: 50px;
+    width: 100%;
+}
+.sidebar-profile-item button:hover{
+    color: var(--color-accent) !important;
+}
+
+.current-page {
+    background-position: left bottom;
+}
+
+.current-page span{
+    color: black;
 }

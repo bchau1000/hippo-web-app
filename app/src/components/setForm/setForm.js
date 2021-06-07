@@ -53,7 +53,6 @@ export default function SetForm(props) {
 
                 }
                 <button
-                    ref={bottom}
                     className="add-card"
                     onClick={() => props.addCard()}
                 >
@@ -62,6 +61,7 @@ export default function SetForm(props) {
                 </button>
             </div>
             <button
+                ref={bottom}
                 className="sf-submit-button"
                 onClick={() => props.submit()}
             >Save</button>
