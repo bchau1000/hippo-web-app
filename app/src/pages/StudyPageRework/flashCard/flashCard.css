@@ -6,8 +6,9 @@
     grid-template-columns: 45% 55%;
     grid-template-areas:
     "fc-term fc-definition";
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    box-shadow: var(--box-shadow);
     background-color: var(--color-fg);
+    border-radius: 3px;
 }
 
 .fc-term-container {

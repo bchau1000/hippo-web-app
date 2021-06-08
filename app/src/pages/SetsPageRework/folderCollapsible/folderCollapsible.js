@@ -10,28 +10,31 @@ import "./folderCollapsible.css";
 export default function FolderCollapsible(props) {
     const width = useViewport();
     const owner = useContext(OwnerContext);
-    const [containerHeight, setContainerHeight] = useState('240px');
-    const [calcHeight, setCalcHeight] = useState(240);
+    const itemHeight = 170;
+    const [filter, setFilter] = useState("");
+    const [containerHeight, setContainerHeight] = useState(itemHeight + 'px');
+    const [calcHeight, setCalcHeight] = useState(itemHeight);
     const [showFolders, setShowFolders] = useState(props.showFolder);
     const [showEditModal, setShowEditModal] = useState(false);
     const folder = props.folder;
 
     useEffect(() => {
         let setLen = folder.sets.length;
-        if(owner)
+
+        if (owner)
             setLen += 1;
 
         if (width > 1280)
             // 4 per row
-            setCalcHeight(240 * Math.ceil((setLen) / 4));
+            setCalcHeight((itemHeight * Math.ceil((setLen) / 4)) + 20);
         else if (width >= 1025 && width <= 1280)
             // 3 per row
-            setCalcHeight(240 * Math.ceil((setLen) / 3));
+            setCalcHeight((itemHeight * Math.ceil((setLen) / 3)) + 20);
         else if (width >= 550 && width <= 1024)
             // 2 per row
-            setCalcHeight(240 * Math.ceil((setLen) / 2));
+            setCalcHeight((itemHeight * Math.ceil((setLen) / 2)) + 20);
         else if (width < 550)
-            setCalcHeight(240 * setLen);
+            setCalcHeight((itemHeight * setLen) + 20);
 
     }, [props.isFolder, folder, width, owner])
 
@@ -113,14 +116,17 @@ export default function FolderCollapsible(props) {
                         }
                     </span>
                 </button>
-                {props.isFolder && owner &&
-                    <button
-                        className="folder-collapsible-delete-button"
-                        onClick={() => props.onDeleteFolder(props.folder.id)}
-                    >
-                        <span className="material-icons">delete</span>
-                    </button>
-                }
+
+                <div>
+                    {props.isFolder && owner &&
+                        <button
+                            className="folder-collapsible-delete-button"
+                            onClick={() => props.onDeleteFolder(props.folder.id)}
+                        >
+                            <span className="material-icons">delete</span>
+                        </button>
+                    }
+                </div>
             </div>
             <div
                 className={`folder-collapsible-container ${showFolders ? "collapsible-show" : "collapsible-hide"}`}
@@ -129,21 +135,24 @@ export default function FolderCollapsible(props) {
                 <div className="folder-collapsible-position">
                     {
                         folder.sets.map((sets, idx) => {
-                            return (sets.id && <SetGridItem
-                                key={idx}
-                                id={sets.id}
-                                title={sets.title}
-                                desc={sets.description}
-                                onDelete={props.onDelete}
-                                onEdit={props.onEdit}
-                                onRemove={onRemove}
-                                isFolder={props.isFolder}
-                            />)
+                            return (
+                                sets.id &&
+                                <SetGridItem
+                                    key={idx}
+                                    id={sets.id}
+                                    title={sets.title}
+                                    desc={sets.description}
+                                    tags={sets.tags}
+                                    onDelete={props.onDelete}
+                                    onEdit={props.onEdit}
+                                    onRemove={onRemove}
+                                    isFolder={props.isFolder}
+                                />)
                         })
                     }
 
                     {owner && showAddCard()
-                        
+
                     }
 
                 </div>

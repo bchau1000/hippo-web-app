@@ -4,7 +4,7 @@ export default function ProfilePic(props) {
     const style = {
         height: props.dimensions,
         width: props.dimensions,
-        fontSize: props.fontSize
+        fontSize: props.fontSize,
     }
     return(
         <div 

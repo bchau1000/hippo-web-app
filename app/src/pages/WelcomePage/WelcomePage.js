@@ -7,7 +7,7 @@ export default function WelcomePage(props) {
             <div className="banner-container">
                 <div className="banner-title-container">
                     <span className="banner-title">Hippo.</span>
-                    <span className="banner-summary">Create, browse, and learn from study sets to help you improve your grades. </span>
+                    <span className="banner-summary">Learn from study sets to help you improve your grades. </span>
                     <button 
                         className="start-container" 
                         onClick={() => {

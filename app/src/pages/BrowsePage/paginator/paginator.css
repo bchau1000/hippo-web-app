@@ -12,15 +12,18 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    margin-top: 7px;
+    margin-bottom: 7px;
 }
 
 .paginator-container {
+    
     width: 95%;
-    height: 50px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    border-radius: 2px;
     gap: 2px;
 }
 
@@ -39,12 +42,12 @@
 
 .paginator-container .not-current-page:hover{
     cursor: pointer;
-    background-color: rgba(24, 24, 24, 0.1);
+    background-color: rgba(252, 186, 3, 0.4);
 }
 
 .current-page {
 
-    background-color: rgba(24, 24, 24, 0.3);
+    background-color: var(--color-accent);
 }
 
 .hide-button {

@@ -17,7 +17,7 @@ export default function SetsPageRework(props) {
     const [folders, setFolders] = useState([]);
     const [allSets, setAllSets] = useState([]);
     const [showFolderModal, setShowFolderModal] = useState(false);
-    
+
     const bottomOfPage = useRef();
 
     useEffect(() => {
@@ -44,7 +44,6 @@ export default function SetsPageRework(props) {
             if (response.status === 201) {
                 json = await response.json();
                 setFolders(json);
-                
             }
             if (await isOwner(username))
                 setOwner(true);
@@ -202,13 +201,13 @@ export default function SetsPageRework(props) {
     return (
         <OwnerContext.Provider value={owner}>
             <section className="sets-page-container">
-                <div style={{fontSize: '26px', fontWeight: 'bold', marginBottom:'15px'}}>
-                {owner 
-                    ? <span>My Sets</span>
-                    : <span>{username[0].toUpperCase() + username.substring(1)}'s Sets</span>
-                }
+                <div style={{ fontSize: '26px', fontWeight: 'bold', marginBottom: '15px' }}>
+                    {owner
+                        ? <span>My Sets</span>
+                        : <span>{username[0].toUpperCase() + username.substring(1)}'s Sets</span>
+                    }
                 </div>
-                
+
                 {showFolderModal &&
                     <ModalTemplate
                         showModal={showFolderModal}
@@ -249,17 +248,18 @@ export default function SetsPageRework(props) {
                 <div className="all-folders-container">
                     {
                         folders.map((folder, idx) => {
-                            return <FolderCollapsible
-                                key={idx}
-                                isFolder={true}
-                                showFolder={false}
-                                folder={folder}
-                                onDeleteFolder={onDeleteFolder}
-                                onEditFolder={onEditFolder}
-                                onDelete={onDelete}
-                                onEdit={onEdit}
-                                allSets={allSets}
-                            />
+                            return (
+                                <FolderCollapsible
+                                    key={idx}
+                                    isFolder={true}
+                                    showFolder={false}
+                                    folder={folder}
+                                    onDeleteFolder={onDeleteFolder}
+                                    onEditFolder={onEditFolder}
+                                    onDelete={onDelete}
+                                    onEdit={onEdit}
+                                    allSets={allSets}
+                                />)
                         })
                     }
                 </div>

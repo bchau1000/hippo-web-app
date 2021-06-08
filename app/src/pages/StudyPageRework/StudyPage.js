@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import FlashCard from './flashCard/flashCard.js';
-import CardSwiper from "components/cardSwiper/cardSwiper.js";
 import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
 
 import './StudyPage.css';
@@ -11,7 +10,7 @@ export default function StudyPage(props) {
     const [description, setDescription] = useState("");
     const [flashCards, setFlashCards] = useState([]);
     const [loading, setLoading] = useState(false);
-
+    
     useEffect(() => {
         async function getData() {
             setLoading(true);

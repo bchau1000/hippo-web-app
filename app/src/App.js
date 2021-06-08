@@ -52,10 +52,7 @@ export default function App(props) {
     }, []);
 
     useEffect(() => {
-        if (width <= 1025)
-            setShowDropdown(false);
-        else
-            setShowDropdown(true);
+        width <= 1025 ? setShowDropdown(false) : setShowDropdown(localSD);
     }, [width]);
 
     useEffect(() => {

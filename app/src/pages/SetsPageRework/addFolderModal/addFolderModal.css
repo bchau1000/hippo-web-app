@@ -91,14 +91,6 @@
     cursor:pointer;
 }
 
-.folder-modal-buttons {
-    
-}
-
-.folder-modal-sets::-webkit-scrollbar {
-    
-}
-
 .folder-modal-search-submit{
     grid-area: submit-form;
     display: flex;
@@ -120,7 +112,7 @@
 }
 
 .folder-modal-submit:hover{
-    background-color: rgba(22, 206, 120, 0.7);
+    background-color: rgba(252, 186, 3, 0.7);
 }
 
 .folder-modal-cancel{

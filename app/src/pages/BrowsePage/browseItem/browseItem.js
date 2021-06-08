@@ -7,13 +7,13 @@ export default function BrowseItem(props) {
     return (
         <li className="browse-item-container" onClick={() => { window.location.href = "/sets/" + set.id + "/cards"; }}>
             <div className="browse-item-header">
-                <a className="profile-container" href={ set.username + "/sets/"}>
+                <a className="profile-container" href={ set.username + "/sets/"} onClick={(event) => event.stopPropagation()}>
                     <ProfilePic
                         dimensions={'25px'}
                         username={set.username}
                         fontSize={'16px'}
                     />
-                    <span>{set.username}</span>
+                    <span className="profile-username">{set.username}</span>
                 </a>
                 <button onClick={(event) => {event.stopPropagation();}}>
                     <span className="material-icons">star</span>

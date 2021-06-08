@@ -1,8 +1,9 @@
 {
-    "scripts": {
-      "app": "cd app && npm start",
-      "server": "cd webserver && npm start",
-      "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run app\"",
-      "heroku-postbuild": "cd webserver && npm install && cd .. && cd app && npm install && npm run build"
-    }
-  }
+  "scripts": {
+    "app": "cd app && npm start",
+    "server": "cd webserver && npm start",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run app\"",
+    "heroku-postbuild": "cd webserver && npm install && cd .. && cd app && npm install && npm run build"
+  },
+  "dependencies": {}
+}

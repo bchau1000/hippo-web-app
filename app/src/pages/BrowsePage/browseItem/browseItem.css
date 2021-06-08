@@ -10,10 +10,10 @@
     width: 95%;
     border-radius: 5px;
     background-color: var(--color-fg);
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    box-shadow: rgba(99, 99, 99, 0.4) 0px 2px 8px 0px;
     transition: box-shadow 0.16s;
     display: grid;
-    
+    row-gap: 15px;
     grid-template-areas: 
     "item-header"
     "item-content"
@@ -21,7 +21,7 @@
 }
 
 .browse-item-container:hover{
-    box-shadow: rgba(99, 99, 99, 0.5) 0px 2px 8px 0px;
+    box-shadow: rgba(99, 99, 99, 0.8) 0px 2px 8px 0px;
 }
 
 .browse-item-header {
@@ -50,12 +50,12 @@
     display: flex;
     flex-direction: row;
     font-size: 16px;
-    color: rgb(24, 24, 24);
     gap: 7px;
     align-items: center;
+    color: black;
 }
 
-.browse-item-header .profile-container:hover{
+.browse-item-header .profile-container:hover .profile-username{
     text-decoration: underline;
 }
 
@@ -68,7 +68,14 @@
 }
 
 .browse-item-content .title{
-    font-size: 22px;
+    font-size: 23px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.browse-item-content .description{
+    font-weight: lighter;
+    color: black;
 }
 
 
@@ -85,11 +92,15 @@
 
 .browse-item-footer button{
     padding: 5px;
-    background-color: var(--color-accent);
-    border-radius: 5px;
+    background-color: rgb(24, 24, 24, 0.9);
+    color: rgba(255, 255, 255, 0.9);
+    border-radius: 2px;
     font-size: 16px;
+    transition: color 0.15s ease, background-color 0.15s ease;
 }
 
 .browse-item-footer button:hover{
     text-decoration: underline;
+    background-color: var(--color-accent);
+    color: rgba(24, 24, 24, 1);
 }

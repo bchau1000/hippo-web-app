@@ -5,7 +5,7 @@
 }
 
 .register-tab-container button:hover{
-    background-color: rgba(22, 206, 120, 0.7);
+    background-color: rgba(252, 186, 3, 0.7);
     cursor: pointer;
 }
 
@@ -25,7 +25,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
     gap: 15px;
 }
 
