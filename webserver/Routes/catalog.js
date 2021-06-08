@@ -4,7 +4,9 @@ const set_controller = require("./Controller/sets")
 const folder_controller = require('./Controller/folder')
 const user_controller = require('./Controller/user')
 const owner_controller = require('./Controller/owner')
-const browse_controller = require('./Controller/browse')
+const browse_controller = require('./Controller/browse');
+const { Router } = require("express");
+const { getAllTags } = require("../Controller/browse");
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,3 +48,4 @@ route.post('/api/owner/sets', authUser, owner_controller.setOwner)
 route.post('/api/owner/folders', authUser, owner_controller.folderOwner)
 route.post('/api/owner/username', authUser, owner_controller.usernameOwner)
 route.get("/api/browse", generateBrowseQuery, browse_controller.defaultBrowse)
+route.get('/api/tags', getAllTags, browse_controller.getAllTags);

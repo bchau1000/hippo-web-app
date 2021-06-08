@@ -40,15 +40,12 @@ app.set("json spaces", 2);
 ///////////////////////////////////USER REQUEST FUNCTIONS//////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-// // Get all sets belonging to a user
 app.get("/api/:username/sets", set_controller.getSetsByUsername);
 app.get ("/api/sets/:set_id/cards", set_controller.getCardsOfSet);
 app.get('/api/:username/folders', folder_controller.getFoldersByUsername);
 app.put("/api/folders/new", authUser, folder_controller.insertNewFolder);
 app.put("/api/folders/edit", authUser, folder_controller.editFolder);
 app.delete("/api/folders/delete", authUser, folder_controller.deleteFolder);
-   
-// END USER REQUEST FUNCTIONS
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////SETS FUNCTIONS//////////////////////////////////////////
@@ -75,6 +72,7 @@ app.post('/api/owner/sets', authUser, owner_controller.setOwner)
 app.post('/api/owner/folders', authUser, owner_controller.folderOwner)
 app.post('/api/owner/username', authUser, owner_controller.usernameOwner)
 app.get("/api/browse", generateBrowseQuery, browse_controller.defaultBrowse)
+app.get('/api/tags', browse_controller.getAllTags)
 
 app.get("*", (request, response) => {
     return response.sendFile(path.join(__dirname + '/../app/build/index.html'));

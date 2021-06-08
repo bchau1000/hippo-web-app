@@ -152,14 +152,14 @@ export default function BrowsePage(props) {
                             className="by-title"
                             type="text"
                             placeholder="Search by title"
-                            value={title}
+                            value={title ? title : ""}
                             onChange={(event) => setTitle(event.target.value)}
                         />
                         <input
                             className="by-title"
                             type="text"
                             placeholder="Search by user"
-                            value={username}
+                            value={username ? username : ""}
                             onChange={(event) => setUsername(event.target.value)}
                         >
                         </input>
@@ -188,11 +188,11 @@ export default function BrowsePage(props) {
                             className="format-dropdown"
                         >
                             <span>{"Items/Page:"}</span>
-                            <select id="limit-dropdown" onChange={(event) => setLimit(event.target.value)}>
-                                <option value="10" selected={`${limit === 10 ? "selected" : ""}`}>10</option>
-                                <option value="25" selected={`${limit === 25 ? "selected" : ""}`}>25</option>
-                                <option value="50" selected={`${limit === 50 ? "selected" : ""}`}>50</option>
-                                <option value="100" selected={`${limit === 100 ? "selected" : ""}`}>100</option>
+                            <select id="limit-dropdown" onChange={(event) => setLimit(event.target.value)} defaultValue={2}>
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
                             </select>
 
                         </label>

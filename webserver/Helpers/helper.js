@@ -1,6 +1,6 @@
 exports.generateBrowseQuery = (request, _, next) => {
     let sqlQuery =
-        "FROM (sets as s LEFT JOIN (sets_and_tags as st JOIN tags as t ON st.tag_id = t.id) ON s.id = st.set_id), users as u\n" +
+        "FROM (sets as s LEFT JOIN sets_and_tags as st ON s.id = st.set_id) LEFT JOIN tags as t ON  t.id = tag_id, users as u\n" +
         "WHERE u.id = s.user_id";
 
     let sqlValues = new Array();

@@ -1,5 +1,6 @@
 const pool = require("../Config/config");
 const async = require('async')
+
 exports.defaultBrowse = (request, response) => {
     const {
         newUrl,
@@ -78,5 +79,34 @@ exports.defaultBrowse = (request, response) => {
             "status": 404,
             "content": error,
         });
+    }
+}
+
+exports.getAllTags = (_, response) => {
+    try {
+        pool.query(
+            'SELECT * FROM tags;',
+            (error, result) => {
+                if (error) {
+                    return response.status(400).send({
+                        'status': 400,
+                        'content': error,
+                    })
+                }
+                else {
+                    return response.status(200).send({
+                        'status': 200,
+                        'tags': result,
+                    })
+                }
+
+            }
+        )
+    }
+    catch (error) {
+        return response.status(404).send({
+            'status': 404,
+            'content': error,
+        })
     }
 }
