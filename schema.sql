@@ -9,7 +9,7 @@ CREATE TABLE users (
   id int PRIMARY KEY auto_increment,
   username VARCHAR(60) NOT NULL UNIQUE,
   email VARCHAR(60) NULL UNIQUE,
-  password VARCHAR(20) NOT NULL,
+  password VARCHAR(100) NOT NULL,
   first_name VARCHAR(40) NULL,
   last_name VARCHAR(40) NULL
 );
