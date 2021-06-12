@@ -74,6 +74,7 @@ exports.loginUser = (request, response) => {
                 }
                 else {
                     console.log('HERE2', result);
+                    console.log(result[0].password);
                     if(bcrypt.compareSync("password", result[0].password) === true) {
                         console.log("working");
                     }
