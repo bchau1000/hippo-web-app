@@ -24,7 +24,7 @@ CREATE TABLE sets(
   id int PRIMARY KEY auto_increment,
   title VARCHAR(60) NOT NULL,
   description VARCHAR(200),
-  user_id int REFERENCES user(id)
+  user_id int REFERENCES user(id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS flash_cards;  
@@ -33,7 +33,7 @@ CREATE TABLE flash_cards(
   term VARCHAR(8000) CHARACTER SET UTF8MB4,
   definition VARCHAR(8000) CHARACTER SET UTF8MB4,
   q_type int,
-  set_id int REFERENCES study_sets(id)
+  set_id int REFERENCES study_sets(id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS tags;
@@ -44,13 +44,17 @@ CREATE TABLE tags(
 
 DROP TABLE IF EXISTS sets_and_tags;
 CREATE TABLE sets_and_tags(
-	set_id int REFERENCES sets(id),
-    tag_id int REFERENCES tags(id),
-    UNIQUE (set_id, tag_id)
+	set_id int,
+    tag_id int,
+    PRIMARY KEY(set_id, tag_id),
+    CONSTRAINT fk_set FOREIGN KEY(set_id) REFERENCES sets(id) ON DELETE CASCADE,
+    CONSTRAINT fk_tag FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS folders_and_sets;
 CREATE TABLE folders_and_sets(
-	folder_id int REFERENCES folders(id),
-    set_id int REFERENCES sets(id)
+	folder_id int,
+    set_id int,
+    CONSTRAINT fk_fs_folder FOREIGN KEY(folder_id) REFERENCES folders(id) ON DELETE CASCADE,
+    CONSTRAINT fk_fs_set FOREIGN KEY(set_id) REFERENCES sets(id) ON DELETE CASCADE
 );

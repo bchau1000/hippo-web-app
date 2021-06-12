@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import useViewport from "components/useViewport/useViewport.js";
 import SetGridItem from '../setGridItem/setGridItem.js';
 import ModalTemplate from 'components/modalTemplate/modalTemplate.js';
@@ -55,13 +56,13 @@ export default function FolderCollapsible(props) {
     const showAddCard = () => {
         if (!props.isFolder)
             return (
-                <button
+                <Link
                     className="add-set-card"
-                    onClick={() => window.location.href = "/sets/new"}
+                    to={"/sets/new"}
                 >
                     <span className="material-icons">add</span>
                     <span>&nbsp;Create</span>
-                </button>
+                </Link>
             )
         else
             return (

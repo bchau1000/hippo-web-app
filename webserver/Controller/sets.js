@@ -158,12 +158,12 @@ exports.deleteSet = (request, response) => {
                     );
                 },
                 function (callback) {
+
+                    // Delete a set and its relational data
+                    // May not need extra deletes due to cascade
                     pool.query(
-                        "DELETE FROM folders_and_sets WHERE set_id = ?;" +
-                        "DELETE FROM subjects WHERE set_id = ?;" +
-                        "DELETE FROM flash_cards WHERE set_id = ?;" +
                         "DELETE FROM sets WHERE id = ?;",
-                        [set_id, set_id, set_id, set_id],
+                        [set_id],
                         (error, result) => {
                             if (error) {
                                 return response.status(400).send({

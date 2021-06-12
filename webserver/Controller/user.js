@@ -72,12 +72,7 @@ exports.loginUser = (request, response) => {
                     });
                 }
                 else {
-                    if(bcrypt.compareSync("password", result[0].password.toString()) === true) {
-                        console.log("working");
-                    }
-
                     if (bcrypt.compareSync(password, result[0].password).toString()) {
-                        console.log('HERE3', result);
                         const accessToken = createToken(result);
                         if (accessToken !== null) {
                             response.cookie(

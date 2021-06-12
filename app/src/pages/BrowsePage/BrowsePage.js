@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Link, useLocation, useHistory } from "react-router-dom";
+import { useState, useReducer, useEffect } from 'react';
+import { useLocation, useHistory } from "react-router-dom";
 import TagInput from 'components/tagInput/tagInput.js';
 import BrowseItem from "./browseItem/browseItem.js";
 import LoadingAnim from 'components/loadingAnim/loadingAnim';
@@ -12,7 +12,9 @@ const useQuery = () => {
     return new URLSearchParams(useLocation().search);
 }
 
-const createAPIUrl = (title, username, tags, page, limit) => {
+const createAPIUrl = (params) => {
+    let { title, username, tags, page, limit } = params;
+
     let url = "browse?";
     const tagsLength = tags.length;
 
@@ -28,20 +30,29 @@ const createAPIUrl = (title, username, tags, page, limit) => {
 
 export default function BrowsePage(props) {
     const query = useQuery();
-    const history = useHistory();
-    const [allTags, setAllTags] = useState([]);
+
+    const [params, setParams] = useState({
+        'title': query.get('title'),
+        'username': query.get('username'),
+        'tags': query.getAll("tags"),
+        'page': query.get("page") ? query.get("page") : 1,
+        'limit': query.get("limit")
+            ? (query.get("limit") > 100 ? 100 : query.get("limit"))
+            : 25
+    });
+
     const [loading, setLoading] = useState(false);
 
-    const [title, setTitle] = useState(query.get("title"));
-    const [username, setUsername] = useState(query.get("username"));
-    const [tags, setTags] = useState(query.getAll("tags"));
-    const [page, setPage] = useState(query.get("page") ? query.get("page") : 1);
-    const [limit, setLimit] = useState(query.get("limit") ? query.get("limit") : 25);
-
-    const [count, setCount] = useState(0);
-    const [totalPages, setTotalPages] = useState(Math.ceil(count / limit));
     const [sets, setSets] = useState([]);
-    const [url, setUrl] = useState(createAPIUrl(title, username, tags, page, limit));
+    const [allTags, setAllTags] = useState([]);
+    const [count, setCount] = useState(0);
+    const [totalPages, setTotalPages] = useState(Math.ceil(count / params.limit));
+
+    const [url, setUrl] = useState(createAPIUrl(params));
+
+    useEffect(() => {
+        setTotalPages(Math.ceil(count / params.limit));
+    }, [count, params]);
 
     useEffect(() => {
         const fetchTags = async () => {
@@ -64,8 +75,6 @@ export default function BrowsePage(props) {
 
                 setAllTags(newAllTags);
             }
-
-
         }
         const fetchData = async () => {
             const settings = {
@@ -80,9 +89,13 @@ export default function BrowsePage(props) {
                 const json = await response.json();
 
                 setSets(json.sets);
-                setPage(json.page);
                 setCount(json.count);
-                setLimit(json.limit);
+
+                setParams({
+                    ...params,
+                    'page': json.page,
+                    'limit': json.limit,
+                })
             }
             window.history.replaceState(null, null, url);
             setLoading(false);
@@ -93,32 +106,45 @@ export default function BrowsePage(props) {
 
     }, [url]);
 
-    useEffect(() => {
-        setTotalPages(Math.ceil(count / limit));
-    }, [count, limit]);
+    const setTags = (newTags) => {
+        setParams({
+            ...params,
+            'tags': newTags
+        })
+    }
 
     const onPage = (newPage) => {
-        setPage(newPage);
-        setUrl(createAPIUrl(title, username, tags, newPage, limit));
+        setParams({
+            ...params,
+            'page': newPage,
+        });
+
+        setUrl(createAPIUrl({
+            ...params,
+            'page': newPage,
+        }));
     }
 
     const onEnter = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            setUrl(createAPIUrl(title, username, tags, 1, limit))
+            setUrl(createAPIUrl(params))
         }
     }
 
     const onSubmit = (event) => {
         event.preventDefault();
-        setUrl(createAPIUrl(title, username, tags, 1, limit))
+        setUrl(createAPIUrl(params))
     }
 
     const resetForm = (event) => {
         event.preventDefault();
-        setTitle("");
-        setUsername("");
-        setTags([]);
+        setParams({
+            ...params,
+            'title': '',
+            'username': '',
+            'tags': [],
+        });
     }
 
     const showResult = () => {
@@ -138,7 +164,7 @@ export default function BrowsePage(props) {
             return (
                 <div className="empty-results-container">
                     <span>There's Nothing Here!</span>
-                    <button 
+                    <button
                         onClick={(event) => {
                             resetForm(event);
                             window.location.href = '/browse';
@@ -154,7 +180,6 @@ export default function BrowsePage(props) {
     return (
         <section className="browse-page-wrapper">
             <div className="browse-page-container">
-
                 <form id="search-form" className="browse-query-container" onKeyDown={(event) => onEnter(event)}>
                     <span className="browse-page-header">
                         Browse
@@ -165,21 +190,32 @@ export default function BrowsePage(props) {
                             className="by-title"
                             type="text"
                             placeholder="Search by title"
-                            value={title ? title : ""}
-                            onChange={(event) => setTitle(event.target.value)}
+                            value={params.title ? params.title : ""}
+                            onChange={(event) =>
+                                setParams({
+                                    ...params,
+                                    'title':
+                                        event.target.value
+                                })
+                            }
                         />
                         <input
                             className="by-title"
                             type="text"
                             placeholder="Search by user"
-                            value={username ? username : ""}
-                            onChange={(event) => setUsername(event.target.value)}
+                            value={params.username ? params.username : ""}
+                            onChange={(event) =>
+                                setParams({
+                                    ...params,
+                                    'username': event.target.value
+                                })
+                            }
                         >
                         </input>
                     </div>
                     <TagInput
                         allTags={allTags}
-                        selectedTags={tags}
+                        selectedTags={params.tags}
                         setSelectedTags={setTags}
                     />
                     <div className="search-buttons-container">
@@ -201,40 +237,43 @@ export default function BrowsePage(props) {
                             className="format-dropdown"
                         >
                             <span>{"Items/Page:"}</span>
-                            <select id="limit-dropdown" onChange={(event) => setLimit(event.target.value)} defaultValue={limit}>
+                            <select
+                                id="limit-dropdown"
+                                onChange={(event) =>
+                                    setParams({
+                                        ...params,
+                                        'limit': event.target.value,
+                                    })
+                                }
+                                defaultValue={params.limit}
+                            >
                                 <option value="10">10</option>
                                 <option value="25">25</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
                             </select>
-
                         </label>
                     </div>
-
                 </form>
                 {!loading
                     ? <div>
                         <div className="browse-num-results">
                             <span>Found {count} results</span>
                         </div>
-
-
                         <Paginator
                             totalPages={totalPages}
-                            page={page}
+                            page={params.page}
                             onPage={onPage}
                         />
-
                         <ul className="browse-results-container">
-                            { showResult() }
+                            {showResult()}
                         </ul>
                         <Paginator
                             totalPages={totalPages}
-                            page={page}
+                            page={params.page}
                             onPage={onPage}
                         />
                     </div>
-
                     : <LoadingAnim />
                 }
             </div>
