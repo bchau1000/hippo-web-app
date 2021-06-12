@@ -5,7 +5,7 @@ const secretToken = "secret_token";
 
 exports.authUser = (request, response, next) => {
   const token = request.cookies.token;
-
+    
   if (token !== null) {
     jwt.verify(token, secretToken, (err, user) => {
         if (err) return response.sendStatus(403);
@@ -23,7 +23,6 @@ exports.authUser = (request, response, next) => {
 };
 
 exports.createToken = (result) => {
-    console.log('HERE5', result);
     if (result) {
         const accessToken = jwt.sign(
             {

@@ -39,17 +39,14 @@ export function App(props) {
             };
 
             const response = await fetch('/api/auth', settings);
-
             if (response.status === 201) {
                 const json = await response.json();
                 
                 localStorage.setItem('user', jwt_decode(json.content));
                 setUser(jwt_decode(json.content));
             }
-            else {
-                console.log('User not currently logged in.')
-            }
-
+            else
+                console.log('User not currently logged in.');
         }
         getUser();
     }, []);
@@ -65,43 +62,44 @@ export function App(props) {
     }, [showDropdown, width]);
 
     return (
-        <Router>
-            <div className="main-container">
-                <LoginRegisterModal
-                    showModal={showLoginModal}
-                    closeModal={setShowLoginModal}
-                />
-                <div className={`sidebar-transition ${showDropdown ? 'sidebar-transition-true' : ""}`} >
-                    <Sidebar
-                        onFocus={() => setShowDropdown(false)}
+        <UserContext.Provider value={user}>
+            <Router>
+                <div className="main-container">
+                    <LoginRegisterModal
+                        showModal={showLoginModal}
+                        closeModal={setShowLoginModal}
+                    />
+                    <div className={`sidebar-transition ${showDropdown ? 'sidebar-transition-true' : ""}`} >
+                        <Sidebar
+                            onFocus={() => setShowDropdown(false)}
+                            showDropdown={showDropdown}
+                            setShowLoginModal={setShowLoginModal}
+
+                        />
+                    </div>
+                    <div className={`sidebar-margin ${showDropdown ? 'sidebar-transition-true' : ""}`} />
+
+                    <Navbar
+                        onClick={() => setShowDropdown(current => !current)}
                         showDropdown={showDropdown}
                         setShowLoginModal={setShowLoginModal}
-                        user={user}
+                        width={width}
                     />
+                    <Switch>
+                        <Route exact path="/sandbox" render={(props) => <SandBox {...props} />} />
+                        <Route exact path="/" render={(props) => <WelcomePage setShowLoginModal={setShowLoginModal} user={user} {...props} />} />
+                        <Route exact path="/:username/sets" render={(props) => <SetsPageRework width={width} {...props} />} />
+                        <Route exact path="/sets/:set_id/edit" render={(props) => <EditSetPage user={user} {...props} />} />
+                        <Route exact path="/sets/new" render={(props) => <CreateSetPage user={user} {...props} />} />
+                        <Route exact path="/sets/:set_id/cards" render={(props) => <StudyPage {...props} />} />
+                        <Route exact path="/browse" render={(props) => <BrowsePage {...props} />} />
+                    </Switch>
+                    {
+                        showDropdown &&
+                        <div className="focus-container" onClick={() => setShowDropdown(false)} />
+                    }
                 </div>
-                <div className={`sidebar-margin ${showDropdown ? 'sidebar-transition-true' : ""}`} />
-
-                <Navbar
-                    onClick={() => setShowDropdown(current => !current)}
-                    showDropdown={showDropdown}
-                    setShowLoginModal={setShowLoginModal}
-                    width={width}
-                    user={user}
-                />
-                <Switch>
-                    <Route exact path="/sandbox" render={(props) => <SandBox {...props} />} />
-                    <Route exact path="/" render={(props) => <WelcomePage setShowLoginModal={setShowLoginModal} user={user} {...props} />} />
-                    <Route exact path="/:username/sets" render={(props) => <SetsPageRework width={width} {...props} />} />
-                    <Route exact path="/sets/:set_id/edit" render={(props) => <EditSetPage user={user} {...props} />} />
-                    <Route exact path="/sets/new" render={(props) => <CreateSetPage user={user} {...props} />} />
-                    <Route exact path="/sets/:set_id/cards" render={(props) => <StudyPage {...props} />} />
-                    <Route exact path="/browse" render={(props) => <BrowsePage {...props} />} />
-                </Switch>
-                {
-                    showDropdown &&
-                    <div className="focus-container" onClick={() => setShowDropdown(false)} />
-                }
-            </div>
-        </Router>
+            </Router>
+        </UserContext.Provider>
     );
 }
