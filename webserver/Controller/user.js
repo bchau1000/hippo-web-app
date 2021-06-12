@@ -66,15 +66,12 @@ exports.loginUser = (request, response) => {
                 if (error) return next(error);
 
                 if (result.length === 0) {
-                    console.log('HERE', result);
                     return response.status(400).send({
                         'status': 400,
                         'message': 'Invalid username or password.'
                     });
                 }
                 else {
-                    console.log('HERE2', result);
-                    console.log(result[0].password);
                     if(bcrypt.compareSync("password", result[0].password.toString()) === true) {
                         console.log("working");
                     }
@@ -98,8 +95,6 @@ exports.loginUser = (request, response) => {
                         }
 
                     } else {
-                        console.log('HERE4', result);
-                        console.log(password);
                         return response.status(400).send({
                             'status': 400,
                             'message': 'Invalid username or password.'
