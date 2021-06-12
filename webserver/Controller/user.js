@@ -74,6 +74,10 @@ exports.loginUser = (request, response) => {
                 }
                 else {
                     console.log('HERE2', result);
+                    if(bcrypt.compareSync("password", result[0].password) === true) {
+                        console.log("working");
+                    }
+
                     if (bcrypt.compareSync(password, result[0].password)) {
                         console.log('HERE3', result);
                         const accessToken = createToken(result);
