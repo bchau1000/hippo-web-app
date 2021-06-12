@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 import TagInput from 'components/tagInput/tagInput.js';
 import BrowseItem from "./browseItem/browseItem.js";
 import LoadingAnim from 'components/loadingAnim/loadingAnim';
@@ -28,6 +28,7 @@ const createAPIUrl = (title, username, tags, page, limit) => {
 
 export default function BrowsePage(props) {
     const query = useQuery();
+    const history = useHistory();
     const [allTags, setAllTags] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -101,11 +102,16 @@ export default function BrowsePage(props) {
         setUrl(createAPIUrl(title, username, tags, newPage, limit));
     }
 
-    const onSubmit = (event) => {
+    const onEnter = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            setUrl(createAPIUrl(title, username, tags, 1, limit));
+            setUrl(createAPIUrl(title, username, tags, 1, limit))
         }
+    }
+
+    const onSubmit = (event) => {
+        event.preventDefault();
+        setUrl(createAPIUrl(title, username, tags, 1, limit))
     }
 
     const resetForm = (event) => {
@@ -132,7 +138,14 @@ export default function BrowsePage(props) {
             return (
                 <div className="empty-results-container">
                     <span>There's Nothing Here!</span>
-                    <a href="/browse">Back to Browse</a>
+                    <button 
+                        onClick={(event) => {
+                            resetForm(event);
+                            window.location.href = '/browse';
+                        }}
+                    >
+                        Back to Browse
+                    </button>
                 </div>
             )
         }
@@ -142,7 +155,7 @@ export default function BrowsePage(props) {
         <section className="browse-page-wrapper">
             <div className="browse-page-container">
 
-                <form id="search-form" className="browse-query-container" onKeyDown={(event) => onSubmit(event)}>
+                <form id="search-form" className="browse-query-container" onKeyDown={(event) => onEnter(event)}>
                     <span className="browse-page-header">
                         Browse
                     </span>
@@ -171,7 +184,7 @@ export default function BrowsePage(props) {
                     />
                     <div className="search-buttons-container">
                         <button
-                            onClick={() => onSubmit()}
+                            onClick={(event) => onSubmit(event)}
                         >
                             Search
                         </button>
@@ -188,7 +201,7 @@ export default function BrowsePage(props) {
                             className="format-dropdown"
                         >
                             <span>{"Items/Page:"}</span>
-                            <select id="limit-dropdown" onChange={(event) => setLimit(event.target.value)} defaultValue={2}>
+                            <select id="limit-dropdown" onChange={(event) => setLimit(event.target.value)} defaultValue={limit}>
                                 <option value="10">10</option>
                                 <option value="25">25</option>
                                 <option value="50">50</option>

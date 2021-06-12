@@ -2,24 +2,25 @@ import "./setGridItem.css";
 import { useContext } from 'react';
 import { isOwnerSet } from 'components/isOwner/isOwner.js';
 import { OwnerContext } from 'pages/SetsPageRework/SetsPageRework.js';
+import { Link, useHistory } from 'react-router-dom';
 import ProfilePic from 'components/profilePic/profilePic.js';
 
-function redirect(set_id) {
-    window.location.href = "/sets/" + set_id + "/cards";
-}
 
-async function onEdit(event, set_id) {
-    event.stopPropagation(); // Stops parent onClick
-
-    if (await isOwnerSet(set_id))
-        window.location.href = "/sets/" + set_id + "/edit";
-    else
-        alert('You must be the owner of this set to edit/delete it.');
-}
 
 export default function SetGridItem(props) {
     const owner = useContext(OwnerContext);
     const tags = props.tags ? props.tags.split(',').slice(0, 3) : [];
+    const history = useHistory();
+
+    async function onEdit(event, set_id) {
+        event.stopPropagation(); // Stops parent onClick
+    
+        if (await isOwnerSet(set_id)) {
+            history.push("/sets/" + set_id + "/edit");
+        }
+        else
+            alert('You must be the owner of this set to edit/delete it.');
+    }
 
     function setOptions() {
         if (props.isFolder) {
@@ -44,12 +45,12 @@ export default function SetGridItem(props) {
     }
 
     return (
-        <div className="grid-item" onClick={() => redirect(props.id)}>
+        <div className="grid-item" onClick={() => history.push("/sets/" + props.id + "/cards")}>
             <div className="info-options">
-                <a href={"/"} className="info">
+                <Link to={"/"} className="info">
                     <ProfilePic dimensions={'25px'} username={"admin"} fontSize={'16px'} />
                     <span style={{ fontWeight: '500', color: 'rgb(24, 24, 24)' }}>admin</span>
-                </a>
+                </Link>
 
                 {owner &&
                     setOptions()

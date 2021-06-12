@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import SetForm from 'components/setForm/setForm.js';
+import { useHistory } from "react-router-dom";
 import './CreateSetPage.css';
 
 export default function CreateSetPage(props) {
@@ -10,6 +11,7 @@ export default function CreateSetPage(props) {
     }));
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const history = useHistory();
 
     useEffect(() => {
         
@@ -36,7 +38,7 @@ export default function CreateSetPage(props) {
             
             if (response.status === 201) {
                 const json = await response.json();
-                window.location.href = "/" + json.user + "/sets";
+                history.push('/' + json.user + '/sets');
             }
         }
         else {

@@ -93,9 +93,17 @@
     transition: background 0.26s ease;
 }
 
+.sidebar-item a{ 
+    color: white;
+    transition: color 0.35s ease;
+}
+.sidebar-item:hover a{ 
+    color: black;
+}
+
 .sidebar-item:hover {
     background-position:left bottom;
-    color: black;
+    
 }
 
 .sidebar-link-wrapper {
@@ -140,8 +148,9 @@
     height: 50px;
     width: 100%;
 }
-.sidebar-profile-item button:hover{
-    color: var(--color-accent) !important;
+
+.sidebar-profile-item button:hover {
+    color: var(--color-accent);
 }
 
 .current-page {

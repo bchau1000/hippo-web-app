@@ -1,4 +1,6 @@
 const pool = require("../Config/config");
+const async = require('async');
+
 exports.getSetsByUsername = (request, response) => {
     const username = request.params.username;
 
@@ -190,6 +192,7 @@ exports.deleteSet = (request, response) => {
             }
         );
     } catch (err) {
+        console.log(err);
         return response.status(404).send({
             status: 404,
             message: err,

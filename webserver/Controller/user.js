@@ -1,16 +1,19 @@
 /* This is where the business logic goes, 
-AKA dealing with the data retrieved by the connector*/ 
-const {createToken,removeToken} = require("../Middlewares/Auth/auth")
+AKA dealing with the data retrieved by the connector*/
+const { createToken } = require("../Middlewares/Auth/auth")
 const pool = require("../Config/config");
 const bcrypt = require('bcrypt');
 const saltRounds = 10; // adjust how strong the hashing fucntions is, n hashes per second
 
 
 exports.registerUser = (request, response) => {
-    const user = [request.body.username, 
-                bcrypt.hashSync(request.body.password, saltRounds),//hashed password
-                request.body.firstName, 
-                request.body.lastName];
+    const user = [
+        request.body.username,
+        bcrypt.hashSync(request.body.password, saltRounds),//hashed password
+        request.body.firstName,
+        request.body.lastName
+    ];
+
     try {
         pool.query(
             "INSERT INTO users(username, password, first_name, last_name) VALUES(?, ?, ?, ?)",
@@ -24,12 +27,11 @@ exports.registerUser = (request, response) => {
                         });
 
                     }
-                    else{
+                    else {
                         console.log(error)
                         return response.status(400).send(error);
-                        
+
                     }
-                        
                 }
                 else {
                     console.log('201 Created: "/api/register"');
@@ -55,14 +57,14 @@ exports.loginUser = (request, response) => {
         username,
         password
     } = request.body;
-    
+
     try {
         pool
         pool.query(
             "SELECT id, username, email,password\n" +
             "FROM users\n" +
             "WHERE username = ? ",
-            [username,password],
+            [username, password],
             (error, result) => {
                 if (error) return next(error);
 
@@ -70,42 +72,37 @@ exports.loginUser = (request, response) => {
                     return response.status(400).send({
                         'status': 400,
                         'message': 'Invalid username or password.'
-                    });  
+                    });
                 }
                 else {
-                if(bcrypt.compareSync(password, result[0].password)){
-                    [accessToken,refreshToken] = createToken(result);
-                    response.cookie(
-                        'token', accessToken, {
-                        httpOnly: true,
-                        maxAge: 2592000000 // 30 days in ms
-                    }
-                    );
+                    if (bcrypt.compareSync(password, result[0].password)) {
+                        const accessToken = createToken(result);
+                        if (accessToken !== null) {
+                            response.cookie(
+                                'token', accessToken, {
+                                httpOnly: true,
+                                maxAge: 2592000000 // 30 days in ms
+                            });
 
-                    response.cookie(
-                        'refreshToken', refreshToken, {
-                        httpOnly: true,
-                        maxAge: 2592000000 // 30 days in ms
-                    }
-                    );
-
-                    return response.status(200).send({
-                        'status': 200,
-                        'content': {
-                            'username': result[0].username,
+                            return response.status(200).send({
+                                'status': 200,
+                                'content': {
+                                    'username': result[0].username,
+                                }
+                            });
                         }
-                    });
-                }else{
-                    return response.status(400).send({
-                        'status': 400,
-                        'message': 'Invalid username or password.'
-                    });  
-                }
+
+                    } else {
+                        return response.status(400).send({
+                            'status': 400,
+                            'message': 'Invalid username or password.'
+                        });
+                    }
                 }
             }
         );
-    } catch (err) {
-        console.log(err)
+    }
+    catch (err) {
         return response.status(404).send({
             'status': 404,
             'message': err,
@@ -114,18 +111,14 @@ exports.loginUser = (request, response) => {
 }
 
 exports.logoutUser = (request, response) => {
-    
-    if(removeToken(request.cookies.refreshToken))
-    {
-        console.log('200 Ok: "/api/logout"');
-        return response.status(201).send({
-            'status': 201,
-            'message': 'User successfully logged out.'
-        });
-    }
-   else{
-       console.error('Could not logout succesfully');
-   }
+    response.cookie(
+        'token', null
+    );
+    return response.status(201).send({
+        'status': 201,
+        'message': 'User successfully logged out.'
+    });
+
 
 }
 

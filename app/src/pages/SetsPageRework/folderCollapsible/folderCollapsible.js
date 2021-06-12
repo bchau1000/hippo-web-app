@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import useViewport from "components/getViewport/getViewport.js";
+import useViewport from "components/useViewport/useViewport.js";
 import SetGridItem from '../setGridItem/setGridItem.js';
 import ModalTemplate from 'components/modalTemplate/modalTemplate.js';
 import EditFolderModal from 'pages/SetsPageRework/editFolderModal/editFolderModal.js';

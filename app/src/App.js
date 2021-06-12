@@ -1,6 +1,9 @@
-import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import { BrowserRouter as Router, Switch, Route, useHistory } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
+import { UserContext } from 'context/context.js';
+import useViewport from "components/useViewport/useViewport.js";
 import LoginRegisterModal from 'components/loginRegisterModal/loginRegisterModal.js';
 import BrowsePage from "pages/BrowsePage/BrowsePage.js";
 import CreateSetPage from "pages/CreateSetPage/CreateSetPage.js";
@@ -11,24 +14,19 @@ import Navbar from "components/navbar/navbar.js";
 import Sidebar from "components/sidebar/sidebar.js";
 import WelcomePage from "pages/WelcomePage/WelcomePage.js";
 import SandBox from "pages/SandBox/SandBox.js";
-import useViewport from "components/getViewport/getViewport.js";
-import jwt_decode from "jwt-decode";
 
 import "./App.css";
 
-export default function App(props) {
+
+
+export function App(props) {
     const [user, setUser] = useState(null);
     const localSD = JSON.parse(localStorage.getItem('showDropdown'));
     const [showDropdown, setShowDropdown] = useState((localSD !== null) ? localSD : false);
     const [showLoginModal, setShowLoginModal] = useState(false);
-
     const width = useViewport();
 
     useEffect(() => {
-        /*
-            Called on every reload, confirms whether or not the user is currently signed in using
-            stored refresh tokens in the backend.
-        */
         async function getUser() {
             const body = JSON.stringify({
             });
@@ -43,16 +41,19 @@ export default function App(props) {
             const response = await fetch('/api/auth', settings);
             if (response.status === 201) {
                 const json = await response.json();
+                
+                localStorage.setItem('user', jwt_decode(json.content));
                 setUser(jwt_decode(json.content));
             }
             else
-                console.log('User not currently logged in.')
+                console.log('User not currently logged in.');
         }
         getUser();
     }, []);
 
     useEffect(() => {
         width <= 1025 ? setShowDropdown(false) : setShowDropdown(localSD);
+        
     }, [width]);
 
     useEffect(() => {
@@ -61,7 +62,8 @@ export default function App(props) {
     }, [showDropdown, width]);
 
     return (
-        <Router>
+        <UserContext.Provider value={user}>
+            <Router>
                 <div className="main-container">
                     <LoginRegisterModal
                         showModal={showLoginModal}
@@ -72,7 +74,7 @@ export default function App(props) {
                             onFocus={() => setShowDropdown(false)}
                             showDropdown={showDropdown}
                             setShowLoginModal={setShowLoginModal}
-                            user={user}
+
                         />
                     </div>
                     <div className={`sidebar-margin ${showDropdown ? 'sidebar-transition-true' : ""}`} />
@@ -82,7 +84,6 @@ export default function App(props) {
                         showDropdown={showDropdown}
                         setShowLoginModal={setShowLoginModal}
                         width={width}
-                        user={user}
                     />
                     <Switch>
                         <Route exact path="/sandbox" render={(props) => <SandBox {...props} />} />
@@ -98,6 +99,7 @@ export default function App(props) {
                         <div className="focus-container" onClick={() => setShowDropdown(false)} />
                     }
                 </div>
-        </Router>
+            </Router>
+        </UserContext.Provider>
     );
 }
