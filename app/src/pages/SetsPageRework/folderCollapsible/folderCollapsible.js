@@ -143,6 +143,7 @@ export default function FolderCollapsible(props) {
                                     title={sets.title}
                                     desc={sets.description}
                                     tags={sets.tags}
+                                    username={sets.username}
                                     onDelete={props.onDelete}
                                     onEdit={props.onEdit}
                                     onRemove={onRemove}

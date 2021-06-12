@@ -23,6 +23,7 @@ exports.authUser = (request, response, next) => {
 };
 
 exports.createToken = (result) => {
+    console.log('HERE5', result);
     if (result) {
         const accessToken = jwt.sign(
             {

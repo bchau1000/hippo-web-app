@@ -6,9 +6,10 @@ exports.getSetsByUsername = (request, response) => {
 
     try {
         pool.query(
-            "SELECT s.id as 'id', s.title as 'title', s.description as 'description'\n" +
-            "FROM sets as s JOIN (SELECT id FROM users WHERE username=?) as u\n" +
-            "WHERE s.user_id = u.id;\n",
+            "SELECT s.id, s.title, s.description, u.username, GROUP_CONCAT(t.name SEPARATOR ',') as tags\n" +
+            "FROM (SELECT id, username FROM users WHERE username = ?) as u, sets as s, sets_and_tags as st, tags as t\n" +
+            "WHERE u.id = s.user_id AND s.id = st.set_id AND t.id = st.tag_id\n" +
+            "GROUP BY s.id;",
             username,
             (error, result) => {
                 if (error) return response.status(400).send(error);

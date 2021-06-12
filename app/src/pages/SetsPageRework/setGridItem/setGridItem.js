@@ -49,7 +49,7 @@ export default function SetGridItem(props) {
             <div className="info-options">
                 <Link to={"/"} className="info">
                     <ProfilePic dimensions={'25px'} username={"admin"} fontSize={'16px'} />
-                    <span style={{ fontWeight: '500', color: 'rgb(24, 24, 24)' }}>admin</span>
+                    <span style={{ fontWeight: '500', color: 'rgb(24, 24, 24)' }}>{props.username}</span>
                 </Link>
 
                 {owner &&

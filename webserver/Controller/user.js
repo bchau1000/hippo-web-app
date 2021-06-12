@@ -66,13 +66,16 @@ exports.loginUser = (request, response) => {
                 if (error) return next(error);
 
                 if (result.length === 0) {
+                    console.log('HERE', result);
                     return response.status(400).send({
                         'status': 400,
                         'message': 'Invalid username or password.'
                     });
                 }
                 else {
+                    console.log('HERE2', result);
                     if (bcrypt.compareSync(password, result[0].password)) {
+                        console.log('HERE3', result);
                         const accessToken = createToken(result);
                         if (accessToken !== null) {
                             response.cookie(
@@ -90,6 +93,7 @@ exports.loginUser = (request, response) => {
                         }
 
                     } else {
+                        console.log('HERE4', result);
                         return response.status(400).send({
                             'status': 400,
                             'message': 'Invalid username or password.'

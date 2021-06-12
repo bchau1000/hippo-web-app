@@ -21,6 +21,7 @@ export default function SetsPageRework(props) {
     const bottomOfPage = useRef();
 
     useEffect(() => {
+        
         async function getData() {
             setLoading(true);
             const settings = {
