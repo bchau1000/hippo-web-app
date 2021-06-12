@@ -3,8 +3,7 @@ AKA dealing with the data retrieved by the connector*/
 const { createToken } = require("../Middlewares/Auth/auth")
 const pool = require("../Config/config");
 const bcrypt = require('bcrypt');
-const saltRounds = 10; // adjust how strong the hashing fucntions is, n hashes per second
-
+const saltRounds = 10; // adjust how strong the hashing function is, n hashes per second
 
 exports.registerUser = (request, response) => {
     const user = [
@@ -18,7 +17,7 @@ exports.registerUser = (request, response) => {
         pool.query(
             "INSERT INTO users(username, password, first_name, last_name) VALUES(?, ?, ?, ?)",
             user,
-            (error, result) => {
+            (error, _) => {
                 if (error) {
                     if (error.code === 'ER_DUP_ENTRY') {
                         return response.status(401).send({
@@ -28,9 +27,7 @@ exports.registerUser = (request, response) => {
 
                     }
                     else {
-                        console.log(error)
                         return response.status(400).send(error);
-
                     }
                 }
                 else {

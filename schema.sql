@@ -1,17 +1,15 @@
-
-
 DROP DATABASE IF EXISTS study_buddy_db;
 CREATE DATABASE study_buddy_db;
 USE study_buddy_db;
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
-  id int PRIMARY KEY auto_increment,
-  username VARCHAR(60) NOT NULL UNIQUE,
-  email VARCHAR(60) NULL UNIQUE,
-  password VARCHAR(100) NOT NULL,
-  first_name VARCHAR(40) NULL,
-  last_name VARCHAR(40) NULL
+    id int PRIMARY KEY auto_increment,
+    username VARCHAR(60) NOT NULL UNIQUE,
+    email VARCHAR(60) NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    first_name VARCHAR(40) NULL,
+    last_name VARCHAR(40) NULL
 );
 
 DROP TABLE IF EXISTS folders;
@@ -47,7 +45,8 @@ CREATE TABLE tags(
 DROP TABLE IF EXISTS sets_and_tags;
 CREATE TABLE sets_and_tags(
 	set_id int REFERENCES sets(id),
-    tag_id int REFERENCES tags(id)
+    tag_id int REFERENCES tags(id),
+    UNIQUE (set_id, tag_id)
 );
 
 DROP TABLE IF EXISTS folders_and_sets;

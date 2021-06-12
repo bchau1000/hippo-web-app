@@ -226,9 +226,7 @@ export default function BrowsePage(props) {
                         />
 
                         <ul className="browse-results-container">
-                            {showResult()
-
-                            }
+                            { showResult() }
                         </ul>
                         <Paginator
                             totalPages={totalPages}
