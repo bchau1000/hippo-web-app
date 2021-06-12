@@ -94,6 +94,7 @@ exports.loginUser = (request, response) => {
 
                     } else {
                         console.log('HERE4', result);
+                        console.log(password);
                         return response.status(400).send({
                             'status': 400,
                             'message': 'Invalid username or password.'
