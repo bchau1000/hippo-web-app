@@ -138,11 +138,12 @@
     font-weight: bold;
 }
 
-.empty-results-container a {
+.empty-results-container button {
     width: fit-content;
     margin-top: 5px;
     box-shadow: var(--box-shadow);
     background-color: var(--color-accent);
+    border: none;
     border-radius: 5px;
     cursor: pointer;
     padding: 7px;

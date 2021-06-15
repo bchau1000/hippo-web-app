@@ -1,14 +1,18 @@
-import { useCallback, useState, useEffect } from 'react';
-import './sidebar.css';
+import { useCallback, useState, useEffect, useContext } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { UserContext } from 'context/context.js';
 import ProfilePic from 'components/profilePic/profilePic.js';
 
+import './sidebar.css';
 
 export default function Sidebar(props) {
     const [awaitResp, setAwaitResp] = useState(false);
-    const [currentPage, setCurrentPage] = useState(window.location.pathname);
-    
+    const currentPage = useLocation();
+    const [loading, setLoading] = useState(true);
+    const user = useContext(UserContext);
+
     useEffect(() => {
-        setCurrentPage(window.location.pathname);
+        setLoading(false);
     }, []);
 
     const sendRequest = useCallback(async () => {
@@ -19,9 +23,7 @@ export default function Sidebar(props) {
             setAwaitResp(true);
 
             // If a user is even logged in...
-            if (props.user !== null) {
-                // Wipe user from local storage
-                localStorage.setItem('user', null);
+            if (user !== null) {
 
                 // Send logout request...
                 const body = JSON.stringify({
@@ -36,86 +38,101 @@ export default function Sidebar(props) {
                 };
                 const response = await fetch('/api/logout', settings);
                 if (response.status === 201) {
-                    const json = await response.json();
+                    //const json = await response.json();
+                    localStorage.setItem('user', null);
                     window.location.href = "/browse";
                 }
 
                 setAwaitResp(false);
             }
         }
-    }, [awaitResp, props.user]);
+    }, [awaitResp, user]);
 
     const isCurrentPage = (path) => {
-        return currentPage.includes(path);
+        return currentPage.pathname.includes(path);
+    }
+
+    const setProfile = () => {
+        if (user) {
+            return (
+                <div className="sidebar-profile-item">
+                    <div className="profile-pic-border">
+                        <ProfilePic
+                            username={user.username}
+                            dimensions={"60px"}
+                            border={true}
+                        />
+                    </div>
+
+                    <span className="sidebar-profile-username">Hello, {user.username}</span>
+                    <button onClick={() => sendRequest()}>Logout</button>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div className="sidebar-profile-item">
+                    <div className="profile-pic-border">
+                        <ProfilePic
+                            username={"?guest"}
+                            dimensions={"60px"}
+                            border={true}
+                        />
+                    </div>
+                    <span className="sidebar-profile-username">Hello, Guest</span>
+                    <button onClick={() => props.setShowLoginModal(true)}>Login/Register</button>
+                </div>
+            )
+        }
     }
 
     return (
         <div className="sidebar-container no-select">
             <div className="sidebar-header">
-                <a href="/">Hippo.</a>
+                <Link to="/">Hippo.</Link>
             </div>
 
             <ul className="sidebar-items-container">
-                {props.user
-                ?   <div className="sidebar-profile-item">
-                        <div className="profile-pic-border">
-                            <ProfilePic
-                                username={props.user.username}
-                                dimensions={"60px"}
-                                border={true}
-                            />
-                        </div>
-                        
-                        <span className="sidebar-profile-username">Hello, {props.user.username}</span>
-                        <button  onClick={() => sendRequest()}>Logout</button>
-                    </div>
-                :   <div className="sidebar-profile-item">
-                        <div className="profile-pic-border">
-                            <ProfilePic
-                                username={"?guest"}
-                                dimensions={"60px"}
-                                border={true}
-                            />
-                        </div>
-                        <span className="sidebar-profile-username">Hello, Guest</span>
-                        <button onClick={() => props.setShowLoginModal(true)}>Login/Register</button>
-                    </div>
+                {
+                    setProfile()
                 }
                 <li className={`sidebar-item ? ${isCurrentPage("/browse") ? "current-page" : ""}`}>
-                    <button
+                    <Link
                         className="sidebar-link-wrapper"
-                        onClick={() => { window.location.href = "/browse" }}
+                        to="/browse"
                     >
                         <span className="material-icons">search</span>
                         <span htmlFor="sets">Browse</span>
-                    </button>
+                    </Link>
                 </li>
-                <li className={`sidebar-item ? ${props.user && isCurrentPage("/" + props.user.username + "/sets") ? "current-page" : ""}`}>
-                    <button
+                <li className={`sidebar-item ? ${user && isCurrentPage("/" + user.username + "/sets") ? "current-page" : ""}`}>
+                    <Link
                         className="sidebar-link-wrapper"
-                        onClick={() => props.user === null ? props.setShowLoginModal(true) : window.location.href = "/" + props.user.username + "/sets"}
+                        onClick={() => user === null ? props.setShowLoginModal(true) : ""}
+                        to={user === null ? currentPage : "/" + user.username + "/sets"}
                     >
                         <span className="material-icons">layers</span>
                         <span htmlFor="sets">Sets</span>
-                    </button>
+                    </Link>
                 </li>
                 <li className={`sidebar-item ? ${isCurrentPage("/new") ? "current-page" : ""}`}>
-                    <button
+                    <Link
                         className="sidebar-link-wrapper"
-                        onClick={() => props.user === null ? props.setShowLoginModal(true) : window.location.href = "/sets/new"}
+                        onClick={() => user === null ? props.setShowLoginModal(true) : ""}
+                        to={user === null ? currentPage : "/sets/new"}
                     >
                         <span className="material-icons">library_add</span>
                         <span htmlFor="sets">Create</span>
-                    </button>
+                    </Link>
                 </li>
                 <li className={`sidebar-item ? ${isCurrentPage("/sandbox") ? "current-page" : ""}`}>
-                    <button
+                    <Link
                         className="sidebar-link-wrapper"
-                        onClick={() => { window.location.href = "/sandbox" }}
+                        to="/sandbox"
                     >
                         <span className="material-icons">settings</span>
                         <span htmlFor="sets">Sandbox</span>
-                    </button>
+                    </Link>
                 </li>
 
             </ul>

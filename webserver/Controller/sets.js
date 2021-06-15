@@ -1,12 +1,15 @@
 const pool = require("../Config/config");
+const async = require('async');
+
 exports.getSetsByUsername = (request, response) => {
     const username = request.params.username;
 
     try {
         pool.query(
-            "SELECT s.id as 'id', s.title as 'title', s.description as 'description'\n" +
-            "FROM sets as s JOIN (SELECT id FROM users WHERE username=?) as u\n" +
-            "WHERE s.user_id = u.id;\n",
+            "SELECT s.id, s.title, s.description, u.username, GROUP_CONCAT(t.name SEPARATOR ',') as tags\n" +
+            "FROM users as u JOIN (sets as s LEFT JOIN sets_and_tags as st ON s.id = st.set_id) LEFT JOIN tags as t ON t.id = st.tag_id\n" +
+            "WHERE u.username = ? AND u.id = s.user_id\n" +
+            "GROUP BY s.id;\n",
             username,
             (error, result) => {
                 if (error) return response.status(400).send(error);
@@ -155,12 +158,12 @@ exports.deleteSet = (request, response) => {
                     );
                 },
                 function (callback) {
+
+                    // Delete a set and its relational data
+                    // May not need extra deletes due to cascade
                     pool.query(
-                        "DELETE FROM folders_and_sets WHERE set_id = ?;" +
-                        "DELETE FROM subjects WHERE set_id = ?;" +
-                        "DELETE FROM flash_cards WHERE set_id = ?;" +
                         "DELETE FROM sets WHERE id = ?;",
-                        [set_id, set_id, set_id, set_id],
+                        [set_id],
                         (error, result) => {
                             if (error) {
                                 return response.status(400).send({
@@ -190,6 +193,7 @@ exports.deleteSet = (request, response) => {
             }
         );
     } catch (err) {
+        console.log(err);
         return response.status(404).send({
             status: 404,
             message: err,

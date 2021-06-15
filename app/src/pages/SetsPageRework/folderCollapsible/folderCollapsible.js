@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
-import useViewport from "components/getViewport/getViewport.js";
+import { Link } from 'react-router-dom';
+import useViewport from "components/useViewport/useViewport.js";
 import SetGridItem from '../setGridItem/setGridItem.js';
 import ModalTemplate from 'components/modalTemplate/modalTemplate.js';
 import EditFolderModal from 'pages/SetsPageRework/editFolderModal/editFolderModal.js';
@@ -55,13 +56,13 @@ export default function FolderCollapsible(props) {
     const showAddCard = () => {
         if (!props.isFolder)
             return (
-                <button
+                <Link
                     className="add-set-card"
-                    onClick={() => window.location.href = "/sets/new"}
+                    to={"/sets/new"}
                 >
                     <span className="material-icons">add</span>
                     <span>&nbsp;Create</span>
-                </button>
+                </Link>
             )
         else
             return (
@@ -143,6 +144,7 @@ export default function FolderCollapsible(props) {
                                     title={sets.title}
                                     desc={sets.description}
                                     tags={sets.tags}
+                                    username={sets.username}
                                     onDelete={props.onDelete}
                                     onEdit={props.onEdit}
                                     onRemove={onRemove}

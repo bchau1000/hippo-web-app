@@ -1,6 +1,7 @@
 require('dotenv').config();
 const mysql = require('mysql');
 
+
 // process.env values configured in config.env file
 const config = {
     host: process.env.HOST,

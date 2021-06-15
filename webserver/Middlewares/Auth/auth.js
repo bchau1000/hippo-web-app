@@ -2,20 +2,17 @@ const jwt = require("jsonwebtoken");
 
 // Master access tokens for JWT, MUST CHANGE DURING DEPLOYMENT
 const secretToken = "secret_token";
-const refreshSecretToken = "refresh_secret_token";
-const refreshTokens = [];
 
 exports.authUser = (request, response, next) => {
   const token = request.cookies.token;
-  const refreshToken = request.cookies.refreshToken;
-
-  if (refreshTokens.includes(refreshToken)) {
+    
+  if (token !== null) {
     jwt.verify(token, secretToken, (err, user) => {
-      if (err) return response.sendStatus(403);
+        if (err) return response.sendStatus(403);
 
-      request.token = token;
-      request.user = user;
-      next();
+        request.token = token;
+        request.user = user;
+        next();
     });
   } else {
     response.status(404).send({
@@ -26,41 +23,21 @@ exports.authUser = (request, response, next) => {
 };
 
 exports.createToken = (result) => {
-  if (result) {
-    const accessToken = jwt.sign(
-      {
-        id: result[0].id,
-        username: result[0].username,
-        email: result[0].email,
-      },
-      secretToken,
-      { expiresIn: "20m" }
-    );
+    if (result) {
+        const accessToken = jwt.sign(
+            {
+                id: result[0].id,
+                username: result[0].username,
+                email: result[0].email,
+            },
+            secretToken,
+            { 
+                expiresIn: "7d" 
+            }
+        );
 
-    const refreshToken = jwt.sign(
-      {
-        id: result[0].id,
-        username: result[0].username,
-        email: result[0].email,
-      },
-      refreshSecretToken
-    );
-
-    refreshTokens.push(refreshToken);
-
-    return [accessToken, refreshToken];
-  }
-  console.error("Could not establish a accessToken");
-  return [null, null];
-};
-
-
-exports.removeToken = (token) => {
-    for (let i = 0; i < refreshTokens.length; i++) {
-        if (refreshTokens[i] == token) {
-            refreshTokens.splice(i, 1);
-            return true;
-        }
+        return accessToken;
     }
-    return false;
-}
+    
+    return null;
+};

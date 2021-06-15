@@ -21,6 +21,7 @@ export default function SetsPageRework(props) {
     const bottomOfPage = useRef();
 
     useEffect(() => {
+
         async function getData() {
             setLoading(true);
             const settings = {
@@ -232,19 +233,6 @@ export default function SetsPageRework(props) {
 
                 }
 
-                <div className="all-sets-container">
-                    <FolderCollapsible
-                        isFolder={false}
-                        showFolder={true}
-                        folder={{ "name": "All", "sets": allSets }}
-                        onDeleteFolder={onDeleteFolder}
-                        onEditFolder={onEditFolder}
-                        onDelete={onDelete}
-                        onRemove={onRemove}
-                        onEdit={onEdit}
-                        allSets={allSets}
-                    />
-                </div>
                 <div className="all-folders-container">
                     {
                         folders.map((folder, idx) => {
@@ -263,6 +251,21 @@ export default function SetsPageRework(props) {
                         })
                     }
                 </div>
+
+                <div className="all-sets-container">
+                    <FolderCollapsible
+                        isFolder={false}
+                        showFolder={true}
+                        folder={{ "name": "All", "sets": allSets }}
+                        onDeleteFolder={onDeleteFolder}
+                        onEditFolder={onEditFolder}
+                        onDelete={onDelete}
+                        onRemove={onRemove}
+                        onEdit={onEdit}
+                        allSets={allSets}
+                    />
+                </div>
+
                 <div ref={bottomOfPage}></div>
             </section>
         </OwnerContext.Provider>

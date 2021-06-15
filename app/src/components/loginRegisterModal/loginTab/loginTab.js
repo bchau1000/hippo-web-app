@@ -11,6 +11,9 @@ export default function LoginTab(props) {
 
     useEffect(() => {
     }, []);
+
+    useEffect(() => {
+    }, [username, password]);
     
 
     return (
@@ -25,8 +28,6 @@ export default function LoginTab(props) {
                             onClick={async (event) => {
                                 setLoading(true);
                                 await props.handleLogin(event, username, password, setNotification, setLoading);
-                                setUsername("");
-                                setPassword("");
                             }}
                         >Log In</button> :
                         <LoadingAnim text="Logging in..."/>
