@@ -1,4 +1,3 @@
-import { useState, useRef } from 'react';
 import TagItem from './tagItem/tagItem.js';
 import AutoComplete from './autoComplete/autoComplete.js';
 

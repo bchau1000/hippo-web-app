@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 import './autoComplete.css';
 
@@ -20,7 +20,7 @@ export default function AutoComplete(props) {
             setCursor(-1);
         }
 
-    }, [input]);
+    }, [input, allTags]);
 
     const handleListNav = (event) => {
         if (input.length > 0) {

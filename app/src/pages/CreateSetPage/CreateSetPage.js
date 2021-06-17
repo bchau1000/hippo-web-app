@@ -1,4 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { NotificationContext } from 'context/context.js';
 import SetForm from 'components/setForm/setForm.js';
 import { useHistory } from "react-router-dom";
 import './CreateSetPage.css';
@@ -12,6 +14,18 @@ export default function CreateSetPage(props) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const history = useHistory();
+    const notifications = useContext(NotificationContext);
+
+    function notify(type, text, status) {
+        notifications({
+            type: type,
+            value: {
+                id: uuidv4(),
+                text: text,
+                status: status,
+            }
+        });
+    }
 
     useEffect(() => {
         
@@ -39,12 +53,11 @@ export default function CreateSetPage(props) {
             if (response.status === 201) {
                 const json = await response.json();
                 history.push('/' + json.user + '/sets');
+                notify('ADD', 'New set created!', 'Success');
             }
         }
-        else {
-            
-        }
-
+        else 
+            notify('ADD', 'You must provide a title for the study set.', 'Error');
     }
 
     const updateCards = (idx, flashCard) => {

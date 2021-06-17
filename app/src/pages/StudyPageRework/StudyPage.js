@@ -12,6 +12,10 @@ export default function StudyPage(props) {
     const [loading, setLoading] = useState(false);
     
     useEffect(() => {
+        console.log(description)
+    }, [description]);
+
+    useEffect(() => {
         async function getData() {
             setLoading(true);
             const settings = {
@@ -23,6 +27,7 @@ export default function StudyPage(props) {
             const response = await fetch('/api/sets/' + set_id + "/cards", settings);
             if (response.status === 201) {
                 const json = await response.json();
+                
                 setTitle(json.title);
                 setDescription(json.description);
                 setFlashCards(json.flash_cards);

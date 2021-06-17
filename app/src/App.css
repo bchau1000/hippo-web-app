@@ -36,7 +36,6 @@ button {
             user-select: none;
 }
 
-
 .main-container {
     display: grid;
     grid-template-rows: 60px auto;
@@ -62,20 +61,25 @@ button {
     margin-left: 0;
 }
 
-.notifications-container {
+.popup-notif-container {
     display: flex;
-    flex-direction: column-reverse;
-    width: 325px;
-    height: 150px;
+    flex-direction: column;
+    
+    width: 350px;
     background-color: rgba(0, 0, 0, 0);
+    row-gap: 15px;
 
     position: fixed;
-    bottom: 0;
-    right: 0;
-    z-index: 3;
+    top: 0;
+    left: 50%;
+    margin-top: 15px;
+    margin-left: -175px;
+    z-index: 4;
 }
 
-@media (max-width: 1025px){
+
+
+@media (max-width: 1025px) {
     .focus-container {
         position: fixed;
         grid-template-rows: margin-top content;
@@ -101,3 +105,4 @@ button {
         display: none;
     }
 }
+

@@ -8,12 +8,13 @@ import './sidebar.css';
 export default function Sidebar(props) {
     const [awaitResp, setAwaitResp] = useState(false);
     const currentPage = useLocation();
-    const [loading, setLoading] = useState(true);
     const user = useContext(UserContext);
 
     useEffect(() => {
-        setLoading(false);
-    }, []);
+        if(props.width < 1026)
+            props.setShowDropdown(false);
+        
+    }, [currentPage]);
 
     const sendRequest = useCallback(async () => {
         if (awaitResp)
@@ -89,7 +90,9 @@ export default function Sidebar(props) {
     return (
         <div className="sidebar-container no-select">
             <div className="sidebar-header">
-                <Link to="/">Hippo.</Link>
+                <Link
+                    to="/"
+                >Hippo.</Link>
             </div>
 
             <ul className="sidebar-items-container">

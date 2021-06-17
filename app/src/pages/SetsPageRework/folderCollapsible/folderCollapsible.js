@@ -1,9 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import useViewport from "components/useViewport/useViewport.js";
+import useViewport from "hooks/useViewport.js";
 import SetGridItem from '../setGridItem/setGridItem.js';
 import ModalTemplate from 'components/modalTemplate/modalTemplate.js';
 import EditFolderModal from 'pages/SetsPageRework/editFolderModal/editFolderModal.js';
+import ConfirmModal from 'components/confirmModal/confirmModal.js';
 import { OwnerContext } from 'pages/SetsPageRework/SetsPageRework.js';
 
 import "./folderCollapsible.css";
@@ -12,12 +13,20 @@ export default function FolderCollapsible(props) {
     const width = useViewport();
     const owner = useContext(OwnerContext);
     const itemHeight = 170;
-    const [filter, setFilter] = useState("");
     const [containerHeight, setContainerHeight] = useState(itemHeight + 'px');
     const [calcHeight, setCalcHeight] = useState(itemHeight);
     const [showFolders, setShowFolders] = useState(props.showFolder);
     const [showEditModal, setShowEditModal] = useState(false);
+    const [modal, setModal] = useState(false);
+    const [confirm, setConfirm] = useState(null);
     const folder = props.folder;
+
+    useEffect(() => {
+        if(confirm){
+            setConfirm(null);
+            props.onDeleteFolder(props.folder.id);
+        }
+    }, [confirm]);
 
     useEffect(() => {
         let setLen = folder.sets.length;
@@ -79,6 +88,12 @@ export default function FolderCollapsible(props) {
     return (
         <div className="folder-collapsible-wrapper">
             <div className="folder-options-container">
+                <ConfirmModal
+                    state={[modal, setModal]}
+                    setConfirm={setConfirm}
+                    header={"Confirm"}
+                    text={"Are you sure you want to delete this folder? Deleting this folder will NOT delete the sets within it."}
+                />
                 {
                     showEditModal &&
                     <ModalTemplate
@@ -122,7 +137,9 @@ export default function FolderCollapsible(props) {
                     {props.isFolder && owner &&
                         <button
                             className="folder-collapsible-delete-button"
-                            onClick={() => props.onDeleteFolder(props.folder.id)}
+                            onClick={() => {
+                                setModal(true);
+                            }}
                         >
                             <span className="material-icons">delete</span>
                         </button>
