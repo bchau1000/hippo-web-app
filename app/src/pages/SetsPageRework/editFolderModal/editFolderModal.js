@@ -37,6 +37,28 @@ export default function EditFolderModal(props) {
 
     return (
         <div className="edit-folder-modal-container">
+            <div className="edit-folder-header">
+                <span
+                    style={{
+                        fontWeight: 'bold',
+                        fontSize: '18px'
+                    }}
+                >Edit Folder</span>
+                <button
+                    style={{
+                        border: 'none',
+                        background: 'transparent',
+                        padding: '0px',
+                        marginRight: '-10px'
+                    }}
+                    onClick={(event) => {
+                        event.preventDefault();
+                        props.setShowEditModal(false);
+                    }}
+                >
+                    <span className="material-icons">close</span>
+                </button>
+            </div>
             <form action="url" id="edit-folder-modal-form" className="edit-folder-modal-form">
                 <div className="edit-folder-modal-input-container">
                     <input

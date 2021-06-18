@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useContext } from 'react';
+import { NotificationContext } from 'context/context.js';
+import { v4 as uuidv4 } from 'uuid';
 import ModalTemplate from 'components/modalTemplate/modalTemplate.js';
 import LoginTab from './loginTab/loginTab.js';
 import RegisterTab from './registerTab/registerTab.js';
@@ -7,10 +9,7 @@ import "./loginRegisterModal.css";
 
 export default function LoginRegisterModal(props) {
     const [tab, setTab] = useState(true);
-    
-    useEffect(() => {
-        
-    }, []);
+    const dispatchNotifications = useContext(NotificationContext);
 
     const handleLogin = async (event, username, password, setNotification, setLoading) => {
         event.preventDefault();
@@ -28,7 +27,7 @@ export default function LoginRegisterModal(props) {
         }
 
         const response = await fetch("/api/login", settings);
-        if(response.status === 200) {
+        if (response.status === 200) {
             const json = await response.json();
             window.location.href = "/" + json.content.username + "/sets";
         }
@@ -56,24 +55,31 @@ export default function LoginRegisterModal(props) {
         }
 
         const response = await fetch("/api/register", settings);
-        if(response.status === 201) {
-            //const json = await response.json();
+        if (response.status === 201) {
             setTab(true);
             setNotification("");
+            dispatchNotifications({
+                type: 'ADD',
+                value: {
+                    id: uuidv4(),
+                    text: 'Registered successfully!',
+                    status: 'Success'
+                },
+            });
         }
-        else if(response.status === 401) {
+        else if (response.status === 401) {
             setNotification("Username is already taken.");
         }
     }
 
     const setContent = () => {
 
-            if(tab) 
-                return( <LoginTab handleLogin={handleLogin}/> );
-            
-            else 
-                return ( <RegisterTab handleRegister={handleRegister}/> );
-        
+        if (tab)
+            return (<LoginTab handleLogin={handleLogin} />);
+
+        else
+            return (<RegisterTab handleRegister={handleRegister} />);
+
     }
 
     return (
@@ -88,20 +94,20 @@ export default function LoginRegisterModal(props) {
                     </button>
                 </div>
                 <div className="lr-modal-tabs">
-                    <button 
-                        className={`${tab ? "lr-tab-selected" : ""}`} 
+                    <button
+                        className={`${tab ? "lr-tab-selected" : ""}`}
                         onClick={() => { setTab(true) }}
-                        style={{'borderTopLeftRadius': '2px'}}
+                        style={{ 'borderTopLeftRadius': '2px' }}
                     >
                         <span className="material-icons">
                             login
                         </span>
                         <span>Login</span>
                     </button>
-                    <button 
-                        className={`${tab ? "" : "lr-tab-selected"}`} 
+                    <button
+                        className={`${tab ? "" : "lr-tab-selected"}`}
                         onClick={() => { setTab(false) }}
-                        style={{'borderTopRightRadius': '2px'}}
+                        style={{ 'borderTopRightRadius': '2px' }}
                     >
                         <span className="material-icons">
                             create

@@ -1,12 +1,11 @@
-import { useState, useReducer, useEffect } from 'react';
-import { useLocation, useHistory } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useLocation } from "react-router-dom";
 import TagInput from 'components/tagInput/tagInput.js';
 import BrowseItem from "./browseItem/browseItem.js";
 import LoadingAnim from 'components/loadingAnim/loadingAnim';
 import Paginator from "./paginator/paginator.js";
 
 import "./BrowsePage.css";
-
 
 const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -83,7 +82,7 @@ export default function BrowsePage(props) {
                     "Content-Type": "application/json",
                 }
             }
-            const response = await fetch("api/" + url, settings);
+            const response = await fetch("/api/" + url, settings);
 
             if (response.status === 200) {
                 const json = await response.json();
@@ -91,11 +90,11 @@ export default function BrowsePage(props) {
                 setSets(json.sets);
                 setCount(json.count);
 
-                setParams({
+                setParams(params => ({
                     ...params,
                     'page': json.page,
                     'limit': json.limit,
-                })
+                }))
             }
             window.history.replaceState(null, null, url);
             setLoading(false);

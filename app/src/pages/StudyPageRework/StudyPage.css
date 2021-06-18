@@ -16,14 +16,12 @@
     padding-bottom: 50px;
 }
 
-
 .sp-header-container {
     padding-top: 20px;
     grid-area: sp-header;
     
     background-color: var(--color-bg);
     display: flex;
-    justify-content: center;
 }
 
 .sp-header-container span{
@@ -51,8 +49,6 @@
     align-items: center;
     gap: 35px;
 }
-
-
 
 @media (min-width: 1025px) and (max-width: 1280px) {
     .study-page-container {

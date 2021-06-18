@@ -64,6 +64,28 @@ export default function AddFolderModal(props) {
 
     return (
         <div className="folder-modal-container">
+            <div className="folder-modal-header">
+                <span
+                    style={{
+                        fontSize: '18px',
+                        fontWeight: 'bold',
+                    }}
+                >New Folder</span>
+                <button
+                    style={{
+                        border: 'none',
+                        background: 'transparent',
+                        padding: '0px',
+                        marginRight: '-10px'
+                    }}
+                    onClick={(event) => {
+                        event.preventDefault();
+                        props.showModal(false);
+                    }}
+                >
+                    <span className="material-icons">close</span>
+                </button>
+            </div>
             <form action="url" id="folder-modal-form" className="folder-modal-form">
                 <div className="folder-modal-input-container">
                     <input

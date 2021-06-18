@@ -1,10 +1,14 @@
-import { useState, useEffect, useRef, createContext } from 'react';
+import { useState, useEffect, useRef, useContext, createContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import { isOwner, isOwnerSet, isOwnerFolder } from 'components/isOwner/isOwner.js';
 
 import FolderCollapsible from './folderCollapsible/folderCollapsible.js';
 import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
 import ModalTemplate from 'components/modalTemplate/modalTemplate.js';
 import AddFolderModal from './addFolderModal/addFolderModal.js';
+
+import { NotificationContext } from 'context/context.js';
 
 import "./SetsPageRework.css";
 
@@ -17,11 +21,22 @@ export default function SetsPageRework(props) {
     const [folders, setFolders] = useState([]);
     const [allSets, setAllSets] = useState([]);
     const [showFolderModal, setShowFolderModal] = useState(false);
-
+    const history = useHistory();
     const bottomOfPage = useRef();
+    const notifications = useContext(NotificationContext);
+
+    function notify(type, text, status) {
+        notifications({
+            type: type,
+            value: {
+                id: uuidv4(),
+                text: text,
+                status: status,
+            }
+        });
+    }
 
     useEffect(() => {
-
         async function getData() {
             setLoading(true);
             const settings = {
@@ -54,43 +69,35 @@ export default function SetsPageRework(props) {
         getData();
     }, [username]);
 
-    async function onDelete(event, set_id) {
-        event.stopPropagation(); // Stops parent onClick
+    async function onDelete(set_id) {
         if (await isOwnerSet(set_id)) {
-            const confirm = window.confirm(
-                "Are you sure you want to delete this set? This action cannot be undone."
-            );
+            const body = JSON.stringify({
+                'set_id': set_id,
+            });
 
-            if (confirm) {
-                const body = JSON.stringify({
-                    'set_id': set_id,
-                });
+            const settings = {
+                method: 'DELETE',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: body,
+            };
 
-                const settings = {
-                    method: 'DELETE',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: body,
-                };
+            const response = await fetch('/api/sets/delete', settings);
+            if (response.status === 201) {
+                const len = folders.length;
+                let newFolders = folders.slice();
+                for (let i = 0; i < len; i++)
+                    newFolders[i].sets = newFolders[i].sets.filter(set => set.id !== set_id);
 
-                const response = await fetch('/api/sets/delete', settings);
-                if (response.status === 201) {
-                    const len = folders.length;
-                    let newFolders = folders.slice();
-                    for (let i = 0; i < len; i++)
-                        newFolders[i].sets = newFolders[i].sets.filter(set => set.id !== set_id);
-
-                    setFolders(newFolders);
-                    setAllSets(allSets.filter(set => set.id !== set_id));
-                }
-                else if (response.status === 401)
-                    alert('You must be the owner of this set to edit/delete it.');
+                setFolders(newFolders);
+                setAllSets(allSets.filter(set => set.id !== set_id));
             }
+            else if (response.status === 401)
+                notify('ADD', 'You must be the owner of this set to delete it', 'Error');
+
         }
-        else
-            alert('You must be the owner of this set to edit/delete it.');
     }
 
     async function onRemove(event, set_id) {
@@ -102,40 +109,38 @@ export default function SetsPageRework(props) {
         event.stopPropagation(); // Stops parent onClick
 
         if (await isOwnerSet(set_id))
-            window.location.href = "/sets/" + set_id + "/edit";
+            history.push("/sets/" + set_id + "/edit");
         else
-            alert('You must be the owner of this set to edit/delete it.');
+            notify('ADD', 'You must be the owner of this set to edit/delete it.', 'Error');
     }
 
     const onDeleteFolder = async (folder_id) => {
         if (await isOwnerFolder(folder_id)) {
-            const confirm = window.confirm(
-                "Are you sure you want to delete this folder? Deleting the folder will NOT delete the sets within it."
-            );
-            if (confirm) {
-                const body = JSON.stringify({
-                    "folder_id": folder_id,
-                });
+            const body = JSON.stringify({
+                "folder_id": folder_id,
+            });
 
-                const settings = {
-                    method: "DELETE",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: body,
-                }
-
-                const response = await fetch('/api/folders/delete', settings);
-
-                if (response.status === 201) {
-                    let newFolders = folders.slice();
-                    setFolders(newFolders.filter(folder => folder.id !== folder_id));
-                }
+            const settings = {
+                method: "DELETE",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: body,
             }
+
+            const response = await fetch('/api/folders/delete', settings);
+
+            if (response.status === 201) {
+                let newFolders = folders.slice();
+                setFolders(newFolders.filter(folder => folder.id !== folder_id));
+                notify('ADD', 'Folder successfully deleted', 'Success');
+            }
+
         }
         else
-            alert('You must be the owner of this folder to delete it.');
+            notify('ADD', 'You must be the owner of this folder to edit/delete it', 'Error');
+        
     }
 
     const insertFolder = (newFolder) => {
@@ -188,9 +193,8 @@ export default function SetsPageRework(props) {
                 setFolders(newFolders);
             }
         }
-        else {
-            alert('You must be the owner of this folder to delete it.');
-        }
+        else
+            notify('ADD', 'You must be the owner of this folder to edit/delete it', 'Error');
     }
 
     if (loading) {
