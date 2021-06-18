@@ -6,11 +6,18 @@ import { useHistory } from "react-router-dom";
 import './CreateSetPage.css';
 
 export default function CreateSetPage(props) {
-    const [flashCards, setFlashCards] = useState(new Array(2).fill({ 
-        'term': '<p></p>', 
+    const [flashCards, setFlashCards] = useState([{
+        'id': uuidv4(),
+        'term': '<p></p>',
         'definition': '<p></p>',
         'plainText': '',
-    }));
+    },
+        {
+            'id': uuidv4(),
+            'term': '<p></p>',
+            'definition': '<p></p>',
+            'plainText': '',
+        }]);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const history = useHistory();
@@ -26,10 +33,6 @@ export default function CreateSetPage(props) {
             }
         });
     }
-
-    useEffect(() => {
-        
-    }, []);
 
     const createSet = async () => {
         if (title.length) {
@@ -49,14 +52,14 @@ export default function CreateSetPage(props) {
             }
 
             const response = await fetch('/api/sets/new', settings);
-            
+
             if (response.status === 201) {
                 const json = await response.json();
                 history.push('/' + json.user + '/sets');
                 notify('ADD', 'New set created!', 'Success');
             }
         }
-        else 
+        else
             notify('ADD', 'You must provide a title for the study set.', 'Error');
     }
 
@@ -69,8 +72,10 @@ export default function CreateSetPage(props) {
     const addCard = () => {
         let newFlashCards = flashCards.slice();
         newFlashCards.push({
+            'id': uuidv4(),
             'term': '<p></p>',
-            'definition': '<p></p>'
+            'definition': '<p></p>',
+            'plainText': '',
         });
 
         setFlashCards(newFlashCards);

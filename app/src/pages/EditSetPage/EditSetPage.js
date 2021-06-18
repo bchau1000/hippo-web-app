@@ -7,6 +7,7 @@ import './EditSetPage.css';
 export default function EditSetPage(props) {
     const set_id = props.match.params.set_id;
     const [flashCards, setFlashCards] = useState(new Array(2).fill({
+        'id': '',
         'term': '<p></p>',
         'definition': '<p></p>',
         'plainText': '',
@@ -40,6 +41,10 @@ export default function EditSetPage(props) {
 
         getData();
     }, [set_id]);
+
+    useEffect(() => {
+        console.log(flashCards)
+    }, [flashCards]);
 
     const editSet = async () => {
         // implement this
