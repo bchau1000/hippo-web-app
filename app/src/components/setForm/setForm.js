@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-
+import { v4 as uuidv4 } from 'uuid';
 import MetaForm from './metaForm/metaForm.js';
 import CardForm from './cardForm/cardForm.js';
 
@@ -42,7 +42,7 @@ export default function SetForm(props) {
                     props.flashCards.map((flashCard, idx) => {
                         return (
                             <CardForm
-                                key={idx}
+                                key={flashCard.id}
                                 idx={idx}
                                 removeCard={props.removeCard}
                                 flashCard={flashCard}

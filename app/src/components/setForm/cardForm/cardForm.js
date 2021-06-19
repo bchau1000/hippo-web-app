@@ -19,6 +19,7 @@ export default function CardForm(props) {
     
     useEffect(() => {
         const flashCard = {
+            'id': props.flashCard.id,
             'term': getRawHtml(termEditor).toString(),
             'definition': getRawHtml(definitionEditor).toString(),
             'plainText': termEditor.getCurrentContent().getPlainText() + definitionEditor.getCurrentContent().getPlainText()
