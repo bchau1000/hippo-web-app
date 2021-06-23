@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import FlashCard from './flashCard/flashCard.js';
 import LoadingAnim from 'components/loadingAnim/loadingAnim.js';
-
+import Carousel from 'components/carousel/carousel.js';
 import './StudyPage.css';
 
 export default function StudyPage(props) {
@@ -52,6 +52,9 @@ export default function StudyPage(props) {
                     <span>Studying: {title}</span>
                 </div>
                 <div className="sp-center-container">
+                    <Carousel
+                        flashCards = {flashCards}
+                    />
                 </div>
                 <div className="sp-cards-container">
                     {
