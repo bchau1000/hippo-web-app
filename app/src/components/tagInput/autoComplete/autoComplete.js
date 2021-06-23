@@ -63,8 +63,8 @@ export default function AutoComplete(props) {
         >
             <input
                 list="filtered-tags"
-                type="search"
-                placeholder="Tags"
+                type="text"
+                placeholder="Add tags"
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
                 onChange={(event) => setInput(event.target.value)}

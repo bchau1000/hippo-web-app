@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useHistory } from "react-router-dom";
 import { NotificationContext } from 'context/context.js';
 import SetForm from 'components/setForm/setForm.js';
-import { useHistory } from "react-router-dom";
+
 import './CreateSetPage.css';
 
 export default function CreateSetPage(props) {

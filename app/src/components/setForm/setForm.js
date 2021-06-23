@@ -19,6 +19,7 @@ export default function SetForm(props) {
                     setTitle={props.setTitle}
                     description={props.description}
                     setDescription={props.setDescription}
+                    selectedTags={props.selectedTags ? props.selectedTags : []}
                 />
             </div>
             <div className="sf-tags-container">

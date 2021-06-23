@@ -56,9 +56,9 @@
 
 .browse-query-container .search-container .by-title{
     box-sizing:border-box;
-    font-size: 20px;
+    font-size: 18px;
     background-color: rgba(0, 0, 0, 0);
-    padding-bottom: 8px;
+    padding-bottom: 10px;
     border: none;
     border-bottom: 2px solid var(--color-text);
     transition: border-bottom 0.15s ease;
