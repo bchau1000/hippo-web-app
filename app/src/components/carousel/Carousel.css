@@ -1,39 +1,41 @@
 .carousel-container{
     height: 100%;
-    width: 100%;
-    transform-style: preserve-3d;
+    width: 850px;
     
+}
+
+.carousel-slides {
+    height: 90%;
+    transform-style: preserve-3d;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    column-gap: 50px;
+    border-radius: 2px;
 }
 
-.next-slide-button{
-    height : 30px;
-    width: 30px;
-    margin: 10px;
-}
-.prev-slide-button{
-    height : 30px;
-    width: 30px;
-    margin: 10px;
-}
-
-.next-slide-button:hover{
-    fill:var(--color-accent);
-}
-.prev-slide-button:hover{
-    fill:var(--color-accent);
-}
 .slide-button-container{
     display: flex;
     align-items: center;
     justify-content: center;
-    height:10%;
+    height: 10%;
+    transition: color 0.2s ease;
 }
 
-/*right
-<svg width="24" height="24" fill-rule="evenodd" clip-rule="evenodd"><path d="M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z"/></svg>
-*/
+.next-slide-button,
+.prev-slide-button {
+    transition: color 0.2s ease;
+}
 
-/*
-<svg width="24" height="24" fill-rule="evenodd" clip-rule="evenodd"><path d="M20 .755l-14.374 11.245 14.374 11.219-.619.781-15.381-12 15.391-12 .609.755z"/></svg>
-*/
+.next-slide-button:hover, 
+.prev-slide-button:hover{
+    color: var(--color-accent);
+}
+
+@media (max-width: 1280px) { 
+    .carousel-container{
+        width: 90%;
+    }
+}

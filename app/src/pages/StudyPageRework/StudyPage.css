@@ -19,15 +19,14 @@
 .sp-header-container {
     padding-top: 20px;
     grid-area: sp-header;
-    
-    background-color: var(--color-bg);
     display: flex;
+    justify-content: center;
 }
 
 .sp-header-container span{
     font-size: 26px;
     font-weight: bold;
-    width: 50%;
+    width: 850px;
 }
 
 .sp-center-container {
@@ -47,17 +46,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 35px;
+    row-gap: 35px;
 }
 
-@media (min-width: 1025px) and (max-width: 1280px) {
+@media (max-width: 1280px) {
     .study-page-container {
         width: 100%;
     } 
-}
 
-@media (max-width: 1024px) {
-    .study-page-container {
-        width: 100%;
-    } 
+    .sp-header-container span{
+        width: 90%;
+    }
 }

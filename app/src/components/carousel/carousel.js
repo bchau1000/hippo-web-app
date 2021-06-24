@@ -1,59 +1,102 @@
-import {useState, useEffect} from 'react';
+import { useEffect, useRef, useReducer } from 'react';
 import Slide from './slide/slide';
 
-import './Carousel.css';
+import './carousel.css';
+
+function reducer(state, action) {
+    let newState = {
+        current: state.current,
+        length: state.length,
+    }
+
+    switch (action.type) {
+        case 'INCREMENT':
+            newState.current = state.current + 1;
+
+            if (state.current >= state.length - 1)
+                newState.current = 0;
+
+            return newState;
+        case 'DECREMENT':
+            newState.current = state.current - 1;
+
+            if (state.current <= 0)
+                newState.current = state.length - 1;
+
+            return newState;
+        default:
+            return state;
+    }
+}
 
 export default function Carousel(props) {
+    const [currentSlide, setCurrentSlide] = useReducer(reducer, {
+        current: 0,
+        length: props.flashCards.length,
+    });
+    const slideRefs = useRef([]);
 
-    
-    const [currentIdx,setCurrentIdx] = useState(0);
+    useEffect(() => {
+        const idx = currentSlide.current;
 
-    const incrementIdx = () => {
-        if(currentIdx === props.flashCards.length - 1){
-            setCurrentIdx(0);
-        }
-        else{
-            setCurrentIdx(currentIdx+1);
-        }
-    }
-
-    const decrementIdx = () => {
-        if(currentIdx === 0){
-            setCurrentIdx(props.flashCards.length - 1);
-        }
-        else{
-            setCurrentIdx(currentIdx - 1);
-        }
-    }
-
-    return(
-        <div className = "carousel-container">
-        {
-            props.flashCards.map((card, idx) => {
-                return (
-                    <Slide 
-                    key = {idx}
-                    idx = {idx}
-                    visible = {idx === currentIdx}
-                    term = {card.term}
-                    definition = {card.definition}
-                    />
-                )
+        if (slideRefs.current[idx]) {
+            slideRefs.current[idx].scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'center'
             })
+
         }
-        <div className="slide-button-container">
+    }, [currentSlide, slideRefs])
 
-        <svg width="24" height="24" 
-        className="prev-slide-button" onClick = {decrementIdx}
-        fill-rule="evenodd" clip-rule="evenodd"><path d="M20 .755l-14.374 11.245 14.374 11.219-.619.781-15.381-12 15.391-12 .609.755z"/></svg>
-       
-        <span>{currentIdx+1} / {props.flashCards.length}</span>
+    return (
+        <div
+            className="carousel-container"
+        >
+            <div className="carousel-slides">
+                {
+                    props.flashCards.map((card, idx) => {
+                        return (
+                            <Slide
+                                innerRef={(slide) => slideRefs.current.push(slide)}
+                                key={idx}
+                                meta={{
+                                    idx: idx,
+                                    length: props.flashCards.length,
+                                }}
+                                term={card.term}
+                                definition={card.definition}
+                            />
+                        )
+                    })
+                }
+            </div>
 
-        <svg className="next-slide-button" 
-        onClick = {incrementIdx}
-        width="24" height="24" fill-rule="evenodd" clip-rule="evenodd"><path d="M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z"/></svg>
-        
-        </div>
+            <div className="slide-button-container">
+
+                <button
+                    className="prev-slide-button blank-button"
+                    onClick={() => setCurrentSlide({ type: 'DECREMENT' })}
+                >
+                    <span
+                        className="material-icons"
+                        style={{ fontSize: '40px' }}
+                    >navigate_before</span>
+                </button>
+
+                <span>{currentSlide.current + 1} / {props.flashCards.length}</span>
+
+                <button
+                    className="next-slide-button blank-button"
+                    onClick={() => setCurrentSlide({ type: 'INCREMENT' })}
+                >
+                    <span
+                        className="material-icons"
+                        style={{ fontSize: '40px' }}
+                    >navigate_next</span>
+                </button>
+
+            </div>
         </div>
     )
 }

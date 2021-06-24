@@ -1,23 +1,14 @@
-.slide-container{
-    height: 90%;
-    width: 100%;
-    background: transparent;
-    perspective: 1000px; /* Remove this if you don't want the 3D effect */
-}
-.hidden-card{
-    display: none;
-}
-
 .slide-content-container{
     background-color: var(--color-fg);
-    height: 100%;
-    width: 100%;
-    box-shadow: var(--box-shadow);
-    display: flex;
+    min-width: 99%;
+    height: 99%;
+    border-radius: 2px;
+    display:flex;
     justify-content: center;
     align-items: center;
-    transition: transform 0.5s;
-    transform-style: preserve-3d; 
+    transition: transform 0.3s;
+    transform-style: preserve-3d;
+    border: 1px solid rgba(24, 24, 24, 0.1);
 }
 
 .back-side{
@@ -25,15 +16,19 @@
     transform: rotateX(180deg);
 }
 
-.slide-term-content, .slide-definition-content{
+.slide-term-content, 
+.slide-definition-content {
     position: absolute;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+    width: calc(100% - 60px);
     height: 100%;
-    -webkit-backface-visibility: hidden; /* Safari */
+    padding-left: 30px;
+    padding-right: 30px;
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .slide-definition-content{
@@ -41,9 +36,13 @@
     transform: rotateX(180deg);
 }
 
-.back-side > .slide-term-content{
-    -webkit-backface-visibility: hidden; /* Safari */
-    backface-visibility: hidden;
+
+.slide-text-container {
+    max-height: 90%;
+    overflow-y: auto;
+    margin: auto;
 }
 
-
+.hidden-side {
+    display: none;
+}

@@ -36,6 +36,12 @@ button {
             user-select: none;
 }
 
+.blank-button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
 .main-container {
     display: grid;
     grid-template-rows: 60px auto;
