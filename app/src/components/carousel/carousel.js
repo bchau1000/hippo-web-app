@@ -1,5 +1,5 @@
 import { useEffect, useRef, useReducer } from 'react';
-import Slide from './slide/slide';
+import Slide from './slide/slide.js';
 
 import './carousel.css';
 
@@ -42,7 +42,7 @@ export default function Carousel(props) {
         if (slideRefs.current[idx]) {
             slideRefs.current[idx].scrollIntoView({
                 behavior: 'smooth',
-                block: 'nearest',
+                block: 'end',
                 inline: 'center'
             })
 

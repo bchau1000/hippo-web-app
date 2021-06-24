@@ -1,0 +1,41 @@
+.carousel-container{
+    height: 100%;
+    width: 850px;
+    
+}
+
+.carousel-slides {
+    height: 90%;
+    transform-style: preserve-3d;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    column-gap: 50px;
+    border-radius: 2px;
+}
+
+.slide-button-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10%;
+    transition: color 0.2s ease;
+}
+
+.next-slide-button,
+.prev-slide-button {
+    transition: color 0.2s ease;
+}
+
+.next-slide-button:hover, 
+.prev-slide-button:hover{
+    color: var(--color-accent);
+}
+
+@media (max-width: 1280px) { 
+    .carousel-container{
+        width: 90%;
+    }
+}
