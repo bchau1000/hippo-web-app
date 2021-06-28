@@ -1,14 +1,15 @@
 .slide-content-container{
     background-color: var(--color-fg);
+    border: 1px solid rgba(24, 24, 24, 0.1);
     min-width: 99%;
     height: 99%;
     border-radius: 2px;
     display:flex;
     justify-content: center;
     align-items: center;
-    transition: transform 0.3s;
+    transition: transform 0.8s;
     transform-style: preserve-3d;
-    border: 1px solid rgba(24, 24, 24, 0.1);
+    
 }
 
 .back-side{
@@ -18,14 +19,14 @@
 
 .slide-term-content, 
 .slide-definition-content {
+    font-size: 2.5em;
     position: absolute;
     width: calc(100% - 60px);
     height: 100%;
     padding-left: 30px;
     padding-right: 30px;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    
+    /* -webkit-backface-visibility: hidden; */
+    /* backface-visibility: hidden; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,9 +42,8 @@
     max-height: 90%;
     overflow-y: auto;
     margin: auto;
-    
 }
 
-.hidden-side {
+.hidden-side{
     display: none;
 }
