@@ -72,7 +72,7 @@ exports.getCardsOfSet = (request, response) => {
 exports.insertNewSet = (request, response) => {
     const { id } = request.user;
     const studySet = request.body;
-
+    console.log(request.body);
     try {
         pool.query(
             "INSERT INTO sets(title, description, user_id) VALUES(?, ?, ?)",
