@@ -16,7 +16,7 @@ export default function BrowseItem(props) {
                     />
                     <span className="profile-username">{set.username}</span>
                 </Link>
-                <button onClick={(event) => {event.stopPropagation();}}>
+                <button hidden={true} onClick={(event) => {event.stopPropagation();}}>
                     <span className="material-icons">star</span>
                 </button>
             </div>

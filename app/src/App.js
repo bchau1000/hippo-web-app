@@ -95,7 +95,7 @@ export function App(props) {
                             width={width}
                         />
                         <Switch>
-                            <Route exact path="/sandbox" render={(props) => <SandBox {...props} />} />
+                            
                             <Route exact path="/" render={(props) => <WelcomePage setShowLoginModal={setShowLoginModal} user={user} {...props} />} />
                             <Route exact path="/:username/sets" render={(props) => <SetsPageRework width={width} {...props} />} />
                             <Route exact path="/sets/:set_id/edit" render={(props) => <EditSetPage user={user} {...props} />} />

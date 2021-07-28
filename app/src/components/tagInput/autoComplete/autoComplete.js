@@ -45,12 +45,19 @@ export default function AutoComplete(props) {
                     setCursor(-1);
                     setInput("");
                 }
+                else {
+                    props.addTag(input);
+                    setInput("");
+                    setCursor(-1);
+                }
 
             }
         }
         else {
             if (event.key === 'Enter') {
-                
+                event.stopPropagation();
+                event.preventDefault();
+
             }
         }
 

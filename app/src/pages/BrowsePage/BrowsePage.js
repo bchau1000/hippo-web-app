@@ -62,7 +62,7 @@ export default function BrowsePage(props) {
                     "Content-Type": "application/json",
                 }
             }
-            const response = await fetch("api/tags", settings);
+            const response = await fetch("/api/tags", settings);
 
             if (response.status === 200) {
                 const json = await response.json();

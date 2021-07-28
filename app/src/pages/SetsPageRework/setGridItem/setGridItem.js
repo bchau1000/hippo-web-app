@@ -30,7 +30,7 @@ export default function SetGridItem(props) {
         if (props.isFolder) {
             return (
                 <div className="options">
-                    <button title="edit" onClick={(event) => props.onRemove(event, props.id)}>
+                    <button hidden={true} title="edit" onClick={(event) => props.onRemove(event, props.id)}>
                         <span className="material-icons edit">close</span>
                     </button>
                 </div>
@@ -48,7 +48,7 @@ export default function SetGridItem(props) {
                 >
                     <span className="material-icons delete">delete</span>
                 </button>
-                <button title="edit" onClick={(event) => onEdit(event, props.id)}>
+                <button hidden={true} title="edit" onClick={(event) => onEdit(event, props.id)}>
                     <span className="material-icons edit">edit</span>
                 </button>
             </div>

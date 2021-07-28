@@ -128,16 +128,6 @@ export default function Sidebar(props) {
                         <span htmlFor="sets">Create</span>
                     </Link>
                 </li>
-                <li className={`sidebar-item ? ${isCurrentPage("/sandbox") ? "current-page" : ""}`}>
-                    <Link
-                        className="sidebar-link-wrapper"
-                        to="/sandbox"
-                    >
-                        <span className="material-icons">settings</span>
-                        <span htmlFor="sets">Sandbox</span>
-                    </Link>
-                </li>
-
             </ul>
         </div>
     );

@@ -5,13 +5,13 @@
     gap: 15px;
 }
 
-.meta-container div {
+.meta-container .meta-field {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
-.meta-container div .meta-form-input{
+.meta-container .meta-field .meta-form-input{
     background-color: rgba(0, 0, 0, 0);
     box-sizing: border-box;
     border: none;
@@ -23,13 +23,13 @@
     transition: 0.26s border-bottom;
 }
 
-.meta-container div label {
+.meta-container .meta-field label {
     font-size: 14px;
     font-weight: bold;
     color: rgba(0, 0, 0, 0.3);
 }
 
-.meta-container div .meta-form-input:focus{
+.meta-container .meta-field .meta-form-input:focus{
     outline: none;
     border-bottom: 2px solid var(--color-accent);
 }

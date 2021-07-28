@@ -4,7 +4,7 @@ import './metaForm.css';
 export default function MetaForm(props) {
     return (
         <form className="meta-container">
-            <div>
+            <div className="meta-field">
                 <input
                     className="meta-form-input"
                     id="title"
@@ -26,11 +26,11 @@ export default function MetaForm(props) {
                 />
                 <label htmlFor="description">DESCRIPTION</label>
             </div>
-            <div>
+            <div className="meta-field"> 
                 <TagInput
-                    allTags={[]}
+                    allTags={props.allTags}
                     selectedTags={props.selectedTags}
-                    setSelectedTags={() => { }}
+                    setSelectedTags={props.setSelectedTags}
                 />
                 <label htmlFor="description">TAGS</label>
             </div>

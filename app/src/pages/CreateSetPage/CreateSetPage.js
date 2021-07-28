@@ -6,7 +6,7 @@ import SetForm from 'components/setForm/setForm.js';
 
 import './CreateSetPage.css';
 
-export default function CreateSetPage(props) {
+export default function CreateSetPage() {
     const [flashCards, setFlashCards] = useState([{
         'id': uuidv4(),
         'term': '<p></p>',
@@ -21,8 +21,39 @@ export default function CreateSetPage(props) {
         }]);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [allTags, setAllTags] = useState([]);
+    const [defaultTags, setDefaultTags] = useState([]);
+    const [tags, setTags] = useState([]);
     const history = useHistory();
     const notifications = useContext(NotificationContext);
+
+    useEffect(() => {
+        const fetchTags = async () => {
+            const settings = {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            }
+            const response = await fetch("/api/tags", settings);
+        
+            if (response.status === 200) {
+                const json = await response.json();
+                const length = json.tags.length;
+                let newAllTags = []
+                let newDefaultTags = []
+
+                for (let i = 0; i < length; i++) {
+                    newAllTags.push(json.tags[i].name);
+                    newDefaultTags.push(json.tags[i]);
+                }
+                
+                setDefaultTags(newDefaultTags);
+                setAllTags(newAllTags);
+            }
+        }
+        fetchTags();
+    }, []);
 
     function notify(type, text, status) {
         notifications({
@@ -37,12 +68,39 @@ export default function CreateSetPage(props) {
 
     const createSet = async () => {
         if (title.length) {
+            let addedTags = [];
+            let newTags = [];
+
+            for(let i = 0; i < tags.length; i++)
+            {
+                let found = false;
+
+                for(let j = 0; j < defaultTags.length; j++) {
+                    if(tags[i] === defaultTags[j].name) {
+                        addedTags.push(defaultTags[j]);
+                        found = true;
+                    }
+                }
+
+                if(!found) {
+                    newTags.push({
+                        id: -1,
+                        name: tags[i]
+                    });
+                }
+            }
+                
+                
+            
+
             const body = JSON.stringify({
                 'title': title,
                 'description': description,
                 'flash_cards': flashCards.filter((flashCard) => flashCard.plainText.length),
+                'tags': addedTags,
+                'new_tags': newTags,
             });
-
+            console.log(body);
             const settings = {
                 method: 'PUT',
                 credentials: 'include',
@@ -98,6 +156,10 @@ export default function CreateSetPage(props) {
                 setTitle={setTitle}
                 description={description}
                 setDescription={setDescription}
+                setTags={setTags}
+                selectedTags={tags}
+                setSelectedTags={setTags}
+                allTags={allTags}
                 flashCards={flashCards}
                 updateCards={updateCards}
                 addCard={addCard}

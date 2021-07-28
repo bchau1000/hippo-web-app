@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import MetaForm from './metaForm/metaForm.js';
 import CardForm from './cardForm/cardForm.js';
 
@@ -20,6 +19,8 @@ export default function SetForm(props) {
                     description={props.description}
                     setDescription={props.setDescription}
                     selectedTags={props.selectedTags ? props.selectedTags : []}
+                    setSelectedTags={props.setSelectedTags ? props.setSelectedTags : () => {}}
+                    allTags={props.allTags}
                 />
             </div>
             <div className="sf-tags-container">
